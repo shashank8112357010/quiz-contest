@@ -12,6 +12,7 @@ import Contests from "./pages/Contests";
 import Rewards from "./pages/Rewards";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
+import DemoAccess from "./pages/DemoAccess";
 import Test from "./pages/Test";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/rewards" element={<Rewards />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/demo" element={<DemoAccess />} />
             <Route path="/test" element={<Test />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

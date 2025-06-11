@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { ProfileAccessCard } from "@/components/ui/profile-access-card";
 import { MockCredentials } from "@/components/ui/mock-credentials";
+import { DemoLoginHelper } from "@/components/ui/demo-login-helper";
 
 const Test = () => {
   const [showAuthModal, setShowAuthModal] = React.useState(false);
@@ -119,8 +120,8 @@ const Test = () => {
         {/* Profile Access Guide */}
         <ProfileAccessCard />
 
-        {/* Mock Credentials */}
-        <MockCredentials />
+        {/* Demo Login Helper */}
+        <DemoLoginHelper />
       </div>
 
       {/* Test Auth Modal */}
