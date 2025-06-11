@@ -781,6 +781,61 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
+              {/* Daily Goals & Challenges */}
+              <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl mb-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-white">
+                    <Target className="w-5 h-5 text-orange-400" />
+                    Daily Goals
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-gray-400">Quizzes Completed</span>
+                        <span className="text-white">
+                          {currentStatus.todayQuizzes}/{currentStatus.todayGoal}
+                        </span>
+                      </div>
+                      <Progress
+                        value={
+                          (currentStatus.todayQuizzes /
+                            currentStatus.todayGoal) *
+                          100
+                        }
+                        className="h-2"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-gray-400">Weekly Streak</span>
+                        <span className="text-white">5/7 days</span>
+                      </div>
+                      <Progress value={(5 / 7) * 100} className="h-2" />
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-gray-400">Accuracy Goal</span>
+                        <span className="text-white">92/90%</span>
+                      </div>
+                      <Progress value={100} className="h-2" />
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-sm text-green-300">
+                        3 goals completed today! +150 bonus coins earned
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Quick Actions */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardHeader>
@@ -792,21 +847,28 @@ const Dashboard = () => {
                 <CardContent className="space-y-3">
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
                     <Play className="w-4 h-4 mr-2" />
-                    Start New Quiz
+                    Continue Quiz Journey
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
+                    className="w-full border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white"
                   >
-                    <Trophy className="w-4 h-4 mr-2" />
-                    View Achievements
+                    <Target className="w-4 h-4 mr-2" />
+                    Join Daily Challenge
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-white"
+                  >
+                    <Star className="w-4 h-4 mr-2" />
+                    Claim Rewards
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full border-green-500 text-green-400 hover:bg-green-500 hover:text-white"
                   >
                     <Users className="w-4 h-4 mr-2" />
-                    Friend Leaderboard
+                    Invite Friends
                   </Button>
                 </CardContent>
               </Card>
