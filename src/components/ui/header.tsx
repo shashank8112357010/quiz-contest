@@ -51,7 +51,7 @@ export const Header = () => {
           </div>
 
           {/* Enhanced Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {[
               { name: "Home", href: "/" },
               { name: "Dashboard", href: "/dashboard" },
@@ -70,10 +70,10 @@ export const Header = () => {
                     link.onClick();
                   }
                 }}
-                className="relative text-white/90 hover:text-white transition-all duration-300 font-bold text-lg group animate-fade-in cursor-pointer"
+                className="relative text-white/90 hover:text-white transition-all duration-300 font-bold text-base xl:text-lg group animate-fade-in cursor-pointer whitespace-nowrap"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <span className="relative z-10">{link.name}</span>
+                {link.name}
                 <div className="absolute inset-0 bg-gradient-to-r from-electric-400/20 to-magic-400/20 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-400 to-neon-400 group-hover:w-full transition-all duration-300"></div>
               </a>
