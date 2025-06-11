@@ -33,6 +33,8 @@ export const questionDatabase: Record<string, Question[]> = {
       difficulty: "Medium",
       explanation:
         "Canberra is the capital city of Australia, not Sydney which is the largest city.",
+      tags: ["geography", "capitals", "australia"],
+      points: 15,
     },
     {
       id: 3,
@@ -41,6 +43,8 @@ export const questionDatabase: Record<string, Question[]> = {
       correctAnswer: 1,
       category: "World",
       difficulty: "Easy",
+      tags: ["geography", "nicknames", "japan"],
+      points: 10,
     },
     {
       id: 4,
@@ -50,6 +54,8 @@ export const questionDatabase: Record<string, Question[]> = {
       correctAnswer: 3,
       category: "World",
       difficulty: "Medium",
+      tags: ["history", "china", "ancient"],
+      points: 15,
     },
     {
       id: 5,
