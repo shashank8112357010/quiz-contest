@@ -19,7 +19,7 @@ export const Header = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-electric-600/20 via-magic-600/20 to-neon-600/20 animate-pulse" />
 
       <div className="container mx-auto px-4 py-4 relative">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4 lg:gap-8">
           {/* Enhanced Logo */}
           <div className="flex items-center gap-4">
             <div className="relative">
