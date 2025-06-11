@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Menu, User, Trophy, Sparkles, Zap } from "lucide-react";
+import { Brain, Menu, User, Trophy, Sparkles, Zap, LogOut } from "lucide-react";
 import { useState } from "react";
+import { AuthModal } from "@/components/ui/auth-modal";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const { user, userData, loading, signOut } = useAuth();
 
   return (
     <header className="relative z-50 bg-black/30 backdrop-blur-xl border-b-2 border-white/20 shadow-2xl">
@@ -66,18 +71,57 @@ export const Header = () => {
 
           {/* Enhanced Action Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <Button
-              variant="outline"
-              className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
-            >
-              <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-              Sign In
-            </Button>
-            <Button className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white border-0 shadow-2xl font-bold transition-all duration-300 hover:scale-105 animate-glow group">
-              <Trophy className="w-4 h-4 mr-2 group-hover:animate-spin" />
-              <span>Sign Up</span>
-              <Zap className="w-4 h-4 ml-2 group-hover:animate-bounce" />
-            </Button>
+            {!loading && (
+              <>
+                {user && userData ? (
+                  <div className="flex items-center gap-4">
+                    <div className="text-white text-right">
+                      <div className="font-bold text-sm">
+                        {userData.displayName}
+                      </div>
+                      <div className="text-xs text-electric-300 flex items-center gap-2">
+                        <span>💰 {userData.coins}</span>
+                        <span>❤️ {userData.lives}</span>
+                        <span>⭐ {userData.totalStars}</span>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={signOut}
+                      className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                    >
+                      <LogOut className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setAuthMode("signin");
+                        setAuthModalOpen(true);
+                      }}
+                      className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                    >
+                      <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                      Sign In
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setAuthMode("signup");
+                        setAuthModalOpen(true);
+                      }}
+                      className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white border-0 shadow-2xl font-bold transition-all duration-300 hover:scale-105 animate-glow group"
+                    >
+                      <Trophy className="w-4 h-4 mr-2 group-hover:animate-spin" />
+                      <span>Sign Up</span>
+                      <Zap className="w-4 h-4 ml-2 group-hover:animate-bounce" />
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
           </div>
 
           {/* Enhanced Mobile Menu Button */}
@@ -112,18 +156,57 @@ export const Header = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-3 mt-6 px-4">
-                <Button
-                  variant="outline"
-                  className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Sign In
-                </Button>
-                <Button className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white font-bold transition-all duration-300 hover:scale-105 animate-glow">
-                  <Trophy className="w-4 h-4 mr-2" />
-                  Sign Up
-                  <Zap className="w-4 h-4 ml-2" />
-                </Button>
+                {!loading && (
+                  <>
+                    {user && userData ? (
+                      <div className="text-center text-white">
+                        <div className="font-bold text-lg mb-2">
+                          {userData.displayName}
+                        </div>
+                        <div className="text-sm text-electric-300 flex justify-center gap-4 mb-4">
+                          <span>💰 {userData.coins}</span>
+                          <span>❤️ {userData.lives}</span>
+                          <span>⭐ {userData.totalStars}</span>
+                        </div>
+                        <Button
+                          variant="outline"
+                          onClick={signOut}
+                          className="w-full bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
+                        >
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setAuthMode("signin");
+                            setAuthModalOpen(true);
+                            setIsMenuOpen(false);
+                          }}
+                          className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
+                        >
+                          <User className="w-4 h-4 mr-2" />
+                          Sign In
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setAuthMode("signup");
+                            setAuthModalOpen(true);
+                            setIsMenuOpen(false);
+                          }}
+                          className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white font-bold transition-all duration-300 hover:scale-105 animate-glow"
+                        >
+                          <Trophy className="w-4 h-4 mr-2" />
+                          Sign Up
+                          <Zap className="w-4 h-4 ml-2" />
+                        </Button>
+                      </>
+                    )}
+                  </>
+                )}
               </div>
             </nav>
           </div>
@@ -132,6 +215,13 @@ export const Header = () => {
 
       {/* Bottom border glow */}
       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-electric-400 via-magic-400 to-neon-400 animate-pulse" />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        defaultTab={authMode}
+      />
     </header>
   );
 };
