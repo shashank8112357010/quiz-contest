@@ -1,202 +1,224 @@
 import React from "react";
+import { AnimatedBackground } from "@/components/ui/animated-background";
+import { NotificationBanner } from "@/components/ui/notification-banner";
+import { Header } from "@/components/ui/header";
+import { HeroSection } from "@/components/ui/hero-section";
+import { FeatureGrid } from "@/components/ui/feature-grid";
+import { FinalCTA } from "@/components/ui/final-cta";
+import {
+  GameStatusBar,
+  FloatingGameStats,
+} from "@/components/ui/game-status-bar";
+import { SoundProvider } from "@/components/ui/sound-effects";
+import { OnboardingTour } from "@/components/ui/onboarding-tour";
+import { WelcomeBackModal } from "@/components/ui/welcome-back-modal";
+import { FloatingHelpButton } from "@/components/ui/floating-help-button";
+import {
+  AchievementToast,
+  useAchievementToasts,
+} from "@/components/ui/achievement-toast";
+import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
+  const { showTour, showWelcomeBack, completeTour, dismissWelcomeBack } =
+    useOnboarding();
+
+  const { activeToasts, showAchievement, hideAchievement } =
+    useAchievementToasts();
+
+  // Listen for achievement events
+  React.useEffect(() => {
+    const handleAchievement = (event: CustomEvent) => {
+      showAchievement(event.detail);
+    };
+
+    window.addEventListener("achievement", handleAchievement as EventListener);
+    return () =>
+      window.removeEventListener(
+        "achievement",
+        handleAchievement as EventListener,
+      );
+  }, [showAchievement]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Test Header */}
-      <header className="bg-black/30 backdrop-blur-xl border-b border-white/20">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                <span className="text-2xl">🧠</span>
+    <SoundProvider>
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Enhanced Animated Background */}
+        <AnimatedBackground />
+
+        {/* Game Status Bar - Always visible */}
+        <GameStatusBar
+          position="top"
+          variant="compact"
+          showNetworkStatus={true}
+        />
+
+        {/* Main Content with better text contrast */}
+        <div className="relative z-40 pt-16">
+          {/* Top Notification Banner */}
+          <NotificationBanner />
+
+          {/* Header */}
+          <Header />
+
+          {/* Main Content */}
+          <main className="relative">
+            {/* Hero Section */}
+            <HeroSection />
+
+            {/* Feature Grid */}
+            <FeatureGrid />
+
+            {/* Final CTA */}
+            <FinalCTA />
+          </main>
+
+          {/* Enhanced Footer */}
+          <footer className="relative border-t-2 border-white/20 bg-black/40 backdrop-blur-xl">
+            <div className="container mx-auto px-4 py-16">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-br from-electric-400 to-magic-500 rounded-xl flex items-center justify-center animate-glow">
+                      <span className="text-2xl">🧠</span>
+                    </div>
+                    <h3 className="text-2xl font-display font-black bg-gradient-to-r from-white to-electric-200 bg-clip-text text-transparent">
+                      Quiz2Play
+                    </h3>
+                  </div>
+                  <p className="text-white/80 mb-6 max-w-md text-lg leading-relaxed">
+                    The ultimate AI-powered quiz platform where knowledge meets
+                    rewards. Win amazing prizes while testing your skills with
+                    our intelligent coaching system! 🚀
+                  </p>
+                  <div className="flex gap-4">
+                    {[
+                      { icon: "📘", label: "Facebook" },
+                      { icon: "🐦", label: "Twitter" },
+                      { icon: "📸", label: "Instagram" },
+                      { icon: "💼", label: "LinkedIn" },
+                    ].map((social, index) => (
+                      <div
+                        key={index}
+                        className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer hover:scale-110 backdrop-blur-sm border border-white/20"
+                      >
+                        <span className="text-xl">{social.icon}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-black text-white mb-6 text-xl">
+                    Quick Links
+                  </h4>
+                  <ul className="space-y-4 text-white/80">
+                    {[
+                      "How to Play",
+                      "Categories",
+                      "Leaderboard",
+                      "Prizes",
+                      "Support",
+                    ].map((link, index) => (
+                      <li key={index}>
+                        <a
+                          href="#"
+                          className="hover:text-white transition-colors font-semibold text-lg hover:translate-x-2 transform duration-300 inline-block"
+                        >
+                          {link}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-black text-white mb-6 text-xl">
+                    Legal & Help
+                  </h4>
+                  <ul className="space-y-4 text-white/80">
+                    {[
+                      "Terms of Service",
+                      "Privacy Policy",
+                      "Contest Rules",
+                      "Contact Us",
+                      "FAQ",
+                    ].map((link, index) => (
+                      <li key={index}>
+                        <a
+                          href="#"
+                          className="hover:text-white transition-colors font-semibold text-lg hover:translate-x-2 transform duration-300 inline-block"
+                        >
+                          {link}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <h1 className="text-2xl font-bold text-white">Quiz2Play</h1>
-            </div>
-            <nav className="hidden md:flex items-center gap-8">
-              <a
-                href="/"
-                className="text-white hover:text-purple-300 transition-colors"
-              >
-                Home
-              </a>
-              <a
-                href="/categories"
-                className="text-white hover:text-purple-300 transition-colors"
-              >
-                Categories
-              </a>
-              <a
-                href="/dashboard"
-                className="text-white hover:text-purple-300 transition-colors"
-              >
-                Dashboard
-              </a>
-              <a
-                href="/admin"
-                className="text-white hover:text-purple-300 transition-colors"
-              >
-                Admin
-              </a>
-            </nav>
-            <div className="flex items-center gap-4">
-              <button className="bg-white/20 border border-white/30 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors">
-                Sign In
-              </button>
-              <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
-                Sign Up
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
 
-      {/* Hero Section */}
-      <main className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Welcome to{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Quiz2Play
-            </span>
-          </h1>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
-            The ultimate AI-powered quiz platform where knowledge meets rewards.
-            Win amazing prizes while testing your skills!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => (window.location.href = "/categories")}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105"
-            >
-              Start Playing Now
-            </button>
-            <button
-              onClick={() => (window.location.href = "/dashboard")}
-              className="border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all transform hover:scale-105"
-            >
-              View Dashboard
-            </button>
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">🏆</span>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-4">
-              Win Real Prizes
-            </h3>
-            <p className="text-white/70">
-              iPhone 15 Pro Max, cash rewards, and exclusive merchandise waiting
-              for you.
-            </p>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">⚡</span>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-4">
-              Lightning Fast
-            </h3>
-            <p className="text-white/70">
-              Quick 60-second rounds. Test your knowledge and reflexes in
-              rapid-fire questions.
-            </p>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">👑</span>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-4">
-              Become a Champion
-            </h3>
-            <p className="text-white/70">
-              Climb the leaderboard and earn your crown as the ultimate quiz
-              master.
-            </p>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8 mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-purple-400 mb-2">20+</div>
-              <div className="text-white/70">Categories</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">5000+</div>
-              <div className="text-white/70">Questions</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-green-400 mb-2">50K+</div>
-              <div className="text-white/70">Players</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-yellow-400 mb-2">
-                $10K+
+              <div className="border-t-2 border-white/20 mt-12 pt-8 text-center">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <p className="text-white/70 text-lg">
+                    &copy; 2024 Quiz2Play. All rights reserved. Made with ❤️ for
+                    quiz enthusiasts.
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 text-white/70">
+                      <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                      <span className="font-semibold">
+                        Over 50,000 players online now!
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="text-white/70">Prizes Won</div>
             </div>
-          </div>
+          </footer>
         </div>
 
-        {/* Quick Navigation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button
-            onClick={() => (window.location.href = "/categories")}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-xl font-bold hover:from-blue-700 hover:to-purple-700 transition-all"
-          >
-            Browse Categories
-          </button>
-          <button
-            onClick={() => (window.location.href = "/leaderboard")}
-            className="bg-gradient-to-r from-green-600 to-blue-600 text-white p-6 rounded-xl font-bold hover:from-green-700 hover:to-blue-700 transition-all"
-          >
-            Leaderboard
-          </button>
-          <button
-            onClick={() => (window.location.href = "/contests")}
-            className="bg-gradient-to-r from-yellow-600 to-red-600 text-white p-6 rounded-xl font-bold hover:from-yellow-700 hover:to-red-700 transition-all"
-          >
-            Contests
-          </button>
-          <button
-            onClick={() => (window.location.href = "/rewards")}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all"
-          >
-            Rewards
-          </button>
-        </div>
-      </main>
+        {/* Onboarding Components */}
+        {showTour && (
+          <OnboardingTour isOpen={showTour} onComplete={completeTour} />
+        )}
 
-      {/* Footer */}
-      <footer className="border-t border-white/20 bg-black/40 backdrop-blur-xl">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-white/70">
-            <p>
-              &copy; 2024 Quiz2Play. All rights reserved. Made with ❤️ for quiz
-              enthusiasts.
-            </p>
-          </div>
-        </div>
-      </footer>
+        {showWelcomeBack && (
+          <WelcomeBackModal
+            isOpen={showWelcomeBack}
+            onClose={dismissWelcomeBack}
+          />
+        )}
 
-      {/* Development Helper */}
-      {process.env.NODE_ENV === "development" && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className="bg-black/80 text-white p-3 rounded-lg text-sm">
-            <div>✅ Page loaded successfully!</div>
-            <div>🔧 Development mode active</div>
+        {/* Floating Help Button */}
+        <FloatingHelpButton />
+
+        {/* Manual Onboarding Trigger for Testing */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="fixed bottom-4 left-4 z-50">
+            <button
+              onClick={() => {
+                // Reset onboarding and trigger tour
+                localStorage.removeItem("quiz2play_onboarding");
+                window.location.reload();
+              }}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold"
+            >
+              Reset & Test Onboarding
+            </button>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {/* Achievement Toasts */}
+        {activeToasts.map((achievement: any) => (
+          <AchievementToast
+            key={achievement.id}
+            achievement={achievement}
+            isVisible={true}
+            onClose={() => hideAchievement(achievement.id)}
+          />
+        ))}
+      </div>
+    </SoundProvider>
   );
 };
 
