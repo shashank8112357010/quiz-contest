@@ -5,7 +5,7 @@ import { DemoLoginHelper } from "@/components/ui/demo-login-helper";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Dashboard,
+  LayoutDashboard,
   ArrowRight,
   Users,
   BarChart3,
@@ -73,7 +73,7 @@ const DemoAccess = () => {
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
-                    <Dashboard className="w-12 h-12 text-purple-400 mx-auto mb-3" />
+                    <LayoutDashboard className="w-12 h-12 text-purple-400 mx-auto mb-3" />
                     <h2 className="text-2xl font-bold text-white mb-2">
                       What's in the Dashboard?
                     </h2>

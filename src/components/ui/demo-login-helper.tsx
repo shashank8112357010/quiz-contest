@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   User,
   Key,
-  Dashboard,
+  LayoutDashboard,
   ArrowRight,
   Copy,
   Check,
@@ -109,7 +109,7 @@ export const DemoLoginHelper: React.FC = () => {
       <CardHeader>
         <div className="text-center">
           <CardTitle className="flex items-center justify-center gap-2 text-white text-2xl mb-2">
-            <Dashboard className="w-6 h-6 text-blue-400" />
+            <LayoutDashboard className="w-6 h-6 text-blue-400" />
             Quick Dashboard Access
           </CardTitle>
           <p className="text-gray-300">
@@ -233,7 +233,7 @@ export const DemoLoginHelper: React.FC = () => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <Dashboard className="w-4 h-4" />
+                      <LayoutDashboard className="w-4 h-4" />
                       Login & View Dashboard
                       <ArrowRight className="w-4 h-4" />
                     </div>
