@@ -3,6 +3,7 @@ import { Brain, Menu, User, Trophy, Sparkles, Zap, LogOut } from "lucide-react";
 import { useState } from "react";
 import { AuthModal } from "@/components/ui/auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { isFirebaseReady } from "@/lib/firebase";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,14 @@ export const Header = () => {
 
   return (
     <header className="relative z-50 bg-black/30 backdrop-blur-xl border-b-2 border-white/20 shadow-2xl">
+      {/* Demo mode banner */}
+      {!isFirebaseReady && (
+        <div className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-center py-2 px-4 text-sm font-bold">
+          🚀 DEMO MODE - Sign up with any email to try the full experience!
+          Check FIREBASE-SETUP.md for real auth setup.
+        </div>
+      )}
+
       {/* Background glow */}
       <div className="absolute inset-0 bg-gradient-to-r from-electric-600/20 via-magic-600/20 to-neon-600/20 animate-pulse" />
 
