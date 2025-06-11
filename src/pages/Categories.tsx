@@ -301,24 +301,30 @@ const Categories = () => {
 
             {/* Stats */}
             <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-6 sm:mb-8 px-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
-                <div className="text-2xl font-bold text-electric-400">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
+                <div className="text-xl sm:text-2xl font-bold text-electric-400">
                   {categories.length}
                 </div>
-                <div className="text-white/70 text-sm">Categories</div>
+                <div className="text-white/70 text-xs sm:text-sm">
+                  Categories
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
-                <div className="text-2xl font-bold text-neon-400">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
+                <div className="text-xl sm:text-2xl font-bold text-neon-400">
                   {categories
                     .reduce((total, cat) => total + cat.questionCount, 0)
                     .toLocaleString()}
                   +
                 </div>
-                <div className="text-white/70 text-sm">Questions</div>
+                <div className="text-white/70 text-xs sm:text-sm">
+                  Questions
+                </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
-                <div className="text-2xl font-bold text-magic-400">50K+</div>
-                <div className="text-white/70 text-sm">Players</div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
+                <div className="text-xl sm:text-2xl font-bold text-magic-400">
+                  50K+
+                </div>
+                <div className="text-white/70 text-xs sm:text-sm">Players</div>
               </div>
             </div>
           </div>
