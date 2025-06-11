@@ -2,8 +2,9 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User as FirebaseUser, onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, isFirebaseReady } from "@/lib/firebase";
 import { getUserData } from "@/lib/firebaseService";
+import { demoAuth } from "@/lib/demoAuth";
 import { User } from "@/lib/store";
 
 interface AuthContextType {
@@ -36,30 +37,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
+    let unsubscribe: () => void;
 
-      if (firebaseUser) {
-        try {
-          const data = await getUserData(firebaseUser.uid);
-          setUserData(data);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+    if (isFirebaseReady) {
+      // Use real Firebase auth
+      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        setUser(firebaseUser);
+
+        if (firebaseUser) {
+          try {
+            const data = await getUserData(firebaseUser.uid);
+            setUserData(data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUserData(null);
+          }
+        } else {
           setUserData(null);
         }
-      } else {
-        setUserData(null);
-      }
 
-      setLoading(false);
-    });
+        setLoading(false);
+      });
+    } else {
+      // Use demo auth
+      console.log("🚀 Running in DEMO mode - Firebase not configured");
+      unsubscribe = demoAuth.onAuthStateChanged(async (demoUser) => {
+        setUser(demoUser as any);
+
+        if (demoUser) {
+          try {
+            const data = await demoAuth.getUserData(demoUser.uid);
+            setUserData(data);
+          } catch (error) {
+            console.error("Error fetching demo user data:", error);
+            setUserData(null);
+          }
+        } else {
+          setUserData(null);
+        }
+
+        setLoading(false);
+      });
+    }
 
     return () => unsubscribe();
   }, []);
 
   const handleSignOut = async () => {
     try {
-      await auth.signOut();
+      if (isFirebaseReady) {
+        await auth.signOut();
+      } else {
+        await demoAuth.signOut();
+      }
       setUser(null);
       setUserData(null);
     } catch (error) {

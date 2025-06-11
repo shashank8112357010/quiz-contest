@@ -20,7 +20,8 @@ import {
   updateProfile,
   User as FirebaseUser,
 } from "firebase/auth";
-import { auth, db } from "./firebase";
+import { auth, db, isFirebaseReady } from "./firebase";
+import { demoAuth } from "./demoAuth";
 import { User, QuizSession } from "./store";
 
 // Auth Services
@@ -30,6 +31,11 @@ export const signUp = async (
   displayName: string,
 ) => {
   try {
+    if (!isFirebaseReady) {
+      // Use demo auth
+      return await demoAuth.signUp(email, password, displayName);
+    }
+
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -68,6 +74,11 @@ export const signUp = async (
 
 export const signIn = async (email: string, password: string) => {
   try {
+    if (!isFirebaseReady) {
+      // Use demo auth
+      return await demoAuth.signIn(email, password);
+    }
+
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -96,6 +107,11 @@ export const signOut = async () => {
 // User Data Services
 export const getUserData = async (uid: string): Promise<User | null> => {
   try {
+    if (!isFirebaseReady) {
+      // Use demo auth
+      return await demoAuth.getUserData(uid);
+    }
+
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
       return userDoc.data() as User;
