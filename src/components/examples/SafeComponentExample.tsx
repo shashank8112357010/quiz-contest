@@ -107,3 +107,11 @@ export default SafeComponentExample;
  * - Use hooks after early returns
  * - Import hooks conditionally
  */
+
+// Example of a placeholder heavy component for demonstration
+const HeavyComponent: React.FC<{ data: any[] }> = ({ data }) => (
+  <div className="mt-4 p-2 bg-gray-100 rounded">
+    <p>Heavy Component Loaded</p>
+    <p>Data items: {data.length}</p>
+  </div>
+);
