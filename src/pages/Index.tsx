@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/game-status-bar";
 import { SoundProvider } from "@/components/ui/sound-effects";
 import { useOnboarding } from "@/hooks/use-onboarding";
+import { useAchievementToasts } from "@/components/ui/achievement-toast";
 
-// Dynamic imports for heavy components
+// Dynamic imports for heavy UI components only (not hooks)
 const OnboardingTour = lazy(() =>
   import("@/components/ui/onboarding-tour").then((module) => ({
     default: module.OnboardingTour,
@@ -72,29 +73,15 @@ class ErrorBoundary extends React.Component<
 }
 
 const Index = () => {
+  // Always call hooks in the same order - no conditional hook calls
   const { showTour, showWelcomeBack, completeTour, dismissWelcomeBack } =
     useOnboarding();
 
-  // Dynamic import for achievement toasts hook
-  const [achievementModule, setAchievementModule] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    import("@/components/ui/achievement-toast").then((module) => {
-      setAchievementModule(module);
-    });
-  }, []);
-
   const { activeToasts, showAchievement, hideAchievement } =
-    achievementModule?.useAchievementToasts() || {
-      activeToasts: [],
-      showAchievement: () => {},
-      hideAchievement: () => {},
-    };
+    useAchievementToasts();
 
   // Listen for achievement events
   React.useEffect(() => {
-    if (!showAchievement) return;
-
     const handleAchievement = (event: CustomEvent) => {
       showAchievement(event.detail);
     };
@@ -246,24 +233,24 @@ const Index = () => {
           </div>
 
           {/* Dynamic Components with Suspense */}
-          <Suspense fallback={<ComponentLoader />}>
-            {showTour && (
+          {showTour && (
+            <Suspense fallback={<ComponentLoader />}>
               <ErrorBoundary>
                 <OnboardingTour isOpen={showTour} onComplete={completeTour} />
               </ErrorBoundary>
-            )}
-          </Suspense>
+            </Suspense>
+          )}
 
-          <Suspense fallback={null}>
-            {showWelcomeBack && (
+          {showWelcomeBack && (
+            <Suspense fallback={null}>
               <ErrorBoundary>
                 <WelcomeBackModal
                   isOpen={showWelcomeBack}
                   onClose={dismissWelcomeBack}
                 />
               </ErrorBoundary>
-            )}
-          </Suspense>
+            </Suspense>
+          )}
 
           {/* Floating Help Button */}
           <Suspense fallback={null}>
@@ -289,17 +276,17 @@ const Index = () => {
           )}
 
           {/* Achievement Toasts */}
-          <Suspense fallback={null}>
-            {activeToasts.map((achievement: any) => (
-              <ErrorBoundary key={achievement.id}>
+          {activeToasts.map((achievement: any) => (
+            <Suspense key={achievement.id} fallback={null}>
+              <ErrorBoundary>
                 <AchievementToast
                   achievement={achievement}
                   isVisible={true}
                   onClose={() => hideAchievement(achievement.id)}
                 />
               </ErrorBoundary>
-            ))}
-          </Suspense>
+            </Suspense>
+          ))}
         </div>
       </SoundProvider>
     </ErrorBoundary>
