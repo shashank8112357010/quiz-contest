@@ -63,7 +63,9 @@ export const Header = () => {
             {[
               { name: "Home", href: "/" },
               { name: "Categories", href: "/categories" },
-              { name: "Leaderboard", href: "#" },
+              { name: "Leaderboard", href: "/leaderboard" },
+              { name: "Contests", href: "/contests" },
+              { name: "Rewards", href: "/rewards" },
               { name: "Help", href: "#", onClick: triggerTour },
             ].map((link, index) => (
               <a
@@ -158,7 +160,9 @@ export const Header = () => {
               {[
                 { name: "Home", href: "/" },
                 { name: "Categories", href: "/categories" },
-                { name: "Leaderboard", href: "#" },
+                { name: "Leaderboard", href: "/leaderboard" },
+                { name: "Contests", href: "/contests" },
+                { name: "Rewards", href: "/rewards" },
                 { name: "Help", href: "#", onClick: triggerTour },
               ].map((link, index) => (
                 <a

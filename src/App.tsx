@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Categories from "./pages/Categories";
 import Quiz from "./pages/Quiz";
+import Leaderboard from "./pages/Leaderboard";
+import Contests from "./pages/Contests";
+import Rewards from "./pages/Rewards";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +24,9 @@ const App = () => (
           <Route path="/categories" element={<Categories />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quiz/:categoryId" element={<Quiz />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/contests" element={<Contests />} />
+          <Route path="/rewards" element={<Rewards />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
