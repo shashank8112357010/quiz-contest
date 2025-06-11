@@ -53,7 +53,7 @@ export const categories: QuizCategory[] = [
     id: "animal",
     name: "Animal",
     description: "Wildlife, pets, and fascinating creatures of our planet",
-    icon: Dog,
+    icon: Rabbit,
     color: "from-neon-500 to-electric-500",
     bgColor: "bg-neon-500/10",
     borderColor: "border-neon-400/30",
