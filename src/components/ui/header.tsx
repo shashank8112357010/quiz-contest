@@ -184,25 +184,21 @@ export const Header = () => {
               <div className="flex flex-col gap-3 mt-6 px-4">
                 {!loading && (
                   <>
-                    {user && userData ? (
-                      <div className="text-center text-white">
-                        <div className="font-bold text-lg mb-2">
-                          {userData.displayName}
-                        </div>
-                        <div className="text-sm text-electric-300 flex justify-center gap-4 mb-4">
-                          <span>💰 {userData.coins}</span>
-                          <span>❤️ {userData.lives}</span>
-                          <span>⭐ {userData.totalStars}</span>
-                        </div>
-                        <Button
-                          variant="outline"
-                          onClick={signOut}
-                          className="w-full bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
-                        >
-                          <LogOut className="w-4 h-4 mr-2" />
-                          Sign Out
-                        </Button>
+                {user && userData ? (
+                  <div className="flex items-center gap-4">
+                    <div
+                      onClick={() => window.location.href = '/profile'}
+                      className="text-white text-right hover:text-electric-300 transition-colors cursor-pointer"
+                    >
+                      <div className="font-bold text-sm">
+                        {userData.displayName}
                       </div>
+                      <div className="text-xs text-electric-300 flex items-center gap-2">
+                        <span>💰 {userData.coins}</span>
+                        <span>❤️ {userData.lives}</span>
+                        <span>⭐ {userData.totalStars}</span>
+                      </div>
+                    </div>
                     ) : (
                       <>
                         <Button

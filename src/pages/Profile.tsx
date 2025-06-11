@@ -37,9 +37,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { ProfileCompletion } from "@/components/ui/profile-completion";
+import { AuthDebug } from "@/components/ui/auth-debug";
 
 const Profile = () => {
-  const { userData } = useAuth();
+  const { user, userData, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
 
   // Mock data for demonstration
@@ -250,16 +251,50 @@ const Profile = () => {
     return "text-red-400";
   };
 
-  if (!userData) {
+  if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <AnimatedBackground />
         <div className="relative z-40">
           <Header />
           <div className="container mx-auto px-4 py-16 text-center">
-            <h1 className="text-4xl font-bold text-white mb-4">
-              Please sign in to view your profile
-            </h1>
+            <div className="animate-pulse">
+              <h1 className="text-4xl font-bold text-white mb-4">
+                Loading Profile...
+              </h1>
+              <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || !userData) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <AnimatedBackground />
+        <div className="relative z-40">
+          <Header />
+          <div className="container mx-auto px-4 py-16 text-center">
+            <Card className="max-w-md mx-auto bg-slate-900/80 border-slate-700 backdrop-blur-xl">
+              <CardContent className="p-8">
+                <User className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+                <h1 className="text-2xl font-bold text-white mb-4">
+                  Please Sign In
+                </h1>
+                <p className="text-gray-300 mb-6">
+                  You need to be signed in to view your profile and track your
+                  progress.
+                </p>
+                <Button
+                  onClick={() => (window.location.href = "/")}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                >
+                  Go to Homepage
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
@@ -274,8 +309,11 @@ const Profile = () => {
         <Header />
 
         <main className="container mx-auto px-4 py-8">
+          {/* Debug Component - Remove this after fixing */}
+          <AuthDebug />
+
           {/* Profile Header */}
-          <Card className="bg-gradient-to-r from-slate-900/90 to-purple-900/90 border-purple-500/20 backdrop-blur-xl mb-8">
+          <Card className="bg-gradient-to-r from-slate-900/90 to-purple-900/90 border-purple-500/20 backdrop-blur-xl mb-8 mt-8">
             <CardContent className="p-8">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="relative">
