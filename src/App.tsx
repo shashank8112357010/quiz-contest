@@ -12,6 +12,7 @@ import Contests from "./pages/Contests";
 import Rewards from "./pages/Rewards";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import DemoAccess from "./pages/DemoAccess";
 import Test from "./pages/Test";
 import NotFound from "./pages/NotFound";
