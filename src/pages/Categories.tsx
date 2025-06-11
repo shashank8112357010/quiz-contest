@@ -349,7 +349,7 @@ const Categories = () => {
 
                   {/* Icon with Enhanced Animations */}
                   <div
-                    className={`relative w-14 h-14 ${category.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden`}
+                    className={`relative w-12 h-12 sm:w-14 sm:h-14 ${category.bgColor} rounded-xl flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden`}
                   >
                     {/* Animated background glow */}
                     <div
