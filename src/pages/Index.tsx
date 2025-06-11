@@ -10,8 +10,13 @@ import {
   FloatingGameStats,
 } from "@/components/ui/game-status-bar";
 import { SoundProvider } from "@/components/ui/sound-effects";
+import { OnboardingTour } from "@/components/ui/onboarding-tour";
+import { WelcomeBackModal } from "@/components/ui/welcome-back-modal";
+import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
+  const { showTour, showWelcomeBack, completeTour, dismissWelcomeBack } =
+    useOnboarding();
   return (
     <SoundProvider>
       <div className="min-h-screen relative overflow-hidden">
@@ -156,6 +161,13 @@ const Index = () => {
             </div>
           </footer>
         </div>
+
+        {/* Onboarding Modals */}
+        <OnboardingTour isOpen={showTour} onComplete={completeTour} />
+        <WelcomeBackModal
+          isOpen={showWelcomeBack}
+          onClose={dismissWelcomeBack}
+        />
       </div>
     </SoundProvider>
   );
