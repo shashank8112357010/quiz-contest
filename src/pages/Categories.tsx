@@ -417,7 +417,7 @@ const Categories = () => {
 
                   {/* Play Button */}
                   <Button
-                    className={`w-full bg-gradient-to-r ${category.color} hover:shadow-lg transition-all duration-300 text-white border-0`}
+                    className={`w-full bg-gradient-to-r ${category.color} hover:shadow-lg transition-all duration-300 text-white border-0 h-10 sm:h-11 text-sm sm:text-base font-semibold touch-manipulation`}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCategorySelect(category.id);
