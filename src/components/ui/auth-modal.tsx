@@ -111,6 +111,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           "Your account has been created successfully. You've received 100 coins and 3 lives to start!",
         variant: "default",
       });
+
+      // Trigger welcome achievement
+      setTimeout(() => {
+        const event = new CustomEvent("achievement", { detail: "welcome" });
+        window.dispatchEvent(event);
+      }, 1000);
+
       onClose();
       setSignUpData({
         email: "",
