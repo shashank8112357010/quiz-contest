@@ -81,16 +81,16 @@ export const Header = () => {
           </nav>
 
           {/* Enhanced Action Buttons */}
-          <div className="hidden md:flex items-center gap-4 relative z-50">
+          <div className="hidden md:flex items-center gap-3 lg:gap-4 relative z-50 ml-auto">
             {!loading && (
               <>
                 {user && userData ? (
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <div
                       onClick={() => (window.location.href = "/profile")}
-                      className="text-white text-right hover:text-electric-300 transition-colors cursor-pointer p-2 rounded-lg hover:bg-white/10"
+                      className="text-white text-right hover:text-electric-300 transition-colors cursor-pointer p-2 rounded-lg hover:bg-white/10 min-w-0"
                     >
-                      <div className="font-bold text-sm">
+                      <div className="font-bold text-sm truncate max-w-32">
                         {userData.displayName}
                       </div>
                       <div className="text-xs text-electric-300 flex items-center gap-2">
@@ -102,7 +102,7 @@ export const Header = () => {
                     <Button
                       variant="outline"
                       onClick={signOut}
-                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50"
+                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50 whitespace-nowrap"
                     >
                       <LogOut className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                       Sign Out
@@ -116,10 +116,10 @@ export const Header = () => {
                         setAuthMode("signin");
                         setAuthModalOpen(true);
                       }}
-                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50"
+                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50 whitespace-nowrap"
                     >
                       <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                      Sign In
+                      Login
                     </Button>
                     <Button
                       onClick={() => {
