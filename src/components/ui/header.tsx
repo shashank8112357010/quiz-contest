@@ -30,10 +30,16 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <a
-              href="#"
+              href="/"
               className="text-white/80 hover:text-white transition-colors font-medium"
             >
               Home
+            </a>
+            <a
+              href="/categories"
+              className="text-white/80 hover:text-white transition-colors font-medium"
+            >
+              Categories
             </a>
             <a
               href="#"
@@ -86,10 +92,16 @@ export const Header = () => {
           <div className="md:hidden mt-4 py-4 border-t border-white/20">
             <nav className="flex flex-col gap-4">
               <a
-                href="#"
+                href="/"
                 className="text-white/80 hover:text-white transition-colors font-medium py-2"
               >
                 Home
+              </a>
+              <a
+                href="/categories"
+                className="text-white/80 hover:text-white transition-colors font-medium py-2"
+              >
+                Categories
               </a>
               <a
                 href="#"

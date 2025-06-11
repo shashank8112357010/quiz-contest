@@ -81,7 +81,7 @@ export const FinalCTA = () => {
             <Button
               size="lg"
               className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-neon-500/25 transition-all duration-300 group animate-glow min-w-[280px]"
-              onClick={() => (window.location.href = "/quiz")}
+              onClick={() => (window.location.href = "/categories")}
             >
               <Play className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
               Start Quiz Challenge

@@ -55,7 +55,7 @@ export const HeroSection = () => {
             <Button
               size="lg"
               className="bg-gradient-to-r from-magic-500 to-electric-500 hover:from-magic-400 hover:to-electric-400 text-white px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-magic-500/25 transition-all duration-300 group min-w-[200px]"
-              onClick={() => (window.location.href = "/quiz")}
+              onClick={() => (window.location.href = "/categories")}
             >
               <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
               Start Playing Now
