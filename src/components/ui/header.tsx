@@ -93,7 +93,10 @@ export const Header = () => {
               <>
                 {user && userData ? (
                   <div className="flex items-center gap-4">
-                    <div className="text-white text-right">
+                    <div
+                      onClick={() => (window.location.href = "/profile")}
+                      className="text-white text-right hover:text-electric-300 transition-colors cursor-pointer p-2 rounded-lg hover:bg-white/10"
+                    >
                       <div className="font-bold text-sm">
                         {userData.displayName}
                       </div>
@@ -106,7 +109,7 @@ export const Header = () => {
                     <Button
                       variant="outline"
                       onClick={signOut}
-                      className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50"
                     >
                       <LogOut className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                       Sign Out
@@ -184,21 +187,31 @@ export const Header = () => {
               <div className="flex flex-col gap-3 mt-6 px-4">
                 {!loading && (
                   <>
-                {user && userData ? (
-                  <div className="flex items-center gap-4">
-                    <div
-                      onClick={() => window.location.href = '/profile'}
-                      className="text-white text-right hover:text-electric-300 transition-colors cursor-pointer"
-                    >
-                      <div className="font-bold text-sm">
-                        {userData.displayName}
+                    {user && userData ? (
+                      <div className="text-center text-white">
+                        <div
+                          onClick={() => {
+                            window.location.href = "/profile";
+                            setIsMenuOpen(false);
+                          }}
+                          className="font-bold text-lg mb-2 cursor-pointer hover:text-electric-300 transition-colors"
+                        >
+                          {userData.displayName}
+                        </div>
+                        <div className="text-sm text-electric-300 flex justify-center gap-4 mb-4">
+                          <span>💰 {userData.coins}</span>
+                          <span>❤️ {userData.lives}</span>
+                          <span>⭐ {userData.totalStars}</span>
+                        </div>
+                        <Button
+                          variant="outline"
+                          onClick={signOut}
+                          className="w-full bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
+                        >
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Sign Out
+                        </Button>
                       </div>
-                      <div className="text-xs text-electric-300 flex items-center gap-2">
-                        <span>💰 {userData.coins}</span>
-                        <span>❤️ {userData.lives}</span>
-                        <span>⭐ {userData.totalStars}</span>
-                      </div>
-                    </div>
                     ) : (
                       <>
                         <Button
