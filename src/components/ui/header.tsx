@@ -1,143 +1,137 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Menu, User, Trophy } from "lucide-react";
+import { Brain, Menu, User, Trophy, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="relative z-50 bg-white/10 backdrop-blur-md border-b border-white/20">
-      <div className="container mx-auto px-4 py-4">
+    <header className="relative z-50 bg-black/30 backdrop-blur-xl border-b-2 border-white/20 shadow-2xl">
+      {/* Background glow */}
+      <div className="absolute inset-0 bg-gradient-to-r from-electric-600/20 via-magic-600/20 to-neon-600/20 animate-pulse" />
+
+      <div className="container mx-auto px-4 py-4 relative">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
+          {/* Enhanced Logo */}
+          <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-electric-400 to-magic-500 rounded-xl flex items-center justify-center">
-                <Brain className="w-7 h-7 text-white" />
+              <div className="w-16 h-16 bg-gradient-to-br from-electric-400 via-magic-500 to-neon-500 rounded-2xl flex items-center justify-center shadow-2xl animate-glow">
+                <Brain className="w-8 h-8 text-white animate-pulse" />
               </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-neon-400 rounded-full animate-pulse" />
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-neon-400 to-electric-400 rounded-full animate-bounce">
+                <Sparkles className="w-3 h-3 text-white m-1" />
+              </div>
+              {/* Orbiting particles */}
+              <div
+                className="absolute inset-0 animate-spin"
+                style={{ animationDuration: "8s" }}
+              >
+                <div className="absolute -top-2 left-1/2 w-2 h-2 bg-electric-400 rounded-full"></div>
+                <div className="absolute top-1/2 -right-2 w-2 h-2 bg-magic-400 rounded-full"></div>
+                <div className="absolute -bottom-2 left-1/2 w-2 h-2 bg-neon-400 rounded-full"></div>
+                <div className="absolute top-1/2 -left-2 w-2 h-2 bg-quiz-400 rounded-full"></div>
+              </div>
             </div>
             <div>
-              <h1 className="text-2xl font-display font-bold bg-gradient-to-r from-white to-electric-200 bg-clip-text text-transparent">
-                QuizMaster
+              <h1 className="text-3xl font-display font-black bg-gradient-to-r from-white via-electric-200 to-neon-200 bg-clip-text text-transparent drop-shadow-lg animate-glow">
+                Quiz2Play
               </h1>
-              <p className="text-xs text-white/70 font-medium">
-                Win. Learn. Dominate.
+              <p className="text-sm text-electric-300 font-bold animate-pulse">
+                🚀 Win. Learn. Dominate. 🚀
               </p>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            <a
-              href="/"
-              className="text-white/80 hover:text-white transition-colors font-medium"
-            >
-              Home
-            </a>
-            <a
-              href="/categories"
-              className="text-white/80 hover:text-white transition-colors font-medium"
-            >
-              Categories
-            </a>
-            <a
-              href="#"
-              className="text-white/80 hover:text-white transition-colors font-medium"
-            >
-              Leaderboard
-            </a>
-            <a
-              href="#"
-              className="text-white/80 hover:text-white transition-colors font-medium"
-            >
-              Contests
-            </a>
-            <a
-              href="#"
-              className="text-white/80 hover:text-white transition-colors font-medium"
-            >
-              Rewards
-            </a>
+          {/* Enhanced Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            {[
+              { name: "Home", href: "/" },
+              { name: "Categories", href: "/categories" },
+              { name: "Leaderboard", href: "#" },
+              { name: "Contests", href: "#" },
+              { name: "Rewards", href: "#" },
+            ].map((link, index) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="relative text-white/90 hover:text-white transition-all duration-300 font-bold text-lg group animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <span className="relative z-10">{link.name}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-electric-400/20 to-magic-400/20 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-400 to-neon-400 group-hover:w-full transition-all duration-300"></div>
+              </a>
+            ))}
           </nav>
 
-          {/* Action Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Enhanced Action Buttons */}
+          <div className="hidden md:flex items-center gap-4">
             <Button
               variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
+              className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
             >
-              <User className="w-4 h-4 mr-2" />
+              <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
               Sign In
             </Button>
-            <Button className="bg-gradient-to-r from-neon-500 to-electric-500 hover:from-neon-400 hover:to-electric-400 text-white border-0 shadow-lg">
-              <Trophy className="w-4 h-4 mr-2" />
-              Sign Up
+            <Button className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white border-0 shadow-2xl font-bold transition-all duration-300 hover:scale-105 animate-glow group">
+              <Trophy className="w-4 h-4 mr-2 group-hover:animate-spin" />
+              <span>Sign Up</span>
+              <Zap className="w-4 h-4 ml-2 group-hover:animate-bounce" />
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Enhanced Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden text-white hover:bg-white/10"
+            className="md:hidden text-white hover:bg-white/20 backdrop-blur-sm border-2 border-white/20 rounded-xl transition-all duration-300 hover:scale-110"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <Menu className="w-6 h-6" />
           </Button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Enhanced Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-white/20">
+          <div className="md:hidden mt-6 py-6 border-t-2 border-white/20 backdrop-blur-xl bg-black/30 rounded-2xl animate-slide-up">
             <nav className="flex flex-col gap-4">
-              <a
-                href="/"
-                className="text-white/80 hover:text-white transition-colors font-medium py-2"
-              >
-                Home
-              </a>
-              <a
-                href="/categories"
-                className="text-white/80 hover:text-white transition-colors font-medium py-2"
-              >
-                Categories
-              </a>
-              <a
-                href="#"
-                className="text-white/80 hover:text-white transition-colors font-medium py-2"
-              >
-                Leaderboard
-              </a>
-              <a
-                href="#"
-                className="text-white/80 hover:text-white transition-colors font-medium py-2"
-              >
-                Contests
-              </a>
-              <a
-                href="#"
-                className="text-white/80 hover:text-white transition-colors font-medium py-2"
-              >
-                Rewards
-              </a>
-              <div className="flex flex-col gap-2 mt-4">
+              {[
+                { name: "Home", href: "/" },
+                { name: "Categories", href: "/categories" },
+                { name: "Leaderboard", href: "#" },
+                { name: "Contests", href: "#" },
+                { name: "Rewards", href: "#" },
+              ].map((link, index) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-white/90 hover:text-white transition-all duration-300 font-bold text-lg py-3 px-4 rounded-xl hover:bg-white/10 border-l-4 border-transparent hover:border-electric-400 animate-fade-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {link.name}
+                </a>
+              ))}
+              <div className="flex flex-col gap-3 mt-6 px-4">
                 <Button
                   variant="outline"
-                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
                 >
                   <User className="w-4 h-4 mr-2" />
                   Sign In
                 </Button>
-                <Button className="bg-gradient-to-r from-neon-500 to-electric-500 hover:from-neon-400 hover:to-electric-400 text-white">
+                <Button className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white font-bold transition-all duration-300 hover:scale-105 animate-glow">
                   <Trophy className="w-4 h-4 mr-2" />
                   Sign Up
+                  <Zap className="w-4 h-4 ml-2" />
                 </Button>
               </div>
             </nav>
           </div>
         )}
       </div>
+
+      {/* Bottom border glow */}
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-electric-400 via-magic-400 to-neon-400 animate-pulse" />
     </header>
   );
 };

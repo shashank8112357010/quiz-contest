@@ -8,10 +8,10 @@ import { FinalCTA } from "@/components/ui/final-cta";
 const Index = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Animated Background */}
+      {/* Enhanced Animated Background */}
       <AnimatedBackground />
 
-      {/* Main Content */}
+      {/* Main Content with better text contrast */}
       <div className="relative z-40">
         {/* Top Notification Banner */}
         <NotificationBanner />
@@ -20,7 +20,7 @@ const Index = () => {
         <Header />
 
         {/* Main Content */}
-        <main>
+        <main className="relative">
           {/* Hero Section */}
           <HeroSection />
 
@@ -31,89 +31,103 @@ const Index = () => {
           <FinalCTA />
         </main>
 
-        {/* Footer */}
-        <footer className="relative border-t border-white/20 bg-black/20 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Enhanced Footer */}
+        <footer className="relative border-t-2 border-white/20 bg-black/40 backdrop-blur-xl">
+          <div className="container mx-auto px-4 py-16">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
               <div className="md:col-span-2">
-                <h3 className="text-xl font-display font-bold text-white mb-4">
-                  QuizMaster
-                </h3>
-                <p className="text-white/70 mb-4 max-w-md">
-                  The ultimate quiz platform where knowledge meets rewards. Win
-                  amazing prizes while testing your skills!
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-electric-400 to-magic-500 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl">🧠</span>
+                  </div>
+                  <h3 className="text-2xl font-display font-black bg-gradient-to-r from-white to-electric-200 bg-clip-text text-transparent">
+                    Quiz2Play
+                  </h3>
+                </div>
+                <p className="text-white/80 mb-6 max-w-md text-lg leading-relaxed">
+                  The ultimate AI-powered quiz platform where knowledge meets
+                  rewards. Win amazing prizes while testing your skills with our
+                  intelligent coaching system! 🚀
                 </p>
                 <div className="flex gap-4">
-                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
-                    <span className="text-white text-sm">f</span>
-                  </div>
-                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
-                    <span className="text-white text-sm">t</span>
-                  </div>
-                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
-                    <span className="text-white text-sm">in</span>
-                  </div>
+                  {[
+                    { icon: "📘", label: "Facebook" },
+                    { icon: "🐦", label: "Twitter" },
+                    { icon: "📸", label: "Instagram" },
+                    { icon: "💼", label: "LinkedIn" },
+                  ].map((social, index) => (
+                    <div
+                      key={index}
+                      className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer hover:scale-110 backdrop-blur-sm border border-white/20"
+                    >
+                      <span className="text-xl">{social.icon}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
               <div>
-                <h4 className="font-semibold text-white mb-4">Quick Links</h4>
-                <ul className="space-y-2 text-white/70">
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      How to Play
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Leaderboard
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Prizes
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Support
-                    </a>
-                  </li>
+                <h4 className="font-black text-white mb-6 text-xl">
+                  Quick Links
+                </h4>
+                <ul className="space-y-4 text-white/80">
+                  {[
+                    "How to Play",
+                    "Categories",
+                    "Leaderboard",
+                    "Prizes",
+                    "Support",
+                  ].map((link, index) => (
+                    <li key={index}>
+                      <a
+                        href="#"
+                        className="hover:text-white transition-colors font-semibold text-lg hover:translate-x-2 transform duration-300 inline-block"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               <div>
-                <h4 className="font-semibold text-white mb-4">Legal</h4>
-                <ul className="space-y-2 text-white/70">
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Terms of Service
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Contest Rules
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white transition-colors">
-                      Contact Us
-                    </a>
-                  </li>
+                <h4 className="font-black text-white mb-6 text-xl">
+                  Legal & Help
+                </h4>
+                <ul className="space-y-4 text-white/80">
+                  {[
+                    "Terms of Service",
+                    "Privacy Policy",
+                    "Contest Rules",
+                    "Contact Us",
+                    "FAQ",
+                  ].map((link, index) => (
+                    <li key={index}>
+                      <a
+                        href="#"
+                        className="hover:text-white transition-colors font-semibold text-lg hover:translate-x-2 transform duration-300 inline-block"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
 
-            <div className="border-t border-white/20 mt-8 pt-8 text-center text-white/60">
-              <p>
-                &copy; 2024 QuizMaster. All rights reserved. Made with ❤️ for
-                quiz enthusiasts.
-              </p>
+            <div className="border-t-2 border-white/20 mt-12 pt-8 text-center">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p className="text-white/70 text-lg">
+                  &copy; 2024 Quiz2Play. All rights reserved. Made with ❤️ for
+                  quiz enthusiasts.
+                </p>
+                <div className="flex items-center gap-2 text-white/70">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span className="font-semibold">
+                    Over 50,000 players online now!
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </footer>
