@@ -325,12 +325,16 @@ const Categories = () => {
 
           {/* Categories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {categories.map((category) => {
+            {categories.map((category, index) => {
               const Icon = category.icon;
               return (
                 <div
                   key={category.id}
-                  className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${category.borderColor} p-6 hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer`}
+                  className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${category.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp`}
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    animationFillMode: "both",
+                  }}
                   onClick={() => handleCategorySelect(category.id)}
                 >
                   {/* Gradient overlay on hover */}
