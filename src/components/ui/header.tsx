@@ -4,12 +4,14 @@ import { useState } from "react";
 import { AuthModal } from "@/components/ui/auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { isFirebaseReady } from "@/lib/firebase";
+import { useOnboarding } from "@/hooks/use-onboarding";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const { user, userData, loading, signOut } = useAuth();
+  const { triggerTour } = useOnboarding();
 
   return (
     <header className="relative z-50 bg-black/30 backdrop-blur-xl border-b-2 border-white/20 shadow-2xl">
@@ -62,13 +64,18 @@ export const Header = () => {
               { name: "Home", href: "/" },
               { name: "Categories", href: "/categories" },
               { name: "Leaderboard", href: "#" },
-              { name: "Contests", href: "#" },
-              { name: "Rewards", href: "#" },
+              { name: "Help", href: "#", onClick: triggerTour },
             ].map((link, index) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="relative text-white/90 hover:text-white transition-all duration-300 font-bold text-lg group animate-fade-in"
+                onClick={(e) => {
+                  if (link.onClick) {
+                    e.preventDefault();
+                    link.onClick();
+                  }
+                }}
+                className="relative text-white/90 hover:text-white transition-all duration-300 font-bold text-lg group animate-fade-in cursor-pointer"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <span className="relative z-10">{link.name}</span>
@@ -152,13 +159,19 @@ export const Header = () => {
                 { name: "Home", href: "/" },
                 { name: "Categories", href: "/categories" },
                 { name: "Leaderboard", href: "#" },
-                { name: "Contests", href: "#" },
-                { name: "Rewards", href: "#" },
+                { name: "Help", href: "#", onClick: triggerTour },
               ].map((link, index) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-white/90 hover:text-white transition-all duration-300 font-bold text-lg py-3 px-4 rounded-xl hover:bg-white/10 border-l-4 border-transparent hover:border-electric-400 animate-fade-in"
+                  onClick={(e) => {
+                    if (link.onClick) {
+                      e.preventDefault();
+                      link.onClick();
+                      setIsMenuOpen(false);
+                    }
+                  }}
+                  className="text-white/90 hover:text-white transition-all duration-300 font-bold text-lg py-3 px-4 rounded-xl hover:bg-white/10 border-l-4 border-transparent hover:border-electric-400 animate-fade-in cursor-pointer"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {link.name}
