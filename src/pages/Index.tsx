@@ -190,9 +190,6 @@ const Index = () => {
         {/* Floating Help Button */}
         <FloatingHelpButton />
 
-        {/* Profile Quick Access */}
-        <ProfileQuickAccess />
-
         {/* Profile Debug Link - Remove after testing */}
 
         {/* Achievement Toasts */}
