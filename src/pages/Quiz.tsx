@@ -143,7 +143,7 @@ const Quiz = () => {
   };
 
   const restartQuiz = () => {
-    const categoryQuestions = getRandomQuestions(10);
+    const categoryQuestions = getRandomQuestions(categoryId || "gk", 10);
     setQuestions(categoryQuestions);
     setUserAnswers(new Array(10).fill(null));
     setCurrentQuestion(0);
