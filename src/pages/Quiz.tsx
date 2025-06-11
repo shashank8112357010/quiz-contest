@@ -51,7 +51,7 @@ const Quiz = () => {
 
   useEffect(() => {
     // Load questions for the selected category
-    const categoryQuestions = getRandomQuestions(10);
+    const categoryQuestions = getRandomQuestions(categoryId || "gk", 10);
     setQuestions(categoryQuestions);
     setUserAnswers(new Array(10).fill(null));
     setQuestionStartTime(Date.now());
