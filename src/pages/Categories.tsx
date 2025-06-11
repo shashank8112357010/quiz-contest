@@ -363,7 +363,7 @@ const Categories = () => {
 
                     {/* Icon with smart animations */}
                     <Icon
-                      className={`relative z-10 w-7 h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${
+                      className={`relative z-10 w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${
                         category.id === "animal"
                           ? "group-hover:animate-bounce"
                           : category.id === "history"
