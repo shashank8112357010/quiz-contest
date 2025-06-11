@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export interface SoundEffect {
   name: string;
@@ -61,13 +61,65 @@ export const SoundEffectsController = ({
   enabled = true,
 }: SoundEffectsControllerProps) => {
   const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
+  const [audioErrors, setAudioErrors] = useState<Set<string>>(new Set());
+
+  // Generate simple beep sounds as fallback
+  const generateBeep = (frequency: number = 800, duration: number = 0.1) => {
+    if (!enabled) return;
+
+    try {
+      const audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      oscillator.type = "square";
+
+      gainNode.gain.setValueAtTime(
+        0.1 * globalVolume,
+        audioContext.currentTime,
+      );
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioContext.currentTime + duration,
+      );
+
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+
+      return true;
+    } catch (error) {
+      console.warn("Web Audio API not supported");
+      return false;
+    }
+  };
 
   useEffect(() => {
-    // Preload all sound effects
+    // Preload all sound effects with error handling
     Object.entries(SOUND_EFFECTS).forEach(([key, sound]) => {
-      const audio = new Audio(sound.url);
+      const audio = new Audio();
+
+      // Error handling
+      audio.addEventListener("error", () => {
+        console.warn(`Sound effect not found: ${sound.url}`);
+        setAudioErrors((prev) => new Set(prev).add(key));
+      });
+
+      audio.addEventListener("canplaythrough", () => {
+        setAudioErrors((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(key);
+          return newSet;
+        });
+      });
+
+      audio.src = sound.url;
       audio.volume = (sound.volume || 0.5) * globalVolume;
-      audio.preload = "auto";
+      audio.preload = "none"; // Changed to "none" to prevent immediate loading errors
       audioRefs.current[key] = audio;
     });
 
@@ -92,17 +144,61 @@ export const SoundEffectsController = ({
   const playSound = (soundKey: string, volumeOverride?: number) => {
     if (!enabled) return;
 
+    // If audio file failed to load, use generated beep
+    if (audioErrors.has(soundKey)) {
+      const frequencies: Record<string, number> = {
+        click: 800,
+        hover: 600,
+        correct: 1000,
+        incorrect: 300,
+        timeWarning: 400,
+        timeUp: 200,
+        levelUp: 1200,
+        achievement: 1000,
+        powerUp: 1400,
+        coinCollect: 900,
+        prizeDrop: 700,
+        fanfare: 1500,
+        streak3: 800,
+        streak5: 1000,
+        streak10: 1200,
+        magic: 1100,
+        explosion: 150,
+        whoosh: 500,
+      };
+
+      const frequency = frequencies[soundKey] || 800;
+      const duration =
+        soundKey.includes("streak") || soundKey === "fanfare" ? 0.3 : 0.1;
+      generateBeep(frequency, duration);
+      return;
+    }
+
     const audio = audioRefs.current[soundKey];
     if (audio) {
-      audio.currentTime = 0; // Reset to start
-      if (volumeOverride !== undefined) {
-        audio.volume = volumeOverride * globalVolume;
+      try {
+        audio.currentTime = 0; // Reset to start
+        if (volumeOverride !== undefined) {
+          audio.volume = volumeOverride * globalVolume;
+        }
+        audio.play().catch((error) => {
+          console.warn(`Failed to play sound ${soundKey}:`, error);
+          // Mark as error and try beep fallback
+          setAudioErrors((prev) => new Set(prev).add(soundKey));
+          const frequencies: Record<string, number> = {
+            click: 800,
+            correct: 1000,
+            incorrect: 300,
+          };
+          generateBeep(frequencies[soundKey] || 800, 0.1);
+        });
+      } catch (error) {
+        console.warn(`Sound playback error for ${soundKey}:`, error);
       }
-      audio.play().catch(console.error);
     }
   };
 
-  return { playSound };
+  return { playSound, hasAudioSupport: audioErrors.size === 0 };
 };
 
 // Hook for using sound effects in components
@@ -110,13 +206,14 @@ export const useSoundEffects = (
   enabled: boolean = true,
   volume: number = 1,
 ) => {
-  const { playSound } = SoundEffectsController({
+  const { playSound, hasAudioSupport } = SoundEffectsController({
     globalVolume: volume,
     enabled,
   });
 
   return {
     playSound,
+    hasAudioSupport,
     // Convenience methods for common sounds
     playClick: () => playSound("click"),
     playHover: () => playSound("hover"),
@@ -260,7 +357,7 @@ export const GameAudioFeedback = {
 };
 
 // Context provider for global sound settings
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, ReactNode } from "react";
 
 interface SoundContextType {
   enabled: boolean;
