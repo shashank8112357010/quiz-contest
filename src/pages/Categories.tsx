@@ -336,10 +336,11 @@ const Categories = () => {
               return (
                 <div
                   key={category.id}
-                  className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${category.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp`}
+                  className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${category.borderColor} p-4 sm:p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp touch-manipulation`}
                   style={{
                     animationDelay: `${index * 100}ms`,
                     animationFillMode: "both",
+                    minHeight: "280px",
                   }}
                   onClick={() => handleCategorySelect(category.id)}
                 >
