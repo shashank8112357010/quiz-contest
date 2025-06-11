@@ -1,8 +1,10 @@
-# Firebase Setup Guide for Quiz2Play
+# Firebase Setup Guide for Quiz2Play (Vite)
 
 ## Quick Start (Demo Mode)
 
 The app is currently running in **demo mode** with mock authentication. To enable full functionality with real Firebase authentication, follow the steps below.
+
+**Note**: This is a Vite project, so environment variables use `VITE_` prefix instead of `NEXT_PUBLIC_`.
 
 ## Step 1: Create a Firebase Project
 
@@ -44,13 +46,13 @@ The app is currently running in **demo mode** with mock authentication. To enabl
 2. Replace the placeholder values with your actual Firebase config:
 
 ```bash
-# Firebase Configuration
-NEXT_PUBLIC_FIREBASE_API_KEY=your-actual-api-key-here
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-actual-project-id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-actual-sender-id
-NEXT_PUBLIC_FIREBASE_APP_ID=your-actual-app-id
+# Firebase Configuration for Vite
+VITE_FIREBASE_API_KEY=your-actual-api-key-here
+VITE_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-actual-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-actual-sender-id
+VITE_FIREBASE_APP_ID=your-actual-app-id
 ```
 
 3. Save the file
