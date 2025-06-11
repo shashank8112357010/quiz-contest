@@ -18,6 +18,7 @@ import {
   AchievementToast,
   useAchievementToasts,
 } from "@/components/ui/achievement-toast";
+import { ProfileDebugLink } from "@/components/ui/profile-debug-link";
 import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
