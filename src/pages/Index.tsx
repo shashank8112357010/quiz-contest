@@ -174,9 +174,6 @@ const Index = () => {
                         Over 50,000 players online now!
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-white/70">
-                      <span className="text-sm">🎵 Music: ON</span>
-                    </div>
                   </div>
                 </div>
               </div>
