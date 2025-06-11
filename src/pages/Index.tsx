@@ -194,12 +194,13 @@ const Index = () => {
         <div className="fixed bottom-4 left-4 z-50">
           <button
             onClick={() => {
-              const { triggerTour } = useOnboarding();
-              triggerTour();
+              // Reset onboarding and trigger tour
+              localStorage.removeItem("quiz2play_onboarding");
+              window.location.reload();
             }}
             className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold"
           >
-            Test Onboarding
+            Reset & Test Onboarding
           </button>
         </div>
 
