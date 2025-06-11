@@ -18,7 +18,7 @@ import {
   AchievementToast,
   useAchievementToasts,
 } from "@/components/ui/achievement-toast";
-import { ProfileDebugLink } from "@/components/ui/profile-debug-link";
+
 import { ProfileQuickAccess } from "@/components/ui/profile-quick-access";
 import { useOnboarding } from "@/hooks/use-onboarding";
 
