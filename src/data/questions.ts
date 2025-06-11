@@ -21,6 +21,8 @@ export const questionDatabase: Record<string, Question[]> = {
       difficulty: "Easy",
       explanation:
         "China has the world's largest population with over 1.4 billion people.",
+      tags: ["geography", "population", "world-facts"],
+      points: 10,
     },
     {
       id: 2,
