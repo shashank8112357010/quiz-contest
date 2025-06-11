@@ -19,7 +19,6 @@ import {
   useAchievementToasts,
 } from "@/components/ui/achievement-toast";
 
-import { ProfileQuickAccess } from "@/components/ui/profile-quick-access";
 import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
