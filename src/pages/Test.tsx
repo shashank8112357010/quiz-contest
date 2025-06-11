@@ -4,6 +4,7 @@ import { AuthModal } from "@/components/ui/auth-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { ProfileAccessCard } from "@/components/ui/profile-access-card";
 
 const Test = () => {
   const [showAuthModal, setShowAuthModal] = React.useState(false);
@@ -113,6 +114,9 @@ const Test = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Profile Access Guide */}
+        <ProfileAccessCard />
       </div>
 
       {/* Test Auth Modal */}
