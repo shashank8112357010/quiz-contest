@@ -105,7 +105,8 @@ const Quiz = () => {
     setUserAnswers(newAnswers);
 
     if (isCorrect) {
-      setScore(score + questions[currentQuestion].points);
+      const points = questions[currentQuestion].points || 10; // Default 10 points
+      setScore(score + points);
       setCorrectAnswers(correctAnswers + 1);
       playCorrect();
     } else {
