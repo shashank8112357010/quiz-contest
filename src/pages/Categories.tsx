@@ -404,11 +404,13 @@ const Categories = () => {
                   </p>
 
                   {/* Stats */}
-                  <div className="flex items-center justify-between mb-4">
-                    <Badge className={getDifficultyColor(category.difficulty)}>
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <Badge
+                      className={`${getDifficultyColor(category.difficulty)} text-xs px-2 py-1`}
+                    >
                       {category.difficulty}
                     </Badge>
-                    <span className="text-white/60 text-sm font-medium">
+                    <span className="text-white/60 text-xs sm:text-sm font-medium">
                       {category.questionCount} questions
                     </span>
                   </div>
