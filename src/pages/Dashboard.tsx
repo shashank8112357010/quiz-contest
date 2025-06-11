@@ -202,12 +202,13 @@ const Dashboard = () => {
             <div className="flex items-center gap-3 mb-4">
               <LayoutDashboard className="w-8 h-8 text-purple-400" />
               <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                User Dashboard
+                Personal Dashboard
               </h1>
+              <Badge className="bg-purple-500 text-white">Player</Badge>
             </div>
             <p className="text-gray-300 text-lg">
-              Welcome back, {userData.displayName}! Here's your learning
-              overview.
+              Welcome back, {userData.displayName}! Track your progress and
+              continue your learning journey.
             </p>
           </div>
 
