@@ -1022,12 +1022,117 @@ export const getRandomQuestions = (
   const categoryQuestions = questionDatabase[categoryId] || [];
   if (categoryQuestions.length === 0) {
     // Fallback to general knowledge if category not found
-    return questionDatabase.gk.slice(0, count);
+    const fallbackQuestions = questionDatabase.gk || [];
+    if (fallbackQuestions.length === 0) {
+      return generateDefaultQuestions(count);
+    }
+    return ensureQuestionProperties(fallbackQuestions.slice(0, count));
   }
 
   // Shuffle and return requested number of questions
   const shuffled = [...categoryQuestions].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
+  const selectedQuestions = shuffled.slice(0, Math.min(count, shuffled.length));
+  return ensureQuestionProperties(selectedQuestions);
+};
+
+// Ensure all questions have required properties
+const ensureQuestionProperties = (questions: Question[]): Question[] => {
+  return questions.map((question) => ({
+    ...question,
+    tags: question.tags || [
+      `${question.category.toLowerCase()}`,
+      question.difficulty.toLowerCase(),
+    ],
+    points:
+      question.points ||
+      (question.difficulty === "Easy"
+        ? 10
+        : question.difficulty === "Medium"
+          ? 15
+          : 20),
+    explanation:
+      question.explanation ||
+      `This is a ${question.difficulty.toLowerCase()} ${question.category} question.`,
+  }));
+};
+
+// Generate default questions when database is empty
+const generateDefaultQuestions = (count: number): Question[] => {
+  const defaultQuestions: Question[] = [
+    {
+      id: 1,
+      question: "What is 2 + 2?",
+      options: ["3", "4", "5", "6"],
+      correctAnswer: 1,
+      category: "Mathematics",
+      difficulty: "Easy",
+      explanation: "2 + 2 equals 4. This is basic arithmetic.",
+      tags: ["math", "basic", "arithmetic"],
+      points: 10,
+    },
+    {
+      id: 2,
+      question: "What is the capital of France?",
+      options: ["London", "Berlin", "Paris", "Madrid"],
+      correctAnswer: 2,
+      category: "Geography",
+      difficulty: "Easy",
+      explanation: "Paris is the capital and largest city of France.",
+      tags: ["geography", "capitals", "europe"],
+      points: 10,
+    },
+    {
+      id: 3,
+      question: "What year did World War II end?",
+      options: ["1944", "1945", "1946", "1947"],
+      correctAnswer: 1,
+      category: "History",
+      difficulty: "Medium",
+      explanation: "World War II ended in 1945 with the surrender of Japan.",
+      tags: ["history", "war", "20th-century"],
+      points: 15,
+    },
+    {
+      id: 4,
+      question: "What is the largest planet in our solar system?",
+      options: ["Earth", "Jupiter", "Saturn", "Neptune"],
+      correctAnswer: 1,
+      category: "Science",
+      difficulty: "Easy",
+      explanation: "Jupiter is the largest planet in our solar system.",
+      tags: ["science", "astronomy", "planets"],
+      points: 10,
+    },
+    {
+      id: 5,
+      question: "Who wrote 'Romeo and Juliet'?",
+      options: [
+        "Charles Dickens",
+        "William Shakespeare",
+        "Jane Austen",
+        "Mark Twain",
+      ],
+      correctAnswer: 1,
+      category: "Literature",
+      difficulty: "Easy",
+      explanation:
+        "William Shakespeare wrote the famous tragedy 'Romeo and Juliet'.",
+      tags: ["literature", "shakespeare", "drama"],
+      points: 10,
+    },
+  ];
+
+  // Repeat questions if needed to reach the requested count
+  const result: Question[] = [];
+  for (let i = 0; i < count; i++) {
+    const baseQuestion = defaultQuestions[i % defaultQuestions.length];
+    result.push({
+      ...baseQuestion,
+      id: i + 1,
+    });
+  }
+
+  return result;
 };
 
 export const getAllCategories = (): string[] => {
