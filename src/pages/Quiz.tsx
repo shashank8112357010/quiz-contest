@@ -197,7 +197,6 @@ const Quiz = () => {
         <div className="min-h-screen relative overflow-hidden">
           <AnimatedBackground />
           <GameStatusBar position="top" variant="compact" />
-          <MusicPlayer position="top-right" />
 
           <div className="relative z-40 min-h-screen p-4 pt-20">
             <div className="container mx-auto max-w-4xl">
