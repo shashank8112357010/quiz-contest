@@ -62,6 +62,7 @@ export const Header = () => {
           <nav className="hidden md:flex items-center gap-8">
             {[
               { name: "Home", href: "/" },
+              { name: "Dashboard", href: "/dashboard" },
               { name: "Categories", href: "/categories" },
               { name: "Leaderboard", href: "/leaderboard" },
               { name: "Contests", href: "/contests" },
@@ -162,6 +163,7 @@ export const Header = () => {
             <nav className="flex flex-col gap-4">
               {[
                 { name: "Home", href: "/" },
+                { name: "Dashboard", href: "/dashboard" },
                 { name: "Categories", href: "/categories" },
                 { name: "Leaderboard", href: "/leaderboard" },
                 { name: "Contests", href: "/contests" },
