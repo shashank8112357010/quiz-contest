@@ -6,6 +6,8 @@ export interface Question {
   category: string;
   difficulty: "Easy" | "Medium" | "Hard";
   explanation?: string;
+  tags?: string[];
+  points?: number;
 }
 
 export const questionDatabase: Record<string, Question[]> = {
