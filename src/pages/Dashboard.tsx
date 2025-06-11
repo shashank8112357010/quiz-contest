@@ -49,6 +49,101 @@ const Dashboard = () => {
     monthlyTarget: 300,
   };
 
+  // Current Activity Status
+  const currentStatus = {
+    isOnline: true,
+    lastActive: "2 minutes ago",
+    currentStreak: 12,
+    streakType: "daily", // daily, weekly, monthly
+    todayQuizzes: 5,
+    todayGoal: 8,
+    energyLevel: 85, // 0-100
+    focusMode: false,
+    studyTime: "2h 15m today",
+  };
+
+  // New Offers and Promotions
+  const activeOffers = [
+    {
+      id: 1,
+      title: "Weekend Bonus",
+      description: "Double XP and coins for all quizzes",
+      type: "limited_time",
+      expires: "23h 45m",
+      reward: "2x XP + Coins",
+      claimed: false,
+      urgent: true,
+    },
+    {
+      id: 2,
+      title: "First Place Prize",
+      description: "Finish top 3 in any category today",
+      type: "daily_challenge",
+      expires: "5h 12m",
+      reward: "500 coins + Premium badge",
+      claimed: false,
+      urgent: false,
+    },
+    {
+      id: 3,
+      title: "Study Buddy Bonus",
+      description: "Invite a friend and both get rewards",
+      type: "referral",
+      expires: "7 days",
+      reward: "1000 coins each",
+      claimed: false,
+      urgent: false,
+    },
+  ];
+
+  // Available Challenges
+  const activeChallenges = [
+    {
+      id: 1,
+      title: "Science Master",
+      description: "Answer 50 science questions correctly",
+      category: "Science",
+      progress: 32,
+      target: 50,
+      reward: "Science Expert Badge + 750 coins",
+      difficulty: "medium",
+      timeLeft: "3 days",
+    },
+    {
+      id: 2,
+      title: "Speed Demon",
+      description: "Complete 10 quizzes in under 30 seconds each",
+      category: "Mixed",
+      progress: 7,
+      target: 10,
+      reward: "Lightning Badge + 1000 coins",
+      difficulty: "hard",
+      timeLeft: "1 day",
+    },
+    {
+      id: 3,
+      title: "Perfect Week",
+      description: "Maintain 100% accuracy for 7 days",
+      category: "Accuracy",
+      progress: 4,
+      target: 7,
+      reward: "Perfectionist Badge + 2000 coins",
+      difficulty: "expert",
+      timeLeft: "3 days",
+    },
+    {
+      id: 4,
+      title: "History Buff",
+      description: "Complete all history category quizzes",
+      category: "History",
+      progress: 15,
+      target: 25,
+      reward: "History Scholar Badge + Premium Month",
+      difficulty: "easy",
+      timeLeft: "No limit",
+    },
+  ];
+
   const recentActivity = [
     {
       id: 1,
