@@ -19,6 +19,7 @@ import {
   useAchievementToasts,
 } from "@/components/ui/achievement-toast";
 import { ProfileDebugLink } from "@/components/ui/profile-debug-link";
+import { ProfileQuickAccess } from "@/components/ui/profile-quick-access";
 import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
@@ -195,6 +196,9 @@ const Index = () => {
 
         {/* Floating Help Button */}
         <FloatingHelpButton />
+
+        {/* Profile Quick Access */}
+        <ProfileQuickAccess />
 
         {/* Profile Debug Link - Remove after testing */}
         <ProfileDebugLink />
