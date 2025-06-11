@@ -195,7 +195,6 @@ const Index = () => {
         <ProfileQuickAccess />
 
         {/* Profile Debug Link - Remove after testing */}
-        <ProfileDebugLink />
 
         {/* Achievement Toasts */}
         {activeToasts.map((achievement) => (
