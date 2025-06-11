@@ -86,6 +86,11 @@ export const useOnboarding = () => {
     // Trigger achievement for completing tour
     const event = new CustomEvent("achievement", { detail: "first_tour" });
     window.dispatchEvent(event);
+
+    // Redirect to profile page after onboarding
+    setTimeout(() => {
+      window.location.href = "/profile";
+    }, 1500); // Give time for achievement notification to show
   };
 
   const markFirstQuizCompleted = () => {
