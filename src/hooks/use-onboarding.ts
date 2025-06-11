@@ -82,18 +82,36 @@ export const useOnboarding = () => {
       hasSeenTour: true,
       lastLoginDate: new Date().toDateString(),
     });
+
+    // Trigger achievement for completing tour
+    const event = new CustomEvent("achievement", { detail: "first_tour" });
+    window.dispatchEvent(event);
   };
 
   const markFirstQuizCompleted = () => {
-    saveOnboardingState({ hasCompletedFirstQuiz: true });
+    if (!onboardingState.hasCompletedFirstQuiz) {
+      saveOnboardingState({ hasCompletedFirstQuiz: true });
+      const event = new CustomEvent("achievement", { detail: "first_quiz" });
+      window.dispatchEvent(event);
+    }
   };
 
   const markPowerupUsed = () => {
-    saveOnboardingState({ hasUsedPowerup: true });
+    if (!onboardingState.hasUsedPowerup) {
+      saveOnboardingState({ hasUsedPowerup: true });
+      const event = new CustomEvent("achievement", { detail: "power_user" });
+      window.dispatchEvent(event);
+    }
   };
 
   const markCategoriesViewed = () => {
-    saveOnboardingState({ hasViewedCategories: true });
+    if (!onboardingState.hasViewedCategories) {
+      saveOnboardingState({ hasViewedCategories: true });
+      const event = new CustomEvent("achievement", {
+        detail: "category_explorer",
+      });
+      window.dispatchEvent(event);
+    }
   };
 
   const dismissWelcomeBack = () => {

@@ -1,3 +1,4 @@
+import React from "react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { NotificationBanner } from "@/components/ui/notification-banner";
 import { Header } from "@/components/ui/header";
@@ -13,11 +14,32 @@ import { SoundProvider } from "@/components/ui/sound-effects";
 import { OnboardingTour } from "@/components/ui/onboarding-tour";
 import { WelcomeBackModal } from "@/components/ui/welcome-back-modal";
 import { FloatingHelpButton } from "@/components/ui/floating-help-button";
+import {
+  AchievementToast,
+  useAchievementToasts,
+} from "@/components/ui/achievement-toast";
 import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
   const { showTour, showWelcomeBack, completeTour, dismissWelcomeBack } =
     useOnboarding();
+
+  const { activeToasts, showAchievement, hideAchievement } =
+    useAchievementToasts();
+
+  // Listen for achievement events
+  React.useEffect(() => {
+    const handleAchievement = (event: CustomEvent) => {
+      showAchievement(event.detail);
+    };
+
+    window.addEventListener("achievement", handleAchievement as EventListener);
+    return () =>
+      window.removeEventListener(
+        "achievement",
+        handleAchievement as EventListener,
+      );
+  }, [showAchievement]);
   return (
     <SoundProvider>
       <div className="min-h-screen relative overflow-hidden">
@@ -172,6 +194,16 @@ const Index = () => {
 
         {/* Floating Help Button */}
         <FloatingHelpButton />
+
+        {/* Achievement Toasts */}
+        {activeToasts.map((achievement) => (
+          <AchievementToast
+            key={achievement.id}
+            achievement={achievement}
+            isVisible={true}
+            onClose={() => hideAchievement(achievement.id)}
+          />
+        ))}
       </div>
     </SoundProvider>
   );
