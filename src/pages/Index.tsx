@@ -12,6 +12,7 @@ import {
 import { SoundProvider } from "@/components/ui/sound-effects";
 import { OnboardingTour } from "@/components/ui/onboarding-tour";
 import { WelcomeBackModal } from "@/components/ui/welcome-back-modal";
+import { FloatingHelpButton } from "@/components/ui/floating-help-button";
 import { useOnboarding } from "@/hooks/use-onboarding";
 
 const Index = () => {
@@ -168,6 +169,9 @@ const Index = () => {
           isOpen={showWelcomeBack}
           onClose={dismissWelcomeBack}
         />
+
+        {/* Floating Help Button */}
+        <FloatingHelpButton />
       </div>
     </SoundProvider>
   );
