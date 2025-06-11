@@ -190,6 +190,19 @@ const Index = () => {
         {/* Floating Help Button */}
         <FloatingHelpButton />
 
+        {/* Manual Onboarding Trigger for Testing */}
+        <div className="fixed bottom-4 left-4 z-50">
+          <button
+            onClick={() => {
+              const { triggerTour } = useOnboarding();
+              triggerTour();
+            }}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold"
+          >
+            Test Onboarding
+          </button>
+        </div>
+
         {/* Profile Debug Link - Remove after testing */}
 
         {/* Achievement Toasts */}
