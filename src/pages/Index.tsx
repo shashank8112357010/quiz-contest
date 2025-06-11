@@ -5,7 +5,7 @@ import { Header } from "@/components/ui/header";
 import { HeroSection } from "@/components/ui/hero-section";
 import { FeatureGrid } from "@/components/ui/feature-grid";
 import { FinalCTA } from "@/components/ui/final-cta";
-import { MusicPlayer } from "@/components/ui/music-player";
+
 import {
   GameStatusBar,
   FloatingGameStats,
@@ -57,9 +57,6 @@ const Index = () => {
 
         {/* Floating Game Stats - Alternative minimal stats */}
         {/* <FloatingGameStats /> */}
-
-        {/* Music Player - Top right corner */}
-        <MusicPlayer autoPlay={false} position="top-right" />
 
         {/* Main Content with better text contrast */}
         <div className="relative z-40 pt-16">

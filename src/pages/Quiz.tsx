@@ -21,7 +21,7 @@ import {
   ExplanationSummary,
 } from "@/components/ui/question-explanation";
 import { GameStatusBar } from "@/components/ui/game-status-bar";
-import { MusicPlayer } from "@/components/ui/music-player";
+
 import { SoundProvider, useSoundEffects } from "@/components/ui/sound-effects";
 
 const Quiz = () => {
