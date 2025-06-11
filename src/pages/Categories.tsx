@@ -336,13 +336,51 @@ const Categories = () => {
                   {/* Gradient overlay on hover */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
 
-                  {/* Icon */}
+                  {/* Icon with Enhanced Animations */}
                   <div
-                    className={`w-14 h-14 ${category.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                    className={`relative w-14 h-14 ${category.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden`}
                   >
-                    <Icon
-                      className={`w-7 h-7 bg-gradient-to-r ${category.color} bg-clip-text text-transparent`}
+                    {/* Animated background glow */}
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${category.color} opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-500`}
                     />
+
+                    {/* Pulse animation on hover */}
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${category.color} opacity-0 group-hover:opacity-10 rounded-xl animate-pulse`}
+                    />
+
+                    {/* Icon with smart animations */}
+                    <Icon
+                      className={`relative z-10 w-7 h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${
+                        category.id === "animal"
+                          ? "group-hover:animate-bounce"
+                          : category.id === "history"
+                            ? "group-hover:animate-pulse"
+                            : category.id === "celebrity"
+                              ? "group-hover:animate-spin"
+                              : category.id === "computer"
+                                ? "group-hover:animate-pulse"
+                                : category.id === "science"
+                                  ? "group-hover:rotate-12"
+                                  : category.id === "geography"
+                                    ? "group-hover:animate-ping"
+                                    : "group-hover:scale-110"
+                      }`}
+                      style={{
+                        filter: "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+                      }}
+                    />
+
+                    {/* Floating particles effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div
+                        className={`absolute top-1 right-1 w-1 h-1 bg-gradient-to-r ${category.color} rounded-full animate-ping`}
+                      />
+                      <div
+                        className={`absolute bottom-1 left-1 w-1 h-1 bg-gradient-to-r ${category.color} rounded-full animate-ping delay-100`}
+                      />
+                    </div>
                   </div>
 
                   {/* Content */}
