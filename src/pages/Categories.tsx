@@ -285,22 +285,22 @@ const Categories = () => {
       <div className="relative z-40">
         <Header />
 
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Page Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4 sm:mb-6 px-2">
               Choose Your{" "}
               <span className="bg-gradient-to-r from-electric-400 via-neon-400 to-magic-400 bg-clip-text text-transparent">
                 Category
               </span>
             </h1>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
+            <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
               Boost your IQ in the most classic categories. Select your
               expertise and start your quiz journey!
             </p>
 
             {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-6 mb-8">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-6 sm:mb-8 px-4">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
                 <div className="text-2xl font-bold text-electric-400">
                   {categories.length}
