@@ -88,7 +88,7 @@ export const Header = () => {
           </nav>
 
           {/* Enhanced Action Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 relative z-50">
             {!loading && (
               <>
                 {user && userData ? (
@@ -120,7 +120,7 @@ export const Header = () => {
                         setAuthMode("signin");
                         setAuthModalOpen(true);
                       }}
-                      className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50"
                     >
                       <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                       Sign In
@@ -130,7 +130,7 @@ export const Header = () => {
                         setAuthMode("signup");
                         setAuthModalOpen(true);
                       }}
-                      className="bg-gradient-to-r from-neon-500 via-electric-500 to-magic-500 hover:from-neon-400 hover:via-electric-400 hover:to-magic-400 text-white border-0 shadow-2xl font-bold transition-all duration-300 hover:scale-105 animate-glow group"
+                      className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 hover:from-purple-500 hover:via-blue-500 hover:to-purple-500 text-white border-2 border-white/30 shadow-2xl font-bold transition-all duration-300 hover:scale-105 animate-pulse group relative z-50"
                     >
                       <Trophy className="w-4 h-4 mr-2 group-hover:animate-spin" />
                       <span>Sign Up</span>
