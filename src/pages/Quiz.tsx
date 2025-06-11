@@ -442,16 +442,18 @@ const Quiz = () => {
                 </div>
 
                 {/* Question tags */}
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {question.tags.slice(0, 3).map((tag, index) => (
-                    <Badge
-                      key={index}
-                      className="bg-white/5 border-white/20 text-white/60 text-xs"
-                    >
-                      #{tag.replace("-", " ")}
-                    </Badge>
-                  ))}
-                </div>
+                {question.tags && question.tags.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {question.tags.slice(0, 3).map((tag, index) => (
+                      <Badge
+                        key={index}
+                        className="bg-white/5 border-white/20 text-white/60 text-xs"
+                      >
+                        #{tag.replace("-", " ")}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
