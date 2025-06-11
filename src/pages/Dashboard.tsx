@@ -167,40 +167,22 @@ const Dashboard = () => {
         <AnimatedBackground />
         <div className="relative z-40">
           <Header />
-          <div className="container mx-auto px-4 py-16 text-center">
-            <Card className="max-w-md mx-auto bg-slate-900/80 border-slate-700 backdrop-blur-xl">
-              <CardContent className="p-8">
-                <User className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-                <h1 className="text-2xl font-bold text-white mb-4">
-                  Dashboard Access Required
+          <div className="container mx-auto px-4 py-16">
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <LayoutDashboard className="w-8 h-8 text-purple-400" />
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Dashboard Access
                 </h1>
-                <p className="text-gray-300 mb-6">
-                  Please sign in to access your personalized dashboard.
-                </p>
-                <div className="bg-blue-500/10 p-4 rounded-lg border border-blue-500/20 mb-6">
-                  <h3 className="font-bold text-blue-400 mb-2">
-                    Demo Credentials:
-                  </h3>
-                  <div className="space-y-2 text-sm text-blue-200">
-                    <div>
-                      <strong>Email:</strong> demo@quiz2play.com
-                    </div>
-                    <div>
-                      <strong>Password:</strong> demo123
-                    </div>
-                    <div className="text-xs text-blue-300 mt-2">
-                      Or create any account with any email in demo mode!
-                    </div>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => (window.location.href = "/")}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-                >
-                  Go to Sign In
-                </Button>
-              </CardContent>
-            </Card>
+              </div>
+              <p className="text-gray-300 text-lg">
+                Sign in to access your personalized quiz dashboard
+              </p>
+            </div>
+
+            <div className="max-w-2xl mx-auto">
+              <DemoLoginHelper />
+            </div>
           </div>
         </div>
       </div>
