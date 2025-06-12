@@ -1,0 +1,16 @@
+# Netlify redirects file for Quiz2Play React SPA
+
+# Handle client-side routing - redirect all non-file requests to index.html
+/*    /index.html   200
+
+# Optional: Redirect old dashboard route to profile
+/dashboard    /profile    301
+
+# Optional: API routes (if you have any backend)
+# /api/*  https://your-api-server.com/api/:splat  200
+
+# Optional: Redirect www to non-www (or vice versa)
+# https://www.quiz2play.com/*  https://quiz2play.com/:splat  301
+
+# Optional: Force HTTPS
+# http://quiz2play.com/*  https://quiz2play.com/:splat  301
