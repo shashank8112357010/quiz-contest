@@ -13,7 +13,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Contests from "./pages/Contests";
 import Rewards from "./pages/Rewards";
 import Profile from "./pages/Profile";
-import Dashboard from "./pages/Dashboard";
+
 import AdminDashboard from "./pages/AdminDashboard";
 import DemoAccess from "./pages/DemoAccess";
 import Test from "./pages/Test";
@@ -45,7 +45,7 @@ const App = () => (
             <Route path="/contests" element={<Contests />} />
             <Route path="/rewards" element={<Rewards />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/demo" element={<DemoAccess />} />
             <Route path="/test" element={<Test />} />
