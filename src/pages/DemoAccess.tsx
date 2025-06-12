@@ -54,10 +54,10 @@ const DemoAccess = () => {
           {/* Page Header */}
           <div className="text-center mb-12">
             <h1 className="text-6xl font-black bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
-              🚀 Dashboard Demo Access
+              🚀 Profile Demo Access
             </h1>
             <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Instantly access the user dashboard with pre-configured demo
+              Instantly access the user profile with pre-configured demo
               accounts. No signup required - just one click!
             </p>
           </div>
@@ -103,10 +103,10 @@ const DemoAccess = () => {
 
                   <div className="mt-6 text-center">
                     <Button
-                      onClick={() => (window.location.href = "/dashboard")}
+                      onClick={() => (window.location.href = "/profile")}
                       className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                     >
-                      Visit Dashboard Directly
+                      Visit Profile Directly
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
