@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 const DemoAccess = () => {
-  const dashboardFeatures = [
+  const profileFeatures = [
     {
       icon: <BarChart3 className="w-6 h-6 text-blue-400" />,
       title: "Performance Analytics",
@@ -68,22 +68,20 @@ const DemoAccess = () => {
               <DemoLoginHelper />
             </div>
 
-            {/* Dashboard Preview */}
-            <div className="space-y-6">
+            {/* Profile Preview */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardContent className="p-6">
-                  <div className="text-center mb-6">
+                  <div className="text-center">
                     <LayoutDashboard className="w-12 h-12 text-purple-400 mx-auto mb-3" />
-                    <h2 className="text-2xl font-bold text-white mb-2">
-                      What's in the Dashboard?
-                    </h2>
-                    <p className="text-gray-300">
+                    <h3 className="text-lg font-bold text-white mb-4">
+                      What's in the Profile?
+                    </h3>
                       A comprehensive analytics and activity center
                     </p>
                   </div>
 
                   <div className="space-y-4">
-                    {dashboardFeatures.map((feature, index) => (
+                    {profileFeatures.map((feature, index) => (
                       <div
                         key={index}
                         className="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg"
@@ -117,7 +115,7 @@ const DemoAccess = () => {
               <Card className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 border-purple-500/20 backdrop-blur-xl">
                 <CardContent className="p-6">
                   <h3 className="text-lg font-bold text-white mb-4 text-center">
-                    📊 Sample Dashboard Data
+                    📊 Sample Profile Data
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-white/10 rounded-lg">
@@ -156,8 +154,8 @@ const DemoAccess = () => {
                   </h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between items-center p-2 bg-slate-800/50 rounded">
-                      <span className="text-gray-300">Dashboard:</span>
-                      <code className="text-blue-300">/dashboard</code>
+                      <span className="text-gray-300">Profile:</span>
+                      <code className="text-blue-300">/profile</code>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-slate-800/50 rounded">
                       <span className="text-gray-300">Profile:</span>
