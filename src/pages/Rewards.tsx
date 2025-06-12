@@ -22,29 +22,91 @@ import {
   Target,
   TrendingUp,
   Clock,
+  Users,
+  Gamepad2,
+  ShoppingCart,
 } from "lucide-react";
 
 const Rewards = () => {
   const [activeTab, setActiveTab] = useState("daily");
   const [spinAvailable, setSpinAvailable] = useState(true);
 
-  // Mock data
+  // Enhanced daily rewards with styling properties
   const dailyRewards = [
-    { day: 1, reward: "25 Coins", claimed: true, type: "coins" },
-    { day: 2, reward: "1 Life", claimed: true, type: "life" },
-    { day: 3, reward: "50 Coins", claimed: true, type: "coins" },
+    {
+      day: 1,
+      reward: "25 Coins",
+      claimed: true,
+      type: "coins",
+      icon: Coins,
+      color: "from-yellow-500 to-orange-500",
+      bgColor: "bg-yellow-500/10",
+      borderColor: "border-yellow-400/30",
+    },
+    {
+      day: 2,
+      reward: "1 Life",
+      claimed: true,
+      type: "life",
+      icon: Heart,
+      color: "from-red-500 to-pink-500",
+      bgColor: "bg-red-500/10",
+      borderColor: "border-red-400/30",
+    },
+    {
+      day: 3,
+      reward: "50 Coins",
+      claimed: true,
+      type: "coins",
+      icon: Coins,
+      color: "from-yellow-500 to-orange-500",
+      bgColor: "bg-yellow-500/10",
+      borderColor: "border-yellow-400/30",
+    },
     {
       day: 4,
       reward: "Power-up",
       claimed: false,
       type: "powerup",
       current: true,
+      icon: Zap,
+      color: "from-electric-500 to-magic-500",
+      bgColor: "bg-electric-500/10",
+      borderColor: "border-electric-400/30",
     },
-    { day: 5, reward: "75 Coins", claimed: false, type: "coins" },
-    { day: 6, reward: "2 Lives", claimed: false, type: "life" },
-    { day: 7, reward: "100 Coins + Badge", claimed: false, type: "special" },
+    {
+      day: 5,
+      reward: "75 Coins",
+      claimed: false,
+      type: "coins",
+      icon: Coins,
+      color: "from-yellow-500 to-orange-500",
+      bgColor: "bg-yellow-500/10",
+      borderColor: "border-yellow-400/30",
+    },
+    {
+      day: 6,
+      reward: "2 Lives",
+      claimed: false,
+      type: "life",
+      icon: Heart,
+      color: "from-red-500 to-pink-500",
+      bgColor: "bg-red-500/10",
+      borderColor: "border-red-400/30",
+    },
+    {
+      day: 7,
+      reward: "100 Coins + Badge",
+      claimed: false,
+      type: "special",
+      icon: Crown,
+      color: "from-magic-500 to-neon-500",
+      bgColor: "bg-magic-500/10",
+      borderColor: "border-magic-400/30",
+    },
   ];
 
+  // Enhanced achievements with styling properties
   const achievements = [
     {
       id: 1,
@@ -54,6 +116,10 @@ const Rewards = () => {
       progress: 100,
       completed: true,
       rarity: "common",
+      icon: Target,
+      color: "from-neon-500 to-electric-500",
+      bgColor: "bg-neon-500/10",
+      borderColor: "border-neon-400/30",
     },
     {
       id: 2,
@@ -63,6 +129,10 @@ const Rewards = () => {
       progress: 87,
       completed: false,
       rarity: "rare",
+      icon: Award,
+      color: "from-brand-500 to-magic-500",
+      bgColor: "bg-brand-500/10",
+      borderColor: "border-brand-400/30",
     },
     {
       id: 3,
@@ -72,6 +142,10 @@ const Rewards = () => {
       progress: 60,
       completed: false,
       rarity: "epic",
+      icon: Calendar,
+      color: "from-magic-500 to-fire-500",
+      bgColor: "bg-magic-500/10",
+      borderColor: "border-magic-400/30",
     },
     {
       id: 4,
@@ -81,9 +155,14 @@ const Rewards = () => {
       progress: 45,
       completed: false,
       rarity: "legendary",
+      icon: Crown,
+      color: "from-fire-500 to-danger-500",
+      bgColor: "bg-fire-500/10",
+      borderColor: "border-fire-400/30",
     },
   ];
 
+  // Enhanced store items with styling properties
   const storeItems = [
     {
       id: 1,
@@ -91,7 +170,10 @@ const Rewards = () => {
       description: "Remove 2 wrong answers",
       price: 50,
       type: "powerup",
-      icon: "🎯",
+      icon: Target,
+      color: "from-electric-500 to-magic-500",
+      bgColor: "bg-electric-500/10",
+      borderColor: "border-electric-400/30",
     },
     {
       id: 2,
@@ -99,7 +181,10 @@ const Rewards = () => {
       description: "Get an additional life",
       price: 75,
       type: "life",
-      icon: "❤️",
+      icon: Heart,
+      color: "from-red-500 to-pink-500",
+      bgColor: "bg-red-500/10",
+      borderColor: "border-red-400/30",
     },
     {
       id: 3,
@@ -107,7 +192,10 @@ const Rewards = () => {
       description: "Stop the timer for 10 seconds",
       price: 100,
       type: "powerup",
-      icon: "⏸️",
+      icon: Clock,
+      color: "from-brand-500 to-neon-500",
+      bgColor: "bg-brand-500/10",
+      borderColor: "border-brand-400/30",
     },
     {
       id: 4,
@@ -115,7 +203,10 @@ const Rewards = () => {
       description: "2x coins for next quiz",
       price: 150,
       type: "boost",
-      icon: "💰",
+      icon: Coins,
+      color: "from-yellow-500 to-orange-500",
+      bgColor: "bg-yellow-500/10",
+      borderColor: "border-yellow-400/30",
     },
     {
       id: 5,
@@ -123,7 +214,10 @@ const Rewards = () => {
       description: "Get hints for difficult questions",
       price: 200,
       type: "powerup",
-      icon: "💡",
+      icon: Sparkles,
+      color: "from-magic-500 to-electric-500",
+      bgColor: "bg-magic-500/10",
+      borderColor: "border-magic-400/30",
     },
     {
       id: 6,
@@ -131,22 +225,25 @@ const Rewards = () => {
       description: "Increase rare reward chances",
       price: 300,
       type: "boost",
-      icon: "🍀",
+      icon: Star,
+      color: "from-neon-500 to-fire-500",
+      bgColor: "bg-neon-500/10",
+      borderColor: "border-neon-400/30",
     },
   ];
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case "common":
-        return "from-gray-500 to-gray-600";
+        return "text-neon-400 bg-neon-500/20 border-neon-400";
       case "rare":
-        return "from-blue-500 to-blue-600";
+        return "text-brand-400 bg-brand-500/20 border-brand-400";
       case "epic":
-        return "from-purple-500 to-purple-600";
+        return "text-magic-400 bg-magic-500/20 border-magic-400";
       case "legendary":
-        return "from-yellow-500 to-orange-500";
+        return "text-fire-400 bg-fire-500/20 border-fire-400";
       default:
-        return "from-gray-500 to-gray-600";
+        return "text-white/70 bg-white/10 border-white/20";
     }
   };
 
@@ -171,50 +268,43 @@ const Rewards = () => {
         <main className="container mx-auto px-4 py-8">
           {/* Page Header */}
           <div className="text-center mb-12">
-            <h1 className="text-6xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent mb-4">
-              🎁 Rewards Center
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
+              🎁 Rewards{" "}
+              <span className="bg-gradient-to-r from-electric-400 via-neon-400 to-magic-400 bg-clip-text text-transparent">
+                Center
+              </span>
             </h1>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto mb-8">
               Earn amazing rewards, collect daily bonuses, and unlock exclusive
               achievements!
             </p>
-          </div>
 
-          {/* Current Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="bg-gradient-to-r from-yellow-600/20 to-orange-600/20 border-yellow-500/20 backdrop-blur-xl">
-              <CardContent className="p-4 text-center">
-                <Coins className="w-6 h-6 text-yellow-400 mx-auto mb-1" />
-                <div className="text-lg font-bold text-white">2,450</div>
-                <div className="text-xs text-gray-300">Total Coins</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border-purple-500/20 backdrop-blur-xl">
-              <CardContent className="p-4 text-center">
-                <Star className="w-6 h-6 text-purple-400 mx-auto mb-1" />
-                <div className="text-lg font-bold text-white">156</div>
-                <div className="text-xs text-gray-300">Stars Earned</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-r from-green-600/20 to-emerald-600/20 border-green-500/20 backdrop-blur-xl">
-              <CardContent className="p-4 text-center">
-                <Award className="w-6 h-6 text-green-400 mx-auto mb-1" />
-                <div className="text-lg font-bold text-white">12</div>
-                <div className="text-xs text-gray-300">Achievements</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-r from-red-600/20 to-pink-600/20 border-red-500/20 backdrop-blur-xl">
-              <CardContent className="p-4 text-center">
-                <Calendar className="w-6 h-6 text-red-400 mx-auto mb-1" />
-                <div className="text-lg font-bold text-white">4</div>
-                <div className="text-xs text-gray-300">Streak Days</div>
-              </CardContent>
-            </Card>
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-6 mb-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-electric-400">
+                  2,450
+                </div>
+                <div className="text-white/70 text-sm">Total Coins</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-neon-400">156</div>
+                <div className="text-white/70 text-sm">Stars Earned</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-magic-400">12</div>
+                <div className="text-white/70 text-sm">Achievements</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 border border-white/20">
+                <div className="text-2xl font-bold text-fire-400">4</div>
+                <div className="text-white/70 text-sm">Streak Days</div>
+              </div>
+            </div>
           </div>
 
           {/* Reward Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4 mb-8 bg-slate-800/50">
+            <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/5 backdrop-blur-sm">
               <TabsTrigger
                 value="daily"
                 className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
@@ -245,98 +335,138 @@ const Rewards = () => {
             <TabsContent value="daily">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
-                  <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-white">
-                        <Calendar className="w-8 h-8 text-yellow-400" />
-                        Daily Login Rewards
-                        <Badge className="bg-green-500 text-white">
-                          4 Day Streak
-                        </Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-7 gap-3">
-                        {dailyRewards.map((reward, index) => (
+                  {/* Daily Login Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                    {dailyRewards.map((reward, index) => {
+                      const Icon = reward.icon;
+                      return (
+                        <div
+                          key={reward.day}
+                          className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${reward.borderColor} p-4 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
+                            reward.current ? "ring-2 ring-yellow-500/50" : ""
+                          }`}
+                          style={{
+                            animationDelay: `${index * 100}ms`,
+                            animationFillMode: "both",
+                            minHeight: "200px",
+                          }}
+                        >
+                          {/* Gradient overlay on hover */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
+
+                          {/* Icon with Enhanced Animations */}
                           <div
-                            key={reward.day}
-                            className={`p-4 rounded-xl text-center transition-all duration-300 ${
-                              reward.current
-                                ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white scale-110 shadow-xl"
-                                : reward.claimed
-                                  ? "bg-green-500/20 border border-green-500/50"
-                                  : "bg-slate-800/50 border border-slate-600"
-                            }`}
+                            className={`relative w-12 h-12 ${reward.bgColor} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden`}
                           >
-                            <div className="text-sm font-bold mb-2">
-                              Day {reward.day}
+                            {/* Animated background glow */}
+                            <div
+                              className={`absolute inset-0 bg-gradient-to-r ${reward.color} opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-500`}
+                            />
+                            <Icon
+                              className={`relative z-10 w-6 h-6 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${
+                                reward.current ? "animate-bounce" : ""
+                              }`}
+                              style={{
+                                filter:
+                                  "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+                              }}
+                            />
+                            {/* Floating particles effect */}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                              <div
+                                className={`absolute top-1 right-1 w-1 h-1 bg-gradient-to-r ${reward.color} rounded-full animate-ping`}
+                              />
+                              <div
+                                className={`absolute bottom-1 left-1 w-1 h-1 bg-gradient-to-r ${reward.color} rounded-full animate-ping delay-100`}
+                              />
                             </div>
-                            <div className="text-xs mb-2">{reward.reward}</div>
-                            {reward.claimed ? (
-                              <CheckCircle className="w-4 h-4 text-green-400 mx-auto" />
-                            ) : reward.current ? (
-                              <Gift className="w-4 h-4 text-white mx-auto animate-bounce" />
-                            ) : (
-                              <Lock className="w-4 h-4 text-gray-400 mx-auto" />
-                            )}
                           </div>
-                        ))}
-                      </div>
-                      <div className="mt-6 text-center">
-                        <Button className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white">
-                          Claim Today's Reward
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+
+                          {/* Content */}
+                          <div className="text-center">
+                            <h3 className="text-sm font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
+                              Day {reward.day}
+                            </h3>
+                            <p className="text-white/70 text-xs leading-relaxed mb-3 group-hover:text-white/80 transition-colors duration-300">
+                              {reward.reward}
+                            </p>
+
+                            {/* Status */}
+                            <div className="flex justify-center">
+                              {reward.claimed ? (
+                                <Badge className="bg-green-500/20 border-green-400 text-green-100 text-xs">
+                                  ✓ Claimed
+                                </Badge>
+                              ) : reward.current ? (
+                                <Button
+                                  className={`w-full bg-gradient-to-r ${reward.color} hover:shadow-lg transition-all duration-300 text-white border-0 h-8 text-xs`}
+                                >
+                                  Claim Now
+                                </Button>
+                              ) : (
+                                <Badge className="bg-gray-500/20 border-gray-400 text-gray-300 text-xs">
+                                  🔒 Locked
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Glow effect */}
+                          <div
+                            className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r ${reward.color} blur-xl -z-10`}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div className="space-y-6">
-                  {/* Quick Stats */}
-                  <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-white">
+                  {/* Progress Card */}
+                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
                         <TrendingUp className="w-6 h-6 text-green-400" />
+                      </div>
+                      <h3 className="text-lg font-display font-bold text-white">
                         Progress
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-gray-300">Next Level</span>
-                            <span className="text-white">78%</span>
-                          </div>
-                          <Progress value={78} className="h-2" />
+                      </h3>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-white/70">Next Level</span>
+                          <span className="text-white">78%</span>
                         </div>
-                        <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-gray-300">Weekly Goal</span>
-                            <span className="text-white">5/7 days</span>
-                          </div>
-                          <Progress value={71} className="h-2" />
-                        </div>
+                        <Progress value={78} className="h-2" />
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-white/70">Weekly Goal</span>
+                          <span className="text-white">5/7 days</span>
+                        </div>
+                        <Progress value={71} className="h-2" />
+                      </div>
+                    </div>
+                  </div>
 
-                  {/* Bonus Info */}
-                  <Card className="bg-gradient-to-r from-blue-900/80 to-purple-900/80 border-blue-500/20 backdrop-blur-xl">
-                    <CardContent className="p-6">
-                      <div className="text-center">
-                        <Sparkles className="w-12 h-12 text-blue-400 mx-auto mb-3" />
-                        <h3 className="font-bold text-white mb-2">
-                          Streak Bonus
-                        </h3>
-                        <p className="text-blue-200 text-sm mb-4">
-                          Keep your login streak to unlock better rewards!
-                        </p>
-                        <div className="text-lg font-bold text-yellow-400">
-                          +25% Bonus at 7 days
-                        </div>
+                  {/* Streak Bonus Card */}
+                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-blue-400/30 p-6">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <Sparkles className="w-6 h-6 text-blue-400" />
                       </div>
-                    </CardContent>
-                  </Card>
+                      <h3 className="font-display font-bold text-white mb-2">
+                        Streak Bonus
+                      </h3>
+                      <p className="text-blue-200 text-sm mb-4">
+                        Keep your login streak to unlock better rewards!
+                      </p>
+                      <div className="text-lg font-bold text-yellow-400">
+                        +25% Bonus at 7 days
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </TabsContent>
@@ -344,43 +474,63 @@ const Rewards = () => {
             {/* Achievements */}
             <TabsContent value="achievements">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {achievements.map((achievement) => (
-                  <Card
-                    key={achievement.id}
-                    className={`bg-gradient-to-r ${getRarityColor(achievement.rarity)}/20 border-slate-600 backdrop-blur-xl ${
-                      achievement.completed ? "ring-2 ring-green-500/50" : ""
-                    }`}
-                  >
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-white flex items-center gap-2">
-                            {achievement.completed ? (
-                              <CheckCircle className="w-6 h-6 text-green-400" />
-                            ) : (
-                              <Target className="w-6 h-6 text-blue-400" />
-                            )}
-                            {achievement.title}
-                          </CardTitle>
-                          <p className="text-gray-300 text-sm mt-1">
-                            {achievement.description}
-                          </p>
+                {achievements.map((achievement, index) => {
+                  const Icon = achievement.icon;
+                  return (
+                    <div
+                      key={achievement.id}
+                      className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${achievement.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
+                        achievement.completed ? "ring-2 ring-green-500/50" : ""
+                      }`}
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animationFillMode: "both",
+                      }}
+                    >
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
+
+                      {/* Header with Icon and Badge */}
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex items-center gap-3">
+                          {/* Enhanced Icon */}
+                          <div
+                            className={`relative w-14 h-14 ${achievement.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden`}
+                          >
+                            {/* Animated background glow */}
+                            <div
+                              className={`absolute inset-0 bg-gradient-to-r ${achievement.color} opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-500`}
+                            />
+                            <Icon
+                              className={`relative z-10 w-7 h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110`}
+                              style={{
+                                filter:
+                                  "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-display font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
+                              {achievement.title}
+                            </h3>
+                            <p className="text-white/70 text-sm group-hover:text-white/80 transition-colors duration-300">
+                              {achievement.description}
+                            </p>
+                          </div>
                         </div>
                         <Badge
-                          className={`bg-gradient-to-r ${getRarityColor(achievement.rarity)} text-white capitalize`}
+                          className={`${getRarityColor(achievement.rarity)} text-xs px-3 py-1 capitalize`}
                         >
                           {achievement.rarity}
                         </Badge>
                       </div>
-                    </CardHeader>
-                    <CardContent>
+
+                      {/* Progress */}
                       <div className="space-y-4">
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-gray-300">Progress</span>
-                            <span className="text-white">
-                              {achievement.progress}%
-                            </span>
+                          <div className="flex justify-between text-sm text-white/70 mb-2">
+                            <span>Progress</span>
+                            <span>{achievement.progress}%</span>
                           </div>
                           <Progress
                             value={achievement.progress}
@@ -388,45 +538,95 @@ const Rewards = () => {
                           />
                         </div>
 
+                        {/* Prize Pool */}
                         <div className="p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
                           <div className="flex items-center gap-2">
                             <Gift className="w-4 h-4 text-yellow-400" />
-                            <span className="text-yellow-300">
+                            <span className="text-yellow-300 text-sm">
                               {achievement.reward}
                             </span>
                           </div>
                         </div>
 
-                        {achievement.completed && (
+                        {/* Action Button */}
+                        {achievement.completed ? (
                           <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
                             Claimed ✓
                           </Button>
+                        ) : (
+                          <Button
+                            className={`w-full bg-gradient-to-r ${achievement.color} hover:shadow-lg transition-all duration-300 text-white border-0`}
+                            disabled
+                          >
+                            In Progress
+                          </Button>
                         )}
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
+
+                      {/* Glow effect */}
+                      <div
+                        className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r ${achievement.color} blur-xl -z-10`}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </TabsContent>
 
             {/* Store */}
             <TabsContent value="store">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {storeItems.map((item) => (
-                  <Card
-                    key={item.id}
-                    className="bg-slate-900/80 border-slate-700 backdrop-blur-xl hover:border-blue-500/50 transition-all duration-300"
-                  >
-                    <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {storeItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.id}
+                      className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${item.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp`}
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animationFillMode: "both",
+                        minHeight: "280px",
+                      }}
+                    >
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
+
+                      {/* Icon with Enhanced Animations */}
+                      <div
+                        className={`relative w-14 h-14 ${item.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden mx-auto`}
+                      >
+                        {/* Animated background glow */}
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-500`}
+                        />
+                        <Icon
+                          className={`relative z-10 w-7 h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110`}
+                          style={{
+                            filter:
+                              "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
+                          }}
+                        />
+                        {/* Floating particles effect */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          <div
+                            className={`absolute top-1 right-1 w-1 h-1 bg-gradient-to-r ${item.color} rounded-full animate-ping`}
+                          />
+                          <div
+                            className={`absolute bottom-1 left-1 w-1 h-1 bg-gradient-to-r ${item.color} rounded-full animate-ping delay-100`}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Content */}
                       <div className="text-center">
-                        <div className="text-4xl mb-3">{item.icon}</div>
-                        <h3 className="font-bold text-white mb-2">
+                        <h3 className="text-lg font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
                           {item.name}
                         </h3>
-                        <p className="text-gray-300 text-sm mb-4">
+                        <p className="text-white/70 text-sm leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-300">
                           {item.description}
                         </p>
 
+                        {/* Price */}
                         <div className="flex items-center justify-center gap-1 mb-4">
                           <Coins className="w-5 h-5 text-yellow-400" />
                           <span className="text-xl font-bold text-yellow-400">
@@ -434,13 +634,21 @@ const Rewards = () => {
                           </span>
                         </div>
 
-                        <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                        {/* Purchase Button */}
+                        <Button
+                          className={`w-full bg-gradient-to-r ${item.color} hover:shadow-lg transition-all duration-300 text-white border-0`}
+                        >
                           Purchase
                         </Button>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
+
+                      {/* Glow effect */}
+                      <div
+                        className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r ${item.color} blur-xl -z-10`}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </TabsContent>
 
@@ -448,106 +656,116 @@ const Rewards = () => {
             <TabsContent value="special">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Lucky Spin */}
-                <Card className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 border-purple-500/20 backdrop-blur-xl">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-3 text-white">
-                      <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                        🎰
-                      </div>
-                      Lucky Spin Wheel
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-center space-y-4">
-                      <div className="w-32 h-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto flex items-center justify-center text-4xl animate-pulse">
-                        🎯
-                      </div>
+                <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-magic-400/30 p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
 
-                      <div>
-                        <h3 className="font-bold text-white mb-2">
-                          Weekly Free Spin
-                        </h3>
-                        <p className="text-purple-200 text-sm">
-                          Spin the wheel for a chance to win amazing rewards!
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                        {spinRewards.slice(0, 6).map((reward, index) => (
-                          <div
-                            key={index}
-                            className="bg-purple-500/20 p-2 rounded text-purple-200"
-                          >
-                            {reward}
-                          </div>
-                        ))}
-                      </div>
-
-                      {spinAvailable ? (
-                        <Button
-                          onClick={() => setSpinAvailable(false)}
-                          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-                        >
-                          Spin Now! (Free)
-                        </Button>
-                      ) : (
-                        <div className="text-purple-300">
-                          <Clock className="w-4 h-4 inline mr-1" />
-                          Next spin in 6d 14h
-                        </div>
-                      )}
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-14 h-14 bg-magic-500/10 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                      <div className="text-2xl">🎰</div>
                     </div>
-                  </CardContent>
-                </Card>
+                    <h3 className="text-xl font-display font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
+                      Lucky Spin Wheel
+                    </h3>
+                  </div>
+
+                  <div className="text-center space-y-4">
+                    <div className="w-32 h-32 bg-gradient-to-r from-magic-500 to-electric-500 rounded-full mx-auto flex items-center justify-center text-4xl animate-pulse">
+                      🎯
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold text-white mb-2">
+                        Weekly Free Spin
+                      </h4>
+                      <p className="text-white/70 text-sm">
+                        Spin the wheel for a chance to win amazing rewards!
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      {spinRewards.slice(0, 6).map((reward, index) => (
+                        <div
+                          key={index}
+                          className="bg-magic-500/20 p-2 rounded text-magic-200"
+                        >
+                          {reward}
+                        </div>
+                      ))}
+                    </div>
+
+                    {spinAvailable ? (
+                      <Button
+                        onClick={() => setSpinAvailable(false)}
+                        className="bg-gradient-to-r from-magic-500 to-electric-500 hover:shadow-lg transition-all duration-300 text-white"
+                      >
+                        Spin Now! (Free)
+                      </Button>
+                    ) : (
+                      <div className="text-magic-300">
+                        <Clock className="w-4 h-4 inline mr-1" />
+                        Next spin in 6d 14h
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r from-magic-500 to-electric-500 blur-xl -z-10" />
+                </div>
 
                 {/* Referral Program */}
-                <Card className="bg-gradient-to-r from-green-900/80 to-emerald-900/80 border-green-500/20 backdrop-blur-xl">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-3 text-white">
-                      <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                        👥
-                      </div>
-                      Refer Friends
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-center space-y-4">
-                      <div className="text-6xl">🤝</div>
+                <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-neon-400/30 p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
 
-                      <div>
-                        <h3 className="font-bold text-white mb-2">
-                          Earn Together
-                        </h3>
-                        <p className="text-green-200 text-sm">
-                          Invite friends and earn rewards when they join!
-                        </p>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center p-2 bg-green-500/20 rounded">
-                          <span className="text-green-200 text-sm">
-                            You earn:
-                          </span>
-                          <span className="text-green-300 font-bold">
-                            200 Coins
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center p-2 bg-green-500/20 rounded">
-                          <span className="text-green-200 text-sm">
-                            Friend earns:
-                          </span>
-                          <span className="text-green-300 font-bold">
-                            100 Coins
-                          </span>
-                        </div>
-                      </div>
-
-                      <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white">
-                        Share Invite Link
-                      </Button>
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-14 h-14 bg-neon-500/10 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                      <Users className="w-7 h-7 text-neon-400" />
                     </div>
-                  </CardContent>
-                </Card>
+                    <h3 className="text-xl font-display font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
+                      Refer Friends
+                    </h3>
+                  </div>
+
+                  <div className="text-center space-y-4">
+                    <div className="text-6xl">🤝</div>
+
+                    <div>
+                      <h4 className="font-bold text-white mb-2">
+                        Earn Together
+                      </h4>
+                      <p className="text-white/70 text-sm">
+                        Invite friends and earn rewards when they join!
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center p-2 bg-neon-500/20 rounded">
+                        <span className="text-neon-200 text-sm">You earn:</span>
+                        <span className="text-neon-300 font-bold">
+                          200 Coins
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center p-2 bg-neon-500/20 rounded">
+                        <span className="text-neon-200 text-sm">
+                          Friend earns:
+                        </span>
+                        <span className="text-neon-300 font-bold">
+                          100 Coins
+                        </span>
+                      </div>
+                    </div>
+
+                    <Button className="bg-gradient-to-r from-neon-500 to-electric-500 hover:shadow-lg transition-all duration-300 text-white">
+                      Share Invite Link
+                    </Button>
+                  </div>
+
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r from-neon-500 to-electric-500 blur-xl -z-10" />
+                </div>
               </div>
             </TabsContent>
           </Tabs>
