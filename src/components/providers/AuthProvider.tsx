@@ -1,14 +1,17 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User as FirebaseUser, onAuthStateChanged } from "firebase/auth";
-import { auth, isFirebaseReady } from "@/lib/firebase";
-import { getUserData } from "@/lib/firebaseService";
-import { demoAuth } from "@/lib/demoAuth";
-import { User } from "@/lib/store";
+import { localStorageAuth } from "@/lib/localStorageAuth";
+import { User } from "../../../lib/store";
+
+interface AuthUser {
+  uid: string;
+  email: string;
+  displayName: string;
+}
 
 interface AuthContextType {
-  user: FirebaseUser | null;
+  user: AuthUser | null;
   userData: User | null;
   loading: boolean;
   signOut: () => Promise<void>;
@@ -32,21 +35,20 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let unsubscribe: () => void;
+    console.log("🚀 Running with localStorage authentication");
 
-    if (isFirebaseReady) {
-      // Use real Firebase auth
-      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-        setUser(firebaseUser);
+    const unsubscribe = localStorageAuth.onAuthStateChanged(
+      async (authUser) => {
+        setUser(authUser);
 
-        if (firebaseUser) {
+        if (authUser) {
           try {
-            const data = await getUserData(firebaseUser.uid);
+            const data = await localStorageAuth.getUserData(authUser.uid);
             setUserData(data);
           } catch (error) {
             console.error("Error fetching user data:", error);
@@ -57,39 +59,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
 
         setLoading(false);
-      });
-    } else {
-      // Use demo auth
-      console.log("🚀 Running in DEMO mode - Firebase not configured");
-      unsubscribe = demoAuth.onAuthStateChanged(async (demoUser) => {
-        setUser(demoUser as any);
-
-        if (demoUser) {
-          try {
-            const data = await demoAuth.getUserData(demoUser.uid);
-            setUserData(data);
-          } catch (error) {
-            console.error("Error fetching demo user data:", error);
-            setUserData(null);
-          }
-        } else {
-          setUserData(null);
-        }
-
-        setLoading(false);
-      });
-    }
+      },
+    );
 
     return () => unsubscribe();
   }, []);
 
   const handleSignOut = async () => {
     try {
-      if (isFirebaseReady) {
-        await auth.signOut();
-      } else {
-        await demoAuth.signOut();
-      }
+      await localStorageAuth.signOut();
       setUser(null);
       setUserData(null);
     } catch (error) {
