@@ -22,13 +22,20 @@ const firebaseConfig = {
   messagingSenderId:
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "123456789",
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:123456789:web:demo",
+
+  measurementId : process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
+
+
 
 // Export configuration status
 export const isFirebaseReady = isFirebaseConfigured;
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+console.log(app , " app initialized with config: ", firebaseConfig);
+
 
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);

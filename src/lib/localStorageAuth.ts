@@ -1,5 +1,5 @@
 // localStorage-based authentication service for production use without Firebase
-import { User } from "../lib/store";
+
 
 interface StorageUser {
   uid: string;
@@ -24,6 +24,7 @@ class LocalStorageAuthService {
   }
 
   private loadCurrentUser() {
+    
     try {
       const currentUserData = localStorage.getItem("quiz2play_current_user");
       if (currentUserData) {
