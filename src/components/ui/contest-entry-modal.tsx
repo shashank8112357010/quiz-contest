@@ -131,11 +131,11 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
 
     try {
       // Initialize reCAPTCHA for second consent
-      await initializeRecaptcha();
+      const verifier = await initializeRecaptcha();
 
       // Send OTP for second consent
       if (user.phoneNumber) {
-        const result = await sendOTP(user.phoneNumber);
+        const result = await sendOTP(user.phoneNumber, verifier);
         setConfirmationResult(result);
 
         toast({
@@ -144,7 +144,8 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
         });
       }
     } catch (error: any) {
-      setError(getAuthErrorMessage(error.code));
+      console.error("Error in handleNonSubscriberOk:", error);
+      setError(getAuthErrorMessage(error?.code || "unknown"));
     }
   };
 
