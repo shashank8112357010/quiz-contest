@@ -58,7 +58,8 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   const [confirmationResult, setConfirmationResult] =
     useState<ConfirmationResult | null>(null);
   const [showEmergencyFallback, setShowEmergencyFallback] = useState(false);
-  const [recaptchaVerifierInstance, setRecaptchaVerifierInstance] = useState<RecaptchaVerifier | null>(null);
+  const [recaptchaVerifierInstance, setRecaptchaVerifierInstance] =
+    useState<RecaptchaVerifier | null>(null);
   const { toast } = useToast();
 
   // Reset state when modal closes
@@ -80,15 +81,24 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       initializeRecaptcha()
-        .then(verifier => {
+        .then((verifier) => {
           setRecaptchaVerifierInstance(verifier);
           console.log("reCAPTCHA verifier instance set in modal state.");
           // Clear any previous reCAPTCHA related error if successfully initialized
-          setError(prevError => prevError.includes("Authentication service temporarily unavailable") ? "" : prevError);
+          setError((prevError) =>
+            prevError.includes("Authentication service temporarily unavailable")
+              ? ""
+              : prevError,
+          );
         })
         .catch((error) => {
-          console.error("reCAPTCHA initialization failed within PhoneAuthModal useEffect:", error);
-          setError("Authentication service temporarily unavailable. Please try closing and reopening the auth window, or try again later.");
+          console.error(
+            "reCAPTCHA initialization failed within PhoneAuthModal useEffect:",
+            error,
+          );
+          setError(
+            "Authentication service temporarily unavailable. Please try closing and reopening the auth window, or try again later.",
+          );
           setRecaptchaVerifierInstance(null);
         });
     } else {
@@ -97,75 +107,87 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
     }
   }, [isOpen]);
 
-const handleSendOTP = async (e: React.FormEvent) => {
-  e.preventDefault();
-  console.log("handleSendOTP called. Current phone number:", countryCode + phoneNumber);
-  setLoading(true);
-  setError(""); // Clear previous errors
+  const handleSendOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(
+      "handleSendOTP called. Current phone number:",
+      countryCode + phoneNumber,
+    );
+    setLoading(true);
+    setError(""); // Clear previous errors
 
-  try {
-    const nationalNumber = phoneNumber.replace(/\D/g, ""); // Now phoneNumber holds national part
-    if (!nationalNumber) {
-      setError("Please enter your national phone number");
+    try {
+      const nationalNumber = phoneNumber.replace(/\D/g, ""); // Now phoneNumber holds national part
+      if (!nationalNumber) {
+        setError("Please enter your national phone number");
+        setLoading(false);
+        return;
+      }
+
+      // Validate countryCode format
+      if (!/^\+\d+$/.test(countryCode)) {
+        setError("Country code must start with '+' and contain only numbers.");
+        setLoading(false);
+        return;
+      }
+
+      const fullPhoneNumber = countryCode + nationalNumber;
+
+      if (!recaptchaVerifierInstance) {
+        console.warn(
+          "handleSendOTP: recaptchaVerifierInstance is not available.",
+        );
+        setError(
+          "reCAPTCHA not ready. Please wait a moment or try reopening the authentication window.",
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Call the refactored sendOTP from phoneAuth.ts
+      console.log("Calling sendOTP from phoneAuth.ts lib...");
+      const result = await sendOTP(fullPhoneNumber, recaptchaVerifierInstance);
+      console.log("sendOTP call successful in modal, result:", result);
+
+      if (result === "demo") {
+        console.log(
+          "Using demo mode for phone authentication as per sendOTP fallback.",
+        );
+        setConfirmationResult("demo" as any); // Type assertion for demo string
+        toast({
+          title: "Demo Mode Active",
+          description:
+            "OTP service has fallen back to demo. Enter any 6-digit code.",
+          variant: "default",
+        });
+        setStep("otp"); // Proceed to OTP step for demo
+      } else {
+        // sendOTP was successful and returned a ConfirmationResult
+        setConfirmationResult(result);
+        toast({
+          title: "OTP Sent!",
+          description: "Please check your phone for the verification code.",
+        });
+        setStep("otp"); // Proceed to OTP step
+      }
+    } catch (err: any) {
+      // Catch errors thrown by the refactored sendOTP.
+      // err.message should contain the user-friendly string.
+      console.error("Error in handleSendOTP:", err.message, err);
+      setError(
+        err.message ||
+          "An unexpected error occurred while trying to send the OTP. Please try again.",
+      );
+
+      // Optional: Trigger emergency fallback on specific, persistent errors if desired
+      // For example, if err.message indicates a service outage.
+      // if (err.message.includes("SMS quota exceeded") || err.message.includes("temporarily unavailable")) {
+      //   setShowEmergencyFallback(true); // Example: trigger emergency on quota issues
+      // }
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Validate countryCode format
-    if (!/^\+\d+$/.test(countryCode)) {
-      setError("Country code must start with '+' and contain only numbers.");
-      setLoading(false);
-      return;
-    }
-
-    const fullPhoneNumber = countryCode + nationalNumber;
-
-    if (!recaptchaVerifierInstance) {
-      console.warn("handleSendOTP: recaptchaVerifierInstance is not available.");
-      setError("reCAPTCHA not ready. Please wait a moment or try reopening the authentication window.");
-      setLoading(false);
-      return;
-    }
-
-    // Call the refactored sendOTP from phoneAuth.ts
-    console.log("Calling sendOTP from phoneAuth.ts lib...");
-    const result = await sendOTP(fullPhoneNumber, recaptchaVerifierInstance);
-    console.log("sendOTP call successful in modal, result:", result);
-    
-    if (result === "demo") {
-      console.log("Using demo mode for phone authentication as per sendOTP fallback.");
-      setConfirmationResult("demo" as any); // Type assertion for demo string
-      toast({
-        title: "Demo Mode Active",
-        description: "OTP service has fallen back to demo. Enter any 6-digit code.",
-        variant: "default",
-      });
-      setStep("otp"); // Proceed to OTP step for demo
-    } else {
-      // sendOTP was successful and returned a ConfirmationResult
-      setConfirmationResult(result);
-      toast({
-        title: "OTP Sent!",
-        description: "Please check your phone for the verification code.",
-      });
-      setStep("otp"); // Proceed to OTP step
-    }
-
-  } catch (err: any) {
-    // Catch errors thrown by the refactored sendOTP.
-    // err.message should contain the user-friendly string.
-    console.error("Error in handleSendOTP:", err.message, err);
-    setError(err.message || "An unexpected error occurred while trying to send the OTP. Please try again.");
-
-    // Optional: Trigger emergency fallback on specific, persistent errors if desired
-    // For example, if err.message indicates a service outage.
-    // if (err.message.includes("SMS quota exceeded") || err.message.includes("temporarily unavailable")) {
-    //   setShowEmergencyFallback(true); // Example: trigger emergency on quota issues
-    // }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -222,7 +244,11 @@ const handleSendOTP = async (e: React.FormEvent) => {
         setStep("profile");
       }
     } catch (error: any) {
-      console.error("Error in handleVerifyOTP:", getAuthErrorMessage(error.code), error);
+      console.error(
+        "Error in handleVerifyOTP:",
+        getAuthErrorMessage(error.code),
+        error,
+      );
       setError(getAuthErrorMessage(error.code));
     } finally {
       setLoading(false);
@@ -260,7 +286,9 @@ const handleSendOTP = async (e: React.FormEvent) => {
       // Create user profile (handle demo mode)
       if (user.uid.startsWith("demo_")) {
         // Demo mode - simulate profile creation for UI flow without backend call
-        console.log("Demo mode: Simulating profile creation for UI flow. No actual user created with localStorageAuth.");
+        console.log(
+          "Demo mode: Simulating profile creation for UI flow. No actual user created with localStorageAuth.",
+        );
         // The rest of the function (setStep, toast, onSuccess) will proceed,
         // but no localStorageAuth.signUp call is made.
       } else {
@@ -305,8 +333,8 @@ const handleSendOTP = async (e: React.FormEvent) => {
 
   return (
     <>
-      {/* reCAPTCHA container */}
-      {/* <div id="recaptcha-container"></div> */}
+      {/* reCAPTCHA container - required for Firebase phone auth */}
+      <div id="recaptcha-container"></div>
 
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-[450px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl">
@@ -376,7 +404,9 @@ const handleSendOTP = async (e: React.FormEvent) => {
                         value={phoneNumber} // Using phoneNumber directly as it holds national part
                         onChange={(e) =>
                           // Allow only digits for national number part
-                          setPhoneNumber(formatNationalPhoneNumber(e.target.value))
+                          setPhoneNumber(
+                            formatNationalPhoneNumber(e.target.value),
+                          )
                         }
                         className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
                         required
@@ -387,7 +417,10 @@ const handleSendOTP = async (e: React.FormEvent) => {
                     type="submit"
                     className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold"
                     disabled={
-                      loading || !phoneNumber.trim() || !countryCode.trim() || !/^\+\d+$/.test(countryCode)
+                      loading ||
+                      !phoneNumber.trim() ||
+                      !countryCode.trim() ||
+                      !/^\+\d+$/.test(countryCode)
                     }
                   >
                     {loading ? (
