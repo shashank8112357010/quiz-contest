@@ -48,6 +48,8 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
         container = document.createElement("div");
         container.id = "recaptcha-container";
         container.style.display = "none";
+        container.style.zIndex = "99999"
+
         document.body.appendChild(container);
       }
 
@@ -120,6 +122,9 @@ export const sendOTP = async (
     if (!formattedPhone.match(/^\+[1-9]\d{1,14}$/)) {
       throw new Error("Please enter a valid phone number with country code");
     }
+
+    console.log("Phone number format validated:", formattedPhone);
+    
 
     const confirmationResult = await signInWithPhoneNumber(
       auth,

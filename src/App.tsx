@@ -74,7 +74,7 @@ const AppContent = () => {
         isOpen={showAutoLoginModal}
         onClose={handleCloseAutoLoginModal}
       />
-      <FloatingAudioControl />
+      {/* <FloatingAudioControl /> */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

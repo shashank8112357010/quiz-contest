@@ -118,7 +118,7 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
       >
         <source src="/audio/background-music.mp3" type="audio/mpeg" />
         <source src="/audio/background-music.ogg" type="audio/ogg" />
-        Your browser does not support the audio element.
+      
       </audio>
 
       {/* Music Control Buttons */}

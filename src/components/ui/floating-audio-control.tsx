@@ -37,7 +37,7 @@ export const FloatingAudioControl = () => {
       <Button
         onClick={handleToggle}
         className={`w-14 h-14 rounded-2xl bg-black/80 backdrop-blur-md border border-white/20 hover:bg-black/90 transition-all duration-300 shadow-2xl ${
-          isEnabled ? "text-white" : "text-red-400"
+          isEnabled ? "text-white" : "text-yellow-400"
         }`}
         title={isEnabled ? "Mute Audio" : "Unmute Audio"}
       >

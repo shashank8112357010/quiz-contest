@@ -114,7 +114,7 @@ const Index = () => {
         {/* <FloatingHelpButton /> */}
 
         {/* Background Music */}
-        {/* <BackgroundMusic autoPlay={true} loop={true} volume={0.2} /> */}
+        <BackgroundMusic autoPlay={true} loop={true} volume={0.2} />
 
         {/* Manual Onboarding Trigger for Testing */}
 

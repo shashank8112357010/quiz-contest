@@ -343,10 +343,10 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   return (
     <>
       {/* reCAPTCHA container - required for Firebase phone auth */}
-      <div id="recaptcha-container"></div>
+      {/* <div id="recaptcha-container"></div> */}
 
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[450px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl">
+        <DialogContent className="sm:max-w-[450px] bg-gradient-to-br  from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl">
           <DialogHeader className="text-center">
             <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
               {step === "phone" && "Enter Your Phone Number"}
@@ -375,7 +375,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
           {/* Phone Number Step */}
           {step === "phone" && (
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-slate-800/50 -z-10 border-slate-700">
               <CardHeader className="text-center">
                 <CardTitle className="text-white flex items-center justify-center gap-2">
                   <Phone className="w-5 h-5" />
