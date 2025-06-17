@@ -45,6 +45,11 @@ export const HeroSection = () => {
     <section className="relative pt-5 pb-2">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto text-center">
+          {/* Prize Carousel */}
+          <div className="mb-12">
+            <PrizeCarousel className="max-w-md mx-auto" />
+          </div>
+
           {/* Enhanced Phone Icon with multiple animations */}
           <div className="mb-12 flex justify-center">
             <div className="relative">
