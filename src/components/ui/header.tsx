@@ -30,6 +30,14 @@ export const Header = () => {
   const { user, userData, loading, signOut } = useAuth();
   const { triggerTour } = useOnboarding();
   const { currentLanguage, setLanguage, t } = useLanguageStore();
+  const {
+    isEnabled,
+    masterVolume,
+    backgroundMusicEnabled,
+    toggleAudio,
+    setMasterVolume,
+    toggleBackgroundMusic,
+  } = useQuizAudio();
 
   const handleFeedback = (type: "like" | "dislike") => {
     submitFeedback(type);
