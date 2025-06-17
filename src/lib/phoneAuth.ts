@@ -84,55 +84,64 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
   });
 };
 
-// Send OTP to phone number with improved error handling and fallback
 export const sendOTP = async (
   phoneNumber: string,
 ): Promise<ConfirmationResult | "demo"> => {
+  if (!isFirebaseReady) {
+    console.warn("Firebase not ready, using demo mode for OTP.");
+    return "demo";
+  }
+
+  const formattedPhone = phoneNumber.startsWith("+")
+    ? phoneNumber
+    : `+91${phoneNumber}`;
+  console.log("Attempting to send OTP to:", formattedPhone);
+
   try {
-    if (!isFirebaseReady) {
-      console.warn("Firebase not ready, using demo mode");
-      return "demo";
-    }
-
-    // Format phone number (ensure it starts with country code)
-    const formattedPhone = phoneNumber.startsWith("+")
-      ? phoneNumber
-      : `+91${phoneNumber}`;
-
-    console.log("Sending OTP to:", formattedPhone);
-
-    // Always initialize fresh reCAPTCHA for each OTP request
-    cleanupRecaptcha();
-
-    try {
-      await initializeRecaptcha();
-    } catch (recaptchaError) {
-      console.warn("reCAPTCHA failed, using demo mode", recaptchaError);
-      return "demo";
-    }
+    cleanupRecaptcha(); // Clean up any existing verifier first
+    await initializeRecaptcha(); // Initialize new one
 
     if (!recaptchaVerifier) {
-      console.warn("No reCAPTCHA verifier, using demo mode");
-      return "demo";
+      console.error("reCAPTCHA verifier not available after initialization attempt.");
+      console.warn("Falling back to demo mode due to reCAPTCHA verifier issue.");
+      return "demo"; // Fallback if reCAPTCHA setup itself failed
     }
 
     // Send SMS with timeout
     const confirmationResult = await Promise.race([
       signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier),
       new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("OTP request timeout")), 15000),
+        // Added error code for timeout
+        setTimeout(() => {
+          const timeoutError = new Error("OTP request timeout (15s)");
+          (timeoutError as any).code = "auth/timeout"; // Custom code for timeout
+          reject(timeoutError);
+        }, 15000),
       ),
     ]);
 
-    console.log("OTP sent successfully");
+    console.log("OTP sent successfully via Firebase.");
     return confirmationResult;
-  } catch (error: any) {
-    console.error("Error sending OTP:", error);
-    cleanupRecaptcha();
 
-    // Instead of throwing error, return demo mode for better UX
-    console.warn("OTP sending failed, falling back to demo mode");
-    return "demo";
+  } catch (error: any) {
+    console.error("Error during OTP sending process:", error);
+    cleanupRecaptcha(); // Clean up verifier on any error
+
+    // Specific fallback for reCAPTCHA errors not caught by the null check earlier
+    // or if initializeRecaptcha itself throws an error that gets caught here.
+    if (error.message &&
+        (error.message.toLowerCase().includes("recaptcha") ||
+         error.message.includes("Failed to initialize reCAPTCHA") ||
+         error.code === 'auth/missing-recaptcha-token')) { // Example additional check
+      console.warn("Falling back to demo mode due to reCAPTCHA related error during send.", error);
+      return "demo";
+    }
+
+    // For other errors (like invalid phone, quota exceeded, network issues during send, or our custom timeout),
+    // throw an error with a user-friendly message.
+    // Ensure error.code exists, provide a default if not.
+    const errorCode = error.code || "auth/internal-error";
+    throw new Error(getAuthErrorMessage(errorCode));
   }
 };
 

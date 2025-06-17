@@ -33,7 +33,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { ConfirmationResult } from "firebase/auth";
 import { EmergencyAuthFallback } from "./emergency-auth-fallback";
-import { localStorageAuth } from "@/lib/localStorageAuth";
 
 interface PhoneAuthModalProps {
   isOpen: boolean;
@@ -86,82 +85,56 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
     }
   }, [isOpen]);
 
-  const handleSendOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+const handleSendOTP = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setError(""); // Clear previous errors
 
-    try {
-      // Validate phone number
-      const cleanPhone = phoneNumber.replace(/\D/g, "");
-      if (cleanPhone.length !== 10) {
-        setError("Please enter a valid 10-digit phone number");
-        setLoading(false);
-        return;
-      }
-
-      // Check if user already exists
-      const existingUser = await checkUserExists(`+91${cleanPhone}`);
-      console.log("Existing user check:", existingUser);
-      
-
-      // Send OTP with fallback to demo mode
-      const result = await sendOTP(`+91${cleanPhone}`);
-
-      if (result === "demo") {
-        // Demo mode - simulate OTP flow
-        console.log("Using demo mode for phone authentication");
-        setConfirmationResult("demo" as any);
-        toast({
-          title: "Demo Mode",
-          description: "Enter any 6-digit code to continue (demo mode active).",
-        });
-      } else {
-        setConfirmationResult(result);
-        toast({
-          title: "OTP Sent!",
-          description: "Please check your phone for the verification code.",
-        });
-      }
-
-      if (existingUser) {
-        // Existing user - go straight to OTP verification
-        setStep("otp");
-        toast({
-          title: "OTP Sent!",
-          description: "Please check your phone for the verification code.",
-        });
-      } else {
-        // New user - will need profile creation after OTP
-        setStep("otp");
-        toast({
-          title: "OTP Sent!",
-          description: "Please check your phone for the verification code.",
-        });
-      }
-    } catch (error: any) {
-      console.error("Phone auth error:", error);
-
-      // Show user-friendly fallback message
-      if (
-        error.message.includes("Firebase not configured") ||
-        error.message.includes("Unknown SID") ||
-        error.message.includes("reCAPTCHA") ||
-        error.message.includes("timeout")
-      ) {
-        setError(
-          "Phone verification is temporarily unavailable. You can use temporary access below.",
-        );
-      } else {
-        setError(
-          getAuthErrorMessage(error.code) ||
-            "Unable to send OTP. Please try again.",
-        );
-      }
-    } finally {
+  try {
+    const cleanPhone = phoneNumber.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Please enter a valid 10-digit phone number");
       setLoading(false);
+      return;
     }
-  };
+
+    // Call the refactored sendOTP from phoneAuth.ts
+    const result = await sendOTP(`+91${cleanPhone}`);
+
+    if (result === "demo") {
+      console.log("Using demo mode for phone authentication as per sendOTP fallback.");
+      setConfirmationResult("demo" as any); // Type assertion for demo string
+      toast({
+        title: "Demo Mode Active",
+        description: "OTP service has fallen back to demo. Enter any 6-digit code.",
+        variant: "default",
+      });
+      setStep("otp"); // Proceed to OTP step for demo
+    } else {
+      // sendOTP was successful and returned a ConfirmationResult
+      setConfirmationResult(result);
+      toast({
+        title: "OTP Sent!",
+        description: "Please check your phone for the verification code.",
+      });
+      setStep("otp"); // Proceed to OTP step
+    }
+
+  } catch (err: any) {
+    // Catch errors thrown by the refactored sendOTP.
+    // err.message should contain the user-friendly string.
+    console.error("Failed to send OTP after explicit throw:", err);
+    setError(err.message || "An unexpected error occurred while trying to send the OTP. Please try again.");
+
+    // Optional: Trigger emergency fallback on specific, persistent errors if desired
+    // For example, if err.message indicates a service outage.
+    // if (err.message.includes("SMS quota exceeded") || err.message.includes("temporarily unavailable")) {
+    //   setShowEmergencyFallback(true); // Example: trigger emergency on quota issues
+    // }
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,12 +221,10 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
       // Create user profile (handle demo mode)
       if (user.uid.startsWith("demo_")) {
-        // Demo mode - use localStorage
-        await localStorageAuth.signUp(
-          `demo+${user.phoneNumber}@example.com`,
-          "demo123",
-          displayName,
-        );
+        // Demo mode - simulate profile creation for UI flow without backend call
+        console.log("Demo mode: Simulating profile creation for UI flow. No actual user created with localStorageAuth.");
+        // The rest of the function (setStep, toast, onSuccess) will proceed,
+        // but no localStorageAuth.signUp call is made.
       } else {
         // Firebase mode
         await createUserProfile(user, displayName, termsAccepted);

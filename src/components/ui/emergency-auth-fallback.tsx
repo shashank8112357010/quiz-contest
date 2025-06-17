@@ -14,8 +14,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { User, AlertTriangle } from "lucide-react";
-import { localStorageAuth } from "@/lib/localStorageAuth";
 import { useToast } from "@/hooks/use-toast";
+import { signInAnonymously } from "firebase/auth";
+import { auth, db } from "@/lib/firebase"; // Adjusted path
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 interface EmergencyAuthFallbackProps {
   isOpen: boolean;
@@ -46,40 +48,51 @@ export const EmergencyAuthFallback: React.FC<EmergencyAuthFallbackProps> = ({
         return;
       }
 
-      if (!email.trim() || !email.includes("@")) {
+      if (!email.trim() || !email.includes("@")) { // Basic email validation
         setError("Please enter a valid email");
         setLoading(false);
         return;
       }
 
-      // Create temporary account using localStorage auth
-      await localStorageAuth.signUp(email, "temp123", displayName);
+      // Sign in anonymously with Firebase
+      const userCredential = await signInAnonymously(auth);
+      const user = userCredential.user;
+
+      // Optionally, save the entered display name and email to Firestore for this anonymous user
+      // This helps link the entered info with the anonymous session if needed later
+      // We are creating a new user document or updating if one somehow exists for this anon UID
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        displayName: displayName,
+        email: email, // Storing email provided in form
+        isAnonymous: true,
+        profileCreated: true, // Mark as profile created for consistency
+        lastLoginDate: serverTimestamp(),
+        // Add other minimal default fields if your app expects them
+        coins: 0, // Or some small amount for temporary access
+        lives: 1,
+        totalStars: 0,
+        currentLevel: 1,
+        unlockedCategories: ["general-knowledge"],
+        powers: { fiftyFifty: 0, flip: 0, expertPoll: 0 },
+        streak: 0,
+        achievements: [],
+        isSubscriber: false,
+        termsAccepted: true, // Implicitly accepted for emergency access
+        secondConsentCompleted: false,
+      }, { merge: true }); // Merge true in case an anon user already existed and we're adding info
 
       toast({
         title: "Temporary Access Granted",
-        description:
-          "You can now access the application. Please set up proper authentication later.",
+        description: "You are signed in anonymously. Your data might be temporary.",
       });
 
       onSuccess?.();
       onClose();
+
     } catch (error: any) {
-      if (error.message.includes("email-already-in-use")) {
-        // Try to sign in instead
-        try {
-          await localStorageAuth.signIn(email, "temp123");
-          toast({
-            title: "Welcome Back",
-            description: "Signed in with existing temporary account.",
-          });
-          onSuccess?.();
-          onClose();
-        } catch (signInError) {
-          setError("Email already in use with different credentials.");
-        }
-      } else {
-        setError("Failed to create temporary account. Please try again.");
-      }
+      console.error("Error during anonymous sign-in:", error);
+      setError("Failed to grant temporary access. Please try again. Code: " + error.code);
     } finally {
       setLoading(false);
     }

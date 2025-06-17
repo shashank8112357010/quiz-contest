@@ -8,7 +8,6 @@ import {
 } from "firebase/auth";
 import { auth, isFirebaseReady } from "@/lib/firebase";
 import { getUserData } from "@/lib/phoneAuth";
-import { localStorageAuth } from "@/lib/localStorageAuth";
 import { User } from "@/lib/store";
 
 interface AuthUser {
@@ -48,86 +47,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let unsubscribe: () => void;
+    let unsubscribe = () => {}; // Default to no-op
 
     if (isFirebaseReady) {
-      console.log(
-        "🚀 Running with Firebase authentication (with fallback protection)",
-      );
+      console.log("🚀 Running with Firebase authentication");
+      unsubscribe = onAuthStateChanged(
+        auth,
+        async (firebaseUser: FirebaseUser | null) => {
+          if (firebaseUser) {
+            const authUser: AuthUser = {
+              uid: firebaseUser.uid,
+              phoneNumber: firebaseUser.phoneNumber || undefined,
+              email: firebaseUser.email || undefined,
+              displayName: firebaseUser.displayName || undefined,
+            };
+            setUser(authUser);
 
-      try {
-        // Firebase authentication with error protection
-        unsubscribe = onAuthStateChanged(
-          auth,
-          async (firebaseUser: FirebaseUser | null) => {
-            if (firebaseUser) {
-              const authUser: AuthUser = {
-                uid: firebaseUser.uid,
-                phoneNumber: firebaseUser.phoneNumber || undefined,
-                email: firebaseUser.email || undefined,
-                displayName: firebaseUser.displayName || undefined,
-              };
-              setUser(authUser);
-
-              try {
-                const data = await getUserData(firebaseUser.uid);
-                setUserData(data);
-              } catch (error) {
-                console.error("Error fetching user data:", error);
-                setUserData(null);
-              }
-            } else {
-              setUser(null);
-              setUserData(null);
-            }
-            setLoading(false);
-          },
-        );
-      } catch (error) {
-        console.error(
-          "Firebase auth error, falling back to localStorage:",
-          error,
-        );
-        // Fallback to localStorage on Firebase error
-        unsubscribe = localStorageAuth.onAuthStateChanged(async (authUser) => {
-          setUser(authUser);
-          if (authUser) {
             try {
-              const data = await localStorageAuth.getUserData(authUser.uid);
+              const data = await getUserData(firebaseUser.uid);
               setUserData(data);
             } catch (error) {
               console.error("Error fetching user data:", error);
               setUserData(null);
             }
           } else {
+            setUser(null);
             setUserData(null);
           }
           setLoading(false);
-        });
-      }
-    } else {
-      console.log(
-        "🚀 Running with localStorage authentication (Firebase not configured)",
-      );
-
-      // Fallback to localStorage authentication
-      unsubscribe = localStorageAuth.onAuthStateChanged(async (authUser) => {
-        setUser(authUser);
-
-        if (authUser) {
-          try {
-            const data = await localStorageAuth.getUserData(authUser.uid);
-            setUserData(data);
-          } catch (error) {
-            console.error("Error fetching user data:", error);
-            setUserData(null);
-          }
-        } else {
-          setUserData(null);
         }
-
-        setLoading(false);
-      });
+      );
+    } else {
+      console.warn(
+        "Firebase not configured. AuthProvider will not be able to authenticate."
+      );
+      setLoading(false); // Ensure loading state is updated
     }
 
     return () => {
@@ -141,10 +95,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleSignOut = async () => {
     try {
-      if (isFirebaseReady) {
+      if (isFirebaseReady) { // Or simply assume auth is available if this function is called
         await firebaseSignOut(auth);
       } else {
-        await localStorageAuth.signOut();
+        console.warn("Firebase not ready, cannot sign out effectively.");
       }
       setUser(null);
       setUserData(null);
