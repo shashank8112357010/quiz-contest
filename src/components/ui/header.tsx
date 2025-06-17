@@ -116,6 +116,58 @@ export const Header = () => {
               </Button>
             </div>
 
+            {/* Audio Controls */}
+            <div className="flex items-center gap-2">
+              {/* Master Audio Toggle */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleAudio}
+                className={`text-white hover:bg-white/10 transition-all duration-300 p-2 ${
+                  isEnabled ? "" : "text-red-400"
+                }`}
+                title={isEnabled ? "Disable Audio" : "Enable Audio"}
+              >
+                {isEnabled ? (
+                  <Volume2 className="w-4 h-4" />
+                ) : (
+                  <VolumeX className="w-4 h-4" />
+                )}
+              </Button>
+
+              {/* Background Music Toggle */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleBackgroundMusic}
+                className={`text-white hover:bg-white/10 transition-all duration-300 p-2 ${
+                  backgroundMusicEnabled ? "" : "text-gray-400"
+                }`}
+                title={
+                  backgroundMusicEnabled
+                    ? "Disable Background Music"
+                    : "Enable Background Music"
+                }
+                disabled={!isEnabled}
+              >
+                <Music className="w-4 h-4" />
+              </Button>
+
+              {/* Volume Slider */}
+              {isEnabled && (
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={masterVolume}
+                  onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
+                  className="w-16 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                  title="Volume Control"
+                />
+              )}
+            </div>
+
             {/* Language Selector */}
             <div className="relative">
               <Button
