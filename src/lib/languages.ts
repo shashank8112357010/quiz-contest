@@ -113,7 +113,7 @@ export const translations: Record<string, Translations> = {
   ar: {
     home: "الرئيسية",
     categories: "الفئات",
-    leaderboard: "لوحة المتصدرين",
+    leaderboard: "لوحة المتصدري��",
     gratifications: "المكافآت",
     faq: "الأسئلة الشائعة",
     login: "تسجيل الدخول",
@@ -136,7 +136,7 @@ export const translations: Record<string, Translations> = {
 
     dailyLimitReached: "تم الوصول للحد اليومي!",
     dailyLimitMessage:
-      "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة ��حلة الاختبار!",
+      "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
     questionsRemaining: "أسئلة متبقية اليوم",
 
@@ -279,4 +279,40 @@ export const getAvailableQuestions = (): number => {
 
 export const canPlayQuiz = (): boolean => {
   return getAvailableQuestions() > 0;
+};
+
+// 90-day contest utilities
+export const CONTEST_DURATION_DAYS = 90;
+export const CONTEST_START_DATE = "2024-01-01"; // Set your contest start date
+
+export const getContestProgress = (): ContestProgress => {
+  const contestStart = new Date(CONTEST_START_DATE);
+  const today = new Date();
+  const timeDiff = today.getTime() - contestStart.getTime();
+  const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+
+  const saved = localStorage.getItem("quiz2play-contest-progress");
+  let totalQuestionsPlayed = 0;
+
+  if (saved) {
+    const data = JSON.parse(saved);
+    totalQuestionsPlayed = data.totalQuestionsPlayed || 0;
+  }
+
+  return {
+    contestStartDate: CONTEST_START_DATE,
+    totalQuestionsPlayed,
+    dayNumber: Math.max(1, Math.min(daysDiff + 1, CONTEST_DURATION_DAYS)),
+    maxContestDays: CONTEST_DURATION_DAYS,
+    maxQuestionsPerContest: CONTEST_DURATION_DAYS * DAILY_QUESTION_LIMIT, // 900 questions
+  };
+};
+
+export const updateContestProgress = (questionsPlayed: number): void => {
+  const current = getContestProgress();
+  const updated = {
+    ...current,
+    totalQuestionsPlayed: current.totalQuestionsPlayed + questionsPlayed,
+  };
+  localStorage.setItem("quiz2play-contest-progress", JSON.stringify(updated));
 };
