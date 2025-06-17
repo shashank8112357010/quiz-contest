@@ -54,7 +54,7 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
     };
 
     // Listen for any user interaction
-    const events = ["click", "touch", "keydown"];
+    const events = ["click", "touchstart", "keydown", "mousedown"];
     events.forEach((event) => {
       document.addEventListener(event, handleFirstInteraction, { once: true });
     });
@@ -66,9 +66,23 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
     };
   }, [autoPlay, isPlaying]);
 
+  // Also try to play when component mounts and user has already interacted
+  useEffect(() => {
+    if (hasInteracted && autoPlay && audioRef.current && !isPlaying) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Audio autoplay failed:", error);
+        });
+      }
+    }
+  }, [hasInteracted, autoPlay, isPlaying]);
+
   const togglePlayPause = () => {
     const audio = audioRef.current;
     if (!audio) return;
+
+    setHasInteracted(true);
 
     if (isPlaying) {
       audio.pause();
@@ -90,8 +104,18 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
   return (
     <div className="fixed bottom-4 right-4 z-50 flex gap-2">
       {/* Background Music Audio Element */}
-      <audio ref={audioRef} preload="auto" className="hidden">
-        {/* Using a placeholder URL - you should replace with actual music files */}
+      <audio
+        ref={audioRef}
+        preload="auto"
+        className="hidden"
+        onLoadedData={() => console.log("Audio loaded successfully")}
+        onError={(e) => console.error("Audio loading error:", e)}
+        onCanPlayThrough={() => {
+          if (hasInteracted && autoPlay && !isPlaying) {
+            audioRef.current?.play().catch(console.error);
+          }
+        }}
+      >
         <source src="/audio/background-music.mp3" type="audio/mpeg" />
         <source src="/audio/background-music.ogg" type="audio/ogg" />
         Your browser does not support the audio element.
@@ -131,8 +155,8 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
 
       {/* Show play hint if music hasn't started due to autoplay restrictions */}
       {!hasInteracted && (
-        <div className="absolute bottom-full right-0 mb-2 bg-black/80 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm border border-white/20 whitespace-nowrap">
-          Click anywhere to enable background music
+        <div className="absolute bottom-full right-0 mb-2 bg-black/80 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm border border-white/20 whitespace-nowrap animate-pulse">
+          Click play button to enable background music
         </div>
       )}
     </div>

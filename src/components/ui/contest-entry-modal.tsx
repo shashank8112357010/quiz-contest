@@ -126,25 +126,35 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
       return;
     }
 
+    setLoading(true);
+    setError("");
+
     // Start second consent flow
     setStep("second-consent");
 
     try {
       // Initialize reCAPTCHA for second consent
-      await initializeRecaptcha();
+      const verifier = await initializeRecaptcha();
 
       // Send OTP for second consent
       if (user.phoneNumber) {
-        const result = await sendOTP(user.phoneNumber);
+        const result = await sendOTP(user.phoneNumber, verifier);
         setConfirmationResult(result);
 
         toast({
           title: "Second Consent Required",
           description: "Please verify with OTP to continue to categories.",
         });
+      } else {
+        setError("Phone number not found. Please try logging in again.");
       }
     } catch (error: any) {
-      setError(getAuthErrorMessage(error.code));
+      console.error("Error in handleNonSubscriberOk:", error);
+      setError(getAuthErrorMessage(error?.code || "unknown"));
+      // Reset to previous step if there's an error
+      setStep("non-subscriber");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -279,8 +289,16 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
                     variant="outline"
                     className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
                     onClick={handleNonSubscriberOk}
+                    disabled={loading}
                   >
-                    Continue Anyway
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Continue Anyway"
+                    )}
                   </Button>
                 </div>
 
