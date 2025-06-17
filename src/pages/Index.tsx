@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/achievement-toast";
 import { BackgroundMusic } from "@/components/ui/background-music";
 import { useOnboarding } from "@/hooks/use-onboarding";
+import { FirebaseDebugInfo } from "@/components/ui/firebase-debug";
 
 const Index = () => {
   const { showTour, showWelcomeBack, completeTour, dismissWelcomeBack } =
