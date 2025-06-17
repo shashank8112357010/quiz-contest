@@ -136,7 +136,7 @@ export const translations: Record<string, Translations> = {
 
     dailyLimitReached: "تم الوصول للحد اليومي!",
     dailyLimitMessage:
-      "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
+      "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة ��حلة الاختبار!",
     comeBackTomorrow: "عد غداً",
     questionsRemaining: "أسئلة متبقية اليوم",
 
@@ -216,6 +216,15 @@ export interface DailyQuestionLimit {
   questionsPlayed: number;
   maxQuestionsPerDay: number;
   accumulatedQuestions: number;
+}
+
+// 90-day contest utilities
+export interface ContestProgress {
+  contestStartDate: string;
+  totalQuestionsPlayed: number;
+  dayNumber: number;
+  maxContestDays: number;
+  maxQuestionsPerContest: number;
 }
 
 export const DAILY_QUESTION_LIMIT = 10;
