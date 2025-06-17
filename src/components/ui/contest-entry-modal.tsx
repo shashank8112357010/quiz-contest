@@ -115,47 +115,12 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
     }
   };
 
-  const handleNonSubscriberOk = async () => {
-    if (!user || !userData) return;
-
-    // Check if second consent is already completed
-    if (userData.secondConsentCompleted) {
-      // Directly go to categories
-      navigate("/categories");
-      onClose();
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-
-    // Start second consent flow
-    setStep("second-consent");
-
-    try {
-      // Initialize reCAPTCHA for second consent
-      const verifier = await initializeRecaptcha();
-
-      // Send OTP for second consent
-      if (user.phoneNumber) {
-        const result = await sendOTP(user.phoneNumber, verifier);
-        setConfirmationResult(result);
-
-        toast({
-          title: "Second Consent Required",
-          description: "Please verify with OTP to continue to categories.",
-        });
-      } else {
-        setError("Phone number not found. Please try logging in again.");
-      }
-    } catch (error: any) {
-      console.error("Error in handleNonSubscriberOk:", error);
-      setError(getAuthErrorMessage(error?.code || "unknown"));
-      // Reset to previous step if there's an error
-      setStep("non-subscriber");
-    } finally {
-      setLoading(false);
-    }
+  const handleNonSubscriberOk = () => {
+    toast({
+      title: "Coming Soon!",
+      description:
+        "This feature will be available soon. Please subscribe for full access.",
+    });
   };
 
   const handleSecondConsentOTP = async (e: React.FormEvent) => {

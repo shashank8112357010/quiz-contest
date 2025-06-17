@@ -15,14 +15,21 @@ export const FloatingAudioControl = () => {
   } = useQuizAudio();
 
   const handleToggle = () => {
-    toggleAudio();
-    setTimeout(() => {
-      if (!isEnabled && backgroundMusicEnabled) {
-        startBackgroundMusic(); // when turning ON
-      } else {
-        stopBackgroundMusic(); // when turning OFF
-      }
-    }, 200); // Delay to allow state update
+    // The logic was inverted - we need to check the OPPOSITE of current state
+    // since toggleAudio() will flip it
+    if (isEnabled) {
+      // Currently ON, will turn OFF after toggle
+      stopBackgroundMusic();
+      toggleAudio();
+    } else {
+      // Currently OFF, will turn ON after toggle
+      toggleAudio();
+      setTimeout(() => {
+        if (backgroundMusicEnabled) {
+          startBackgroundMusic();
+        }
+      }, 100); // Small delay to ensure state has updated
+    }
   };
 
   return (
