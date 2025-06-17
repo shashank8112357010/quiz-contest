@@ -97,9 +97,17 @@ export const sendOTP = async (
     return "demo";
   }
 
-  const formattedPhone = phoneNumber.startsWith("+")
-    ? phoneNumber
-    : `+91${phoneNumber}`;
+  // Better phone number formatting
+  let formattedPhone = phoneNumber.trim();
+
+  // Remove any non-digit characters except +
+  formattedPhone = formattedPhone.replace(/[^\d+]/g, "");
+
+  // Ensure it starts with +
+  if (!formattedPhone.startsWith("+")) {
+    formattedPhone = `+${formattedPhone}`;
+  }
+
   console.log(`Attempting to send OTP to: ${formattedPhone}`);
 
   try {
