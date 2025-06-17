@@ -34,6 +34,8 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
 
   const handleLoginClick = () => {
     setShowPhoneAuth(true);
+    // Optional: Close the auto-login modal when phone auth opens
+    // onClose();
   };
 
   const handleSkip = () => {
