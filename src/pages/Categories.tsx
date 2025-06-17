@@ -287,7 +287,7 @@ const Categories = () => {
                       handleCategorySelect(category.id);
                     }}
                   >
-                    Start Quiz
+                    {user && userData ? "Start Quiz" : "Login to Play"}
                   </Button>
 
                   {/* Glow effect */}
