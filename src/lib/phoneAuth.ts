@@ -37,6 +37,11 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
         return reject(new Error("Firebase not ready"));
       }
 
+      // Check if we're in a secure context (HTTPS or localhost)
+      if (location.protocol !== "https:" && location.hostname !== "localhost") {
+        return reject(new Error("reCAPTCHA requires HTTPS or localhost"));
+      }
+
       // Ensure container exists
       let container = document.getElementById("recaptcha-container");
       if (!container) {
