@@ -45,7 +45,10 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl">
+        <DialogContent
+          className="sm:max-w-[500px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl"
+          hideCloseButton
+        >
           <DialogHeader>
             <div className="text-center space-y-4">
               <div className="w-20 h-20 bg-gradient-to-r from-electric-400 via-magic-500 to-neon-500 rounded-full flex items-center justify-center mx-auto">
