@@ -47,7 +47,7 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
       }
 
       // Setup correct RecaptchaVerifier
-      recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
+      recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
         size: "invisible",
         callback: (response: string) => {
           console.log("reCAPTCHA solved:", response);
@@ -59,8 +59,8 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
         "error-callback": (err: any) => {
           console.error("reCAPTCHA error:", err);
           cleanupRecaptcha();
-        }
-      }, auth);
+        },
+      });
       console.log("reCAPTCHA verifier created.");
 
       recaptchaVerifier
@@ -70,12 +70,18 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
           resolve(recaptchaVerifier!);
         })
         .catch((error) => {
-          console.error("Failed to render reCAPTCHA during initialization:", error);
+          console.error(
+            "Failed to render reCAPTCHA during initialization:",
+            error,
+          );
           cleanupRecaptcha();
           reject(new Error("reCAPTCHA render failed"));
         });
     } catch (err) {
-      console.error("Error during overall reCAPTCHA initialization process:", err);
+      console.error(
+        "Error during overall reCAPTCHA initialization process:",
+        err,
+      );
       cleanupRecaptcha();
       reject(err);
     }
@@ -84,7 +90,7 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
 
 export const sendOTP = async (
   phoneNumber: string,
-  verifier: RecaptchaVerifier
+  verifier: RecaptchaVerifier,
 ): Promise<ConfirmationResult | "demo"> => {
   if (!isFirebaseReady) {
     console.warn("Firebase not ready. Using demo fallback.");
@@ -97,12 +103,22 @@ export const sendOTP = async (
   console.log(`Attempting to send OTP to: ${formattedPhone}`);
 
   try {
-    const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, verifier);
+    const confirmationResult = await signInWithPhoneNumber(
+      auth,
+      formattedPhone,
+      verifier,
+    );
     console.log("OTP sent to", formattedPhone);
-    console.log("signInWithPhoneNumber successful, confirmationResult received:", confirmationResult);
+    console.log(
+      "signInWithPhoneNumber successful, confirmationResult received:",
+      confirmationResult,
+    );
     return confirmationResult;
   } catch (error: any) {
-    console.error(`Error during sendOTP for ${formattedPhone}: Error code: ${error.code}, Message: ${error.message}`, error);
+    console.error(
+      `Error during sendOTP for ${formattedPhone}: Error code: ${error.code}, Message: ${error.message}`,
+      error,
+    );
 
     // Optional fallback
     // if (
@@ -118,7 +134,6 @@ export const sendOTP = async (
   }
 };
 
-
 // Verify OTP and sign in
 export const verifyOTP = async (
   confirmationResult: ConfirmationResult,
@@ -130,7 +145,10 @@ export const verifyOTP = async (
     console.log("OTP verification successful, user:", result.user);
     return result.user;
   } catch (error: any) {
-    console.error(`Error verifying OTP: ${otp}. Error code: ${error.code}, Message: ${error.message}`, error);
+    console.error(
+      `Error verifying OTP: ${otp}. Error code: ${error.code}, Message: ${error.message}`,
+      error,
+    );
     throw error;
   }
 };
@@ -144,7 +162,6 @@ export const checkUserExists = async (
       return null;
     }
     console.log("Checking user existence for phone number:", phoneNumber);
-    
 
     const formattedPhone = phoneNumber.startsWith("+")
       ? phoneNumber
@@ -157,7 +174,6 @@ export const checkUserExists = async (
 
     const querySnapshot = await getDocs(q);
     console.log(querySnapshot, "Query Snapshot");
-    
 
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
