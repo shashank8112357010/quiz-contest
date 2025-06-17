@@ -6,8 +6,9 @@ import {
   User as FirebaseUser,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { auth, isFirebaseReady } from "@/lib/firebase";
-import { getUserData } from "@/lib/phoneAuth";
+import { auth, db, isFirebaseReady } from "@/lib/firebase"; // Added db
+import { doc, onSnapshot } from "firebase/firestore"; // Added doc and onSnapshot
+// import { getUserData } from "@/lib/phoneAuth"; // No longer directly used here
 import { User } from "@/lib/store";
 
 interface AuthUser {
@@ -47,51 +48,65 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let unsubscribe = () => {}; // Default to no-op
+    let unsubscribeFirestore: (() => void) | null = null; // To store Firestore listener unsubscribe
 
-    if (isFirebaseReady) {
-      console.log("🚀 Running with Firebase authentication");
-      unsubscribe = onAuthStateChanged(
-        auth,
-        async (firebaseUser: FirebaseUser | null) => {
-          if (firebaseUser) {
-            const authUser: AuthUser = {
-              uid: firebaseUser.uid,
-              phoneNumber: firebaseUser.phoneNumber || undefined,
-              email: firebaseUser.email || undefined,
-              displayName: firebaseUser.displayName || undefined,
-            };
-            setUser(authUser);
+    const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
+      setLoading(true); // Set loading true when auth state might change
 
-            try {
-              const data = await getUserData(firebaseUser.uid);
-              setUserData(data);
-            } catch (error) {
-              console.error("Error fetching user data:", error);
+      // Clean up previous Firestore listener if any
+      if (unsubscribeFirestore) {
+        unsubscribeFirestore();
+        unsubscribeFirestore = null;
+      }
+
+      if (firebaseUser) {
+        // Set simplified AuthUser based on FirebaseUser
+        const authUser: AuthUser = {
+          uid: firebaseUser.uid,
+          phoneNumber: firebaseUser.phoneNumber || undefined,
+          email: firebaseUser.email || undefined,
+          displayName: firebaseUser.displayName || undefined,
+        };
+        setUser(authUser);
+
+        const userDocRef = doc(db, "users", firebaseUser.uid);
+
+        unsubscribeFirestore = onSnapshot(
+          userDocRef,
+          (docSnap) => {
+            if (docSnap.exists()) {
+              setUserData({ uid: docSnap.id, ...docSnap.data() } as User);
+              console.log("AuthProvider: User data updated from Firestore snapshot:", docSnap.data());
+            } else {
               setUserData(null);
+              console.log("AuthProvider: User document does not exist in Firestore.");
             }
-          } else {
-            setUser(null);
+            setLoading(false);
+          },
+          (error) => {
+            console.error("AuthProvider: Error listening to user document:", error);
             setUserData(null);
+            setLoading(false);
           }
-          setLoading(false);
+        );
+      } else {
+        setUser(null);
+        setUserData(null);
+        if (unsubscribeFirestore) { // Ensure cleanup if user logs out
+          unsubscribeFirestore();
+          unsubscribeFirestore = null;
         }
-      );
-    } else {
-      console.warn(
-        "Firebase not configured. AuthProvider will not be able to authenticate."
-      );
-      setLoading(false); // Ensure loading state is updated
-    }
+        setLoading(false);
+      }
+    });
 
     return () => {
-      try {
-        unsubscribe();
-      } catch (error) {
-        console.warn("Error during auth cleanup:", error);
+      unsubscribeAuth();
+      if (unsubscribeFirestore) {
+        unsubscribeFirestore();
       }
     };
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount and cleans up on unmount
 
   const handleSignOut = async () => {
     try {

@@ -31,7 +31,7 @@ import {
   getAuthErrorMessage,
 } from "@/lib/phoneAuth";
 import { useToast } from "@/hooks/use-toast";
-import { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
+import { ConfirmationResult, RecaptchaVerifier, User as FirebaseUser } from "firebase/auth";
 import { EmergencyAuthFallback } from "./emergency-auth-fallback";
 
 interface PhoneAuthModalProps {
@@ -60,6 +60,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   const [showEmergencyFallback, setShowEmergencyFallback] = useState(false);
   const [recaptchaVerifierInstance, setRecaptchaVerifierInstance] =
     useState<RecaptchaVerifier | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const { toast } = useToast();
 
   // Reset state when modal closes
@@ -72,6 +73,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       setDisplayName("");
       setTermsAccepted(false);
       setConfirmationResult(null);
+      setFirebaseUser(null); // Reset firebaseUser state
       setError("");
       // cleanupRecaptcha(); // Managed by the other useEffect
     }
@@ -231,6 +233,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
         user = await verifyOTP(confirmationResult, otp);
         console.log("verifyOTP call successful in modal, user:", user);
       }
+      setFirebaseUser(user); // Set firebaseUser state
 
       // Check if user profile exists
       const existingUser = await checkUserExists(user.phoneNumber!);
@@ -269,6 +272,14 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
     setError("");
 
     try {
+      const user = firebaseUser; // Use firebaseUser from state
+
+      if (!user) {
+        setError("User authentication data is missing. Please try the OTP step again.");
+        setLoading(false);
+        return;
+      }
+
       if (!displayName.trim()) {
         setError("Please enter your name");
         setLoading(false);
@@ -281,14 +292,14 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
         return;
       }
 
-      if (!confirmationResult) {
-        setError("Authentication error. Please try again.");
-        setLoading(false);
-        return;
-      }
+      // if (!confirmationResult) { // This check might be redundant if firebaseUser is the source of truth
+      //   setError("Authentication error. Please try again.");
+      //   setLoading(false);
+      //   return;
+      // }
 
-      // Get current user from auth
-      const user = await verifyOTP(confirmationResult, otp);
+      // Get current user from auth - REMOVED
+      // const user = await verifyOTP(confirmationResult, otp);
 
       // Create user profile (handle demo mode)
       if (user.uid.startsWith("demo_")) {
@@ -375,7 +386,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
           {/* Phone Number Step */}
           {step === "phone" && (
-            <Card className="bg-slate-800/50 -z-10 border-slate-700">
+            <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader className="text-center">
                 <CardTitle className="text-white flex items-center justify-center gap-2">
                   <Phone className="w-5 h-5" />

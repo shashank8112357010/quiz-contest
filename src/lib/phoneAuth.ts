@@ -178,14 +178,26 @@ export const verifyOTP = async (
   confirmationResult: ConfirmationResult,
   otp: string,
 ): Promise<FirebaseUser> => {
+  console.log(`[verifyOTP] Initiated for OTP: ${otp}`);
+  const startTime = Date.now();
+
   try {
-    console.log(`Attempting to verify OTP: ${otp}`);
+    console.log(`[verifyOTP] Attempting to confirm OTP with Firebase...`);
+    const confirmStartTime = Date.now();
+
     const result = await confirmationResult.confirm(otp);
-    console.log("OTP verification successful, user:", result.user);
+
+    const confirmEndTime = Date.now();
+    console.log(`[verifyOTP] Firebase confirmationResult.confirm() took ${confirmEndTime - confirmStartTime}ms.`);
+
+    console.log("[verifyOTP] OTP verification successful, user:", result.user);
+    const endTime = Date.now();
+    console.log(`[verifyOTP] Total execution time: ${endTime - startTime}ms.`);
     return result.user;
   } catch (error: any) {
+    const errorTime = Date.now();
     console.error(
-      `Error verifying OTP: ${otp}. Error code: ${error.code}, Message: ${error.message}`,
+      `[verifyOTP] Error verifying OTP: ${otp}. Error code: ${error.code}, Message: ${error.message}. Time to error: ${errorTime - startTime}ms.`,
       error,
     );
     throw error;
