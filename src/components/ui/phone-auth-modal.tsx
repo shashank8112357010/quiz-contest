@@ -50,6 +50,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   const [step, setStep] = useState<AuthStep>("phone");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -63,6 +64,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   useEffect(() => {
     if (!isOpen) {
       setStep("phone");
+      setCountryCode("+91");
       setPhoneNumber("");
       setOtp("");
       setDisplayName("");
@@ -91,15 +93,24 @@ const handleSendOTP = async (e: React.FormEvent) => {
   setError(""); // Clear previous errors
 
   try {
-    const cleanPhone = phoneNumber.replace(/\D/g, "");
-    if (cleanPhone.length !== 10) {
-      setError("Please enter a valid 10-digit phone number");
+    const nationalNumber = phoneNumber.replace(/\D/g, ""); // Now phoneNumber holds national part
+    if (!nationalNumber) {
+      setError("Please enter your national phone number");
       setLoading(false);
       return;
     }
 
+    // Validate countryCode format
+    if (!/^\+\d+$/.test(countryCode)) {
+      setError("Country code must start with '+' and contain only numbers.");
+      setLoading(false);
+      return;
+    }
+
+    const fullPhoneNumber = countryCode + nationalNumber;
+
     // Call the refactored sendOTP from phoneAuth.ts
-    const result = await sendOTP(`+91${cleanPhone}`);
+    const result = await sendOTP(fullPhoneNumber);
     console.log(result);
     
     if (result === "demo") {
@@ -159,9 +170,10 @@ const handleSendOTP = async (e: React.FormEvent) => {
       let user;
       if (confirmationResult === "demo") {
         // Demo mode - create mock user
+        const nationalNumber = phoneNumber.replace(/\D/g, "");
         user = {
           uid: `demo_${Date.now()}`,
-          phoneNumber: `+91${phoneNumber.replace(/\D/g, "")}`,
+          phoneNumber: `${countryCode}${nationalNumber}`,
           displayName: null,
         } as any;
       } else {
@@ -249,16 +261,21 @@ const handleSendOTP = async (e: React.FormEvent) => {
     }
   };
 
-  const formatPhoneNumber = (value: string) => {
-    const cleaned = value.replace(/\D/g, "");
-    const limited = cleaned.slice(0, 10);
+  // Simplified formatPhoneNumber for national number input (allows only digits)
+  // A more robust library would be needed for proper formatting of various national numbers.
+  const formatNationalPhoneNumber = (value: string) => {
+    return value.replace(/\D/g, "");
+  };
 
-    if (limited.length >= 6) {
-      return `${limited.slice(0, 5)} ${limited.slice(5)}`;
-    } else if (limited.length >= 1) {
-      return limited;
+  const handleCountryCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    // Ensure it starts with '+'
+    if (!value.startsWith("+")) {
+      value = "+" + value.replace(/\+/g, ""); // Add '+' if not present, remove others
     }
-    return "";
+    // Allow only numbers after '+'
+    value = "+" + value.substring(1).replace(/\D/g, "");
+    setCountryCode(value);
   };
 
   return (
@@ -308,24 +325,35 @@ const handleSendOTP = async (e: React.FormEvent) => {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSendOTP} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-white">
-                      Mobile Number
-                    </Label>
-                    <div className="relative">
-                      <div className="absolute left-3 top-3 flex items-center text-slate-400">
-                        <span className="text-sm">+91</span>
-                      </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="space-y-2 col-span-1">
+                      <Label htmlFor="countryCode" className="text-white">
+                        Country Code
+                      </Label>
+                      <Input
+                        id="countryCode"
+                        type="text"
+                        placeholder="+1"
+                        value={countryCode}
+                        onChange={handleCountryCodeChange}
+                        className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2 col-span-2">
+                      <Label htmlFor="phone" className="text-white">
+                        National Number
+                      </Label>
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="Enter 10-digit number"
-                        value={formatPhoneNumber(phoneNumber)}
+                        placeholder="Enter national number"
+                        value={phoneNumber} // Using phoneNumber directly as it holds national part
                         onChange={(e) =>
-                          setPhoneNumber(e.target.value.replace(/\D/g, ""))
+                          // Allow only digits for national number part
+                          setPhoneNumber(formatNationalPhoneNumber(e.target.value))
                         }
-                        className="pl-12 bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
-                        maxLength={11}
+                        className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400"
                         required
                       />
                     </div>
@@ -334,7 +362,7 @@ const handleSendOTP = async (e: React.FormEvent) => {
                     type="submit"
                     className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold"
                     disabled={
-                      loading || phoneNumber.replace(/\D/g, "").length !== 10
+                      loading || !phoneNumber.trim() || !countryCode.trim() || !/^\+\d+$/.test(countryCode)
                     }
                   >
                     {loading ? (
@@ -391,7 +419,7 @@ const handleSendOTP = async (e: React.FormEvent) => {
                   Verify OTP
                 </CardTitle>
                 <CardDescription className="text-slate-400">
-                  Enter the code sent to +91 {formatPhoneNumber(phoneNumber)}
+                  Enter the code sent to {countryCode} {phoneNumber}
                 </CardDescription>
               </CardHeader>
               <CardContent>
