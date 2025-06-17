@@ -95,6 +95,7 @@ interface PrizeCarouselProps {
   autoPlay?: boolean;
   interval?: number;
   className?: string;
+  itemsToShow?: number;
 }
 
 export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
