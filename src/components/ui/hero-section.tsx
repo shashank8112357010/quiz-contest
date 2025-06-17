@@ -47,7 +47,7 @@ export const HeroSection = () => {
         <div className="max-w-6xl mx-auto text-center">
           {/* Prize Carousel */}
           <div className="mb-12">
-            <PrizeCarousel className="max-w-md mx-auto" />
+            <PrizeCarousel className="max-w-2xl mx-auto" itemsToShow={5} />
           </div>
 
           {/* Enhanced Phone Icon with multiple animations */}
