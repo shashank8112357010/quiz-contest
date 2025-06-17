@@ -7,6 +7,7 @@ import { AuthProvider } from "@/components/providers/AuthProvider";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { AutoLoginModal } from "@/components/ui/auto-login-modal";
 import { QuizAudioProvider } from "@/components/ui/quiz-audio-system";
+import { FloatingAudioControl } from "@/components/ui/floating-audio-control";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 
