@@ -34,45 +34,85 @@ const queryClient = new QueryClient({
   },
 });
 
+const AppContent = () => {
+  const { user, userData, loading } = useAuth();
+  const [showAutoLoginModal, setShowAutoLoginModal] = useState(false);
+
+  useEffect(() => {
+    // Show auto-login modal after auth loading is complete and user is not logged in
+    if (!loading && !user) {
+      // Check if user has dismissed the modal recently (within 24 hours)
+      const lastDismissed = localStorage.getItem("auto-login-dismissed");
+      const shouldShow =
+        !lastDismissed ||
+        Date.now() - parseInt(lastDismissed) > 24 * 60 * 60 * 1000;
+
+      if (shouldShow) {
+        const timer = setTimeout(() => {
+          setShowAutoLoginModal(true);
+        }, 2000); // Show after 2 seconds
+
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [loading, user]);
+
+  const handleCloseAutoLoginModal = () => {
+    setShowAutoLoginModal(false);
+    // Remember that user dismissed the modal
+    localStorage.setItem("auto-login-dismissed", Date.now().toString());
+  };
+
+  return (
+    <>
+      <Toaster />
+      <Sonner />
+      <FeedbackToast />
+      <AutoLoginModal
+        isOpen={showAutoLoginModal}
+        onClose={handleCloseAutoLoginModal}
+      />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route
+            path="/quiz"
+            element={
+              <QuizAudioProvider>
+                <Quiz />
+              </QuizAudioProvider>
+            }
+          />
+          <Route
+            path="/quiz/:categoryId"
+            element={
+              <QuizAudioProvider>
+                <Quiz />
+              </QuizAudioProvider>
+            }
+          />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/contests" element={<Contests />} />
+          <Route path="/rewards" element={<Rewards />} />
+          <Route path="/profile" element={<Profile />} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/demo" element={<DemoAccess />} />
+          <Route path="/test" element={<Test />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <FeedbackToast />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route
-              path="/quiz"
-              element={
-                <QuizAudioProvider>
-                  <Quiz />
-                </QuizAudioProvider>
-              }
-            />
-            <Route
-              path="/quiz/:categoryId"
-              element={
-                <QuizAudioProvider>
-                  <Quiz />
-                </QuizAudioProvider>
-              }
-            />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/contests" element={<Contests />} />
-            <Route path="/rewards" element={<Rewards />} />
-            <Route path="/profile" element={<Profile />} />
-
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/demo" element={<DemoAccess />} />
-            <Route path="/test" element={<Test />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <AppContent />
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
