@@ -403,6 +403,19 @@ const Quiz = () => {
         />
 
         <div className="relative z-40 min-h-screen p-4 pt-20">
+          {/* Floating Category Change Button */}
+          <div className="fixed bottom-6 right-6 z-50 lg:hidden">
+            <Button
+              onClick={goToCategories}
+              className="bg-gradient-to-r from-electric-500 to-neon-500 hover:from-electric-400 hover:to-neon-400 text-white shadow-2xl shadow-electric-500/30 rounded-full w-14 h-14 p-0 group"
+              size="icon"
+            >
+              <div className="flex flex-col items-center">
+                <Zap className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+              </div>
+            </Button>
+          </div>
+
           {/* Header */}
           <div className="container mx-auto max-w-4xl">
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0 mb-8">
