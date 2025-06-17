@@ -405,7 +405,6 @@ const Quiz = () => {
         <AnimatedBackground />
         <GameStatusBar position="top" variant="compact" />
         <FeedbackToast />
-        <QuizAudioControls />
         <DailyLimitModal
           isOpen={showDailyLimitModal}
           onClose={() => setShowDailyLimitModal(false)}
