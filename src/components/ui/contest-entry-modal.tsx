@@ -126,6 +126,9 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
       return;
     }
 
+    setLoading(true);
+    setError("");
+
     // Start second consent flow
     setStep("second-consent");
 
@@ -142,10 +145,16 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
           title: "Second Consent Required",
           description: "Please verify with OTP to continue to categories.",
         });
+      } else {
+        setError("Phone number not found. Please try logging in again.");
       }
     } catch (error: any) {
       console.error("Error in handleNonSubscriberOk:", error);
       setError(getAuthErrorMessage(error?.code || "unknown"));
+      // Reset to previous step if there's an error
+      setStep("non-subscriber");
+    } finally {
+      setLoading(false);
     }
   };
 
