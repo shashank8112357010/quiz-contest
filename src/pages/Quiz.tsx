@@ -460,23 +460,13 @@ const Quiz = () => {
                 <div className="bg-gradient-to-r from-magic-500/20 to-electric-500/20 backdrop-blur-sm rounded-xl border border-magic-400/30 px-4 py-2 shadow-lg shadow-magic-500/10">
                   <div className="text-white text-sm font-bold text-center">
                     <span className="text-magic-300">
-                      {(() => {
-                        const contestProgress = getContestProgress();
-                        return (
-                          contestProgress.totalQuestionsPlayed +
-                          questionsPlayedThisSession
-                        );
-                      })()}
+                      {contestProgress.totalQuestionsPlayed +
+                        questionsPlayedThisSession}
                     </span>{" "}
                     played / <span className="text-electric-300">900</span>
                   </div>
                   <div className="text-white/60 text-xs text-center">
-                    Day{" "}
-                    {(() => {
-                      const contestProgress = getContestProgress();
-                      return contestProgress.dayNumber;
-                    })()}{" "}
-                    of 90-Day Contest
+                    Day {contestProgress.dayNumber} of 90-Day Contest
                   </div>
                 </div>
 
