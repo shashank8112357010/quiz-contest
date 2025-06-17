@@ -48,10 +48,13 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent
-          className="sm:max-w-[500px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl"
-          hideCloseButton
-        >
+        <DialogPortal>
+          <DialogOverlay />
+          <DialogPrimitive.Content
+            className={cn(
+              "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[500px] translate-x-[-50%] translate-y-[-50%] gap-4 border bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl p-6 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg"
+            )}
+          >
           <DialogHeader>
             <div className="text-center space-y-4">
               <div className="w-20 h-20 bg-gradient-to-r from-electric-400 via-magic-500 to-neon-500 rounded-full flex items-center justify-center mx-auto">
