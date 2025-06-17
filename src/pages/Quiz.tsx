@@ -467,7 +467,12 @@ const Quiz = () => {
                     played / <span className="text-electric-300">900</span>
                   </div>
                   <div className="text-white/60 text-xs text-center">
-                    90-Day Contest
+                    Day{" "}
+                    {(() => {
+                      const contestProgress = getContestProgress();
+                      return contestProgress.dayNumber;
+                    })()}{" "}
+                    of 90-Day Contest
                   </div>
                 </div>
 
