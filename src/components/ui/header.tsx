@@ -278,6 +278,67 @@ export const Header = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-3 mt-6 px-4">
+                {/* Audio Controls for Mobile */}
+                <div className="text-center mb-4">
+                  <h4 className="text-white font-bold mb-3">Audio Settings</h4>
+                  <div className="flex justify-center gap-3 mb-3">
+                    {/* Master Audio Toggle */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={toggleAudio}
+                      className={`text-white hover:bg-white/10 transition-all duration-300 p-3 ${
+                        isEnabled ? "" : "text-red-400"
+                      }`}
+                      title={isEnabled ? "Disable Audio" : "Enable Audio"}
+                    >
+                      {isEnabled ? (
+                        <Volume2 className="w-5 h-5" />
+                      ) : (
+                        <VolumeX className="w-5 h-5" />
+                      )}
+                    </Button>
+
+                    {/* Background Music Toggle */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={toggleBackgroundMusic}
+                      className={`text-white hover:bg-white/10 transition-all duration-300 p-3 ${
+                        backgroundMusicEnabled ? "" : "text-gray-400"
+                      }`}
+                      title={
+                        backgroundMusicEnabled
+                          ? "Disable Background Music"
+                          : "Enable Background Music"
+                      }
+                      disabled={!isEnabled}
+                    >
+                      <Music className="w-5 h-5" />
+                    </Button>
+                  </div>
+
+                  {/* Volume Slider */}
+                  {isEnabled && (
+                    <div className="text-center">
+                      <label className="text-white text-sm mb-2 block">
+                        Volume
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        value={masterVolume}
+                        onChange={(e) =>
+                          setMasterVolume(parseFloat(e.target.value))
+                        }
+                        className="w-32 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                  )}
+                </div>
+
                 {!loading && user && userData && (
                   <div className="text-center text-white">
                     <div
