@@ -200,6 +200,7 @@ const Quiz = () => {
     setQuestionsPlayedThisSession((prev) => prev + 1);
     updateDailyQuestionCount(1);
     updateContestProgress(1);
+    setContestProgress(getContestProgress()); // Refresh contest progress state
 
     // Check if we've reached daily limit
     if (!canPlayQuiz() && currentQuestion < questions.length - 1) {
