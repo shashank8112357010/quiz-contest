@@ -405,7 +405,7 @@ const Quiz = () => {
         <div className="relative z-40 min-h-screen p-4 pt-20">
           {/* Header */}
           <div className="container mx-auto max-w-4xl">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-0 mb-8">
               <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
@@ -425,7 +425,7 @@ const Quiz = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-gradient-to-r from-electric-500/20 to-neon-500/20 border-electric-400/50 text-electric-100 hover:bg-electric-500/30 hover:border-electric-400 text-xs px-4 py-2 h-auto font-semibold transition-all duration-300"
+                    className="bg-gradient-to-r from-electric-500/20 to-neon-500/20 border-electric-400/50 text-electric-100 hover:bg-electric-500/30 hover:border-electric-400 text-xs px-4 py-2 h-auto font-semibold transition-all duration-300 shadow-lg shadow-electric-500/20"
                     onClick={goToCategories}
                   >
                     <Zap className="w-3 h-3 mr-1" />
@@ -433,17 +433,26 @@ const Quiz = () => {
                   </Button>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+
+              {/* Right side: Progress, Lives, and Score */}
+              <div className="flex items-center gap-3 lg:gap-4 w-full lg:w-auto justify-between lg:justify-end">
                 {/* Enhanced Progress Display */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2">
+                <div className="bg-gradient-to-r from-magic-500/20 to-electric-500/20 backdrop-blur-sm rounded-xl border border-magic-400/30 px-4 py-2 shadow-lg shadow-magic-500/10">
                   <div className="text-white text-sm font-bold text-center">
-                    {currentQuestion + 1} played /{" "}
-                    {category?.questionCount || 100}
+                    <span className="text-magic-300">
+                      {currentQuestion + 1}
+                    </span>{" "}
+                    played /{" "}
+                    <span className="text-electric-300">
+                      {category?.questionCount || 100}
+                    </span>
                   </div>
                   <div className="text-white/60 text-xs text-center">
                     {t("questionsInBank")}
                   </div>
                 </div>
+
+                {/* Lives */}
                 <div className="flex items-center gap-1">
                   {[...Array(3)].map((_, i) => (
                     <Heart
@@ -456,8 +465,13 @@ const Quiz = () => {
                     />
                   ))}
                 </div>
-                <div className="text-white font-mono text-xl font-bold">
-                  {score}
+
+                {/* Score */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2">
+                  <div className="text-white font-mono text-lg font-bold text-center">
+                    {score}
+                  </div>
+                  <div className="text-white/60 text-xs text-center">Score</div>
                 </div>
               </div>
             </div>
