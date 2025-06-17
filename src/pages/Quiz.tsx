@@ -626,7 +626,7 @@ const Quiz = () => {
           </div>
         </div>
       </div>
-    </QuizAudioProvider>
+    </div>
   );
 };
 
