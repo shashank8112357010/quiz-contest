@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
-  DialogContent,
+  DialogPortal,
+  DialogOverlay,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
