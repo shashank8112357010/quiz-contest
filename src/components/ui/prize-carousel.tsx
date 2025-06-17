@@ -103,6 +103,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
   autoPlay = true,
   interval = 4000,
   className,
+  itemsToShow = 1,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -126,6 +127,20 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
 
   const currentPrize = prizes[currentIndex];
   const Icon = currentPrize.icon;
+
+  // Get visible prizes for multi-item display
+  const getVisiblePrizes = () => {
+    if (itemsToShow === 1) return [currentPrize];
+
+    const visiblePrizes = [];
+    for (let i = 0; i < itemsToShow; i++) {
+      const index = (currentIndex + i) % prizes.length;
+      visiblePrizes.push(prizes[index]);
+    }
+    return visiblePrizes;
+  };
+
+  const visiblePrizes = getVisiblePrizes();
 
   const getRarityBadge = (rarity: Prize["rarity"]) => {
     const rarityConfig = {
