@@ -112,9 +112,11 @@ const AppContent = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <AppContent />
-      </TooltipProvider>
+      <QuizAudioProvider>
+        <TooltipProvider>
+          <AppContent />
+        </TooltipProvider>
+      </QuizAudioProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
