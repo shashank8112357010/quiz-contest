@@ -45,17 +45,6 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl">
           <DialogHeader>
-            <div className="flex items-center justify-between">
-              <div />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="text-white/70 hover:text-white hover:bg-white/10"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
             <div className="text-center space-y-4">
               <div className="w-20 h-20 bg-gradient-to-r from-electric-400 via-magic-500 to-neon-500 rounded-full flex items-center justify-center mx-auto">
                 <Trophy className="w-10 h-10 text-white" />
