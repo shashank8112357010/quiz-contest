@@ -139,6 +139,12 @@ export const sendOTP = async (
     );
 
     // Handle specific errors
+    if (error.code === "auth/invalid-app-credential") {
+      throw new Error(
+        "Phone authentication is not enabled in Firebase Console. Please enable Phone sign-in method in Firebase Console → Authentication → Sign-in method → Phone.",
+      );
+    }
+
     if (error.code === "auth/recaptcha-not-enabled") {
       throw new Error(
         "Phone authentication is not properly configured. Please contact support.",
