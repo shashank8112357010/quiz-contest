@@ -170,30 +170,7 @@ export const Header = () => {
                       {t("signOut")}
                     </Button>
                   </div>
-                ) : (
-                  <>
-                    <Button
-                      variant="outline"
-                      onClick={() => setPhoneAuthModalOpen(true)}
-                      className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50 whitespace-nowrap"
-                    >
-                      <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                      {t("login")}
-                    </Button>
-                    {user && (
-                      <Button
-                        onClick={() => {
-                          signOut();
-                        }}
-                        className="bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:from-red-500 hover:via-red-600 hover:to-red-500 text-white border-2 border-white/30 shadow-2xl font-bold transition-all duration-300 hover:scale-105 group relative z-50"
-                      >
-                        <Trophy className="w-4 h-4 mr-2 group-hover:animate-spin" />
-                        <span>{t("signOut")}</span>
-                        <Zap className="w-4 h-4 ml-2 group-hover:animate-bounce" />
-                      </Button>
-                    )}
-                  </>
-                )}
+                ) : null}
               </>
             )}
           </div>
