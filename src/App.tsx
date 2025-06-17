@@ -10,6 +10,7 @@ import { FeedbackToast } from "@/components/ui/feedback-toast";
 import Index from "./pages/Index";
 import Categories from "./pages/Categories";
 import Quiz from "./pages/Quiz";
+import { QuizAudioProvider } from "@/components/ui/quiz-audio-system";
 import Leaderboard from "./pages/Leaderboard";
 import Contests from "./pages/Contests";
 import Rewards from "./pages/Rewards";
@@ -41,8 +42,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/categories" element={<Categories />} />
-            <Route path="/quiz" element={<Quiz />} />
-            <Route path="/quiz/:categoryId" element={<Quiz />} />
+            <Route path="/quiz" element={<QuizAudioProvider><Quiz /></QuizAudioProvider>} />
+            <Route path="/quiz/:categoryId" element={<QuizAudioProvider><Quiz /></QuizAudioProvider>} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/contests" element={<Contests />} />
             <Route path="/rewards" element={<Rewards />} />

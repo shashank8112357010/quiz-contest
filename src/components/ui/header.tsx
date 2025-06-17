@@ -12,7 +12,7 @@ import {
   Globe,
 } from "lucide-react";
 import { useState } from "react";
-import { AuthModal } from "@/components/ui/auth-modal";
+import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { isFirebaseReady } from "@/lib/firebase";
 import { useOnboarding } from "@/hooks/use-onboarding";
@@ -21,8 +21,7 @@ import { submitFeedback } from "@/lib/feedback";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [phoneAuthModalOpen, setPhoneAuthModalOpen] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const { user, userData, loading, signOut } = useAuth();
   const { triggerTour } = useOnboarding();
@@ -175,10 +174,7 @@ export const Header = () => {
                   <>
                     <Button
                       variant="outline"
-                      onClick={() => {
-                        setAuthMode("signin");
-                        setAuthModalOpen(true);
-                      }}
+                      onClick={() => setPhoneAuthModalOpen(true)}
                       className="bg-white/20 border-2 border-white/50 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl group relative z-50 whitespace-nowrap"
                     >
                       <User className="w-4 h-4 mr-2 group-hover:animate-bounce" />
@@ -273,8 +269,7 @@ export const Header = () => {
                         <Button
                           variant="outline"
                           onClick={() => {
-                            setAuthMode("signin");
-                            setAuthModalOpen(true);
+                            setPhoneAuthModalOpen(true);
                             setIsMenuOpen(false);
                           }}
                           className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
@@ -305,11 +300,14 @@ export const Header = () => {
         )}
       </div>
 
-      {/* Auth Modal */}
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        defaultTab={authMode}
+      {/* Phone Auth Modal */}
+      <PhoneAuthModal
+        isOpen={phoneAuthModalOpen}
+        onClose={() => setPhoneAuthModalOpen(false)}
+        onSuccess={() => {
+          setPhoneAuthModalOpen(false);
+          // Potentially refresh user data or redirect if needed
+        }}
       />
     </header>
   );

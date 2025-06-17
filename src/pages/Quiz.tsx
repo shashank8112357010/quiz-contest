@@ -264,20 +264,18 @@ const Quiz = () => {
   // Loading state
   if (questions.length === 0) {
     return (
-      <QuizAudioProvider>
-        <div className="min-h-screen relative overflow-hidden">
-          <AnimatedBackground />
-          <GameStatusBar position="top" variant="compact" />
-          <div className="relative z-40 min-h-screen flex items-center justify-center pt-16">
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 text-center">
-              <div className="animate-spin w-8 h-8 border-2 border-electric-400 border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p className="text-white text-lg">
-                {t("loading")} quiz questions...
-              </p>
-            </div>
+      <div className="min-h-screen relative overflow-hidden">
+        <AnimatedBackground />
+        <GameStatusBar position="top" variant="compact" />
+        <div className="relative z-40 min-h-screen flex items-center justify-center pt-16">
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 text-center">
+            <div className="animate-spin w-8 h-8 border-2 border-electric-400 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-white text-lg">
+              {t("loading")} quiz questions...
+            </p>
           </div>
         </div>
-      </QuizAudioProvider>
+      </div>
     );
   }
 
@@ -290,14 +288,13 @@ const Quiz = () => {
       questions.length > 0 ? (correctAnswers / questions.length) * 100 : 0;
 
     return (
-      <QuizAudioProvider>
-        <div className="min-h-screen relative overflow-hidden">
-          <AnimatedBackground />
-          <GameStatusBar position="top" variant="compact" />
+      <div className="min-h-screen relative overflow-hidden">
+        <AnimatedBackground />
+        <GameStatusBar position="top" variant="compact" />
 
-          <div className="relative z-40 min-h-screen p-4 pt-20">
-            <div className="container mx-auto max-w-4xl">
-              {/* Results Header */}
+        <div className="relative z-40 min-h-screen p-4 pt-20">
+          <div className="container mx-auto max-w-4xl">
+            {/* Results Header */}
               <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 mb-8 text-center">
                 <div className="mb-8">
                   {gameOver ? (
@@ -388,15 +385,13 @@ const Quiz = () => {
             </div>
           </div>
         </div>
-      </QuizAudioProvider>
     );
   }
 
   return (
-    <QuizAudioProvider>
-      <div className="min-h-screen relative overflow-hidden">
-        <AnimatedBackground />
-        <GameStatusBar position="top" variant="compact" />
+    <div className="min-h-screen relative overflow-hidden">
+      <AnimatedBackground />
+      <GameStatusBar position="top" variant="compact" />
         <FeedbackToast />
         <QuizAudioControls />
         <DailyLimitModal
