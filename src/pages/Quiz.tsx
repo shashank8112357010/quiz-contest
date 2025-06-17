@@ -193,9 +193,10 @@ const Quiz = () => {
   };
 
   const nextQuestion = () => {
-    // Update daily question count
+    // Update daily question count and contest progress
     setQuestionsPlayedThisSession((prev) => prev + 1);
     updateDailyQuestionCount(1);
+    updateContestProgress(1);
 
     // Check if we've reached daily limit
     if (!canPlayQuiz() && currentQuestion < questions.length - 1) {
