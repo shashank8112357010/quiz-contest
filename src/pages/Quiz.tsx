@@ -33,6 +33,8 @@ import {
   canPlayQuiz,
   getAvailableQuestions,
   updateDailyQuestionCount,
+  getContestProgress,
+  updateContestProgress,
 } from "@/lib/languages";
 import { useAuth } from "@/components/providers/AuthProvider";
 
