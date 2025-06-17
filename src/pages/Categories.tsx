@@ -274,9 +274,17 @@ const Categories = () => {
                     >
                       {category.difficulty}
                     </Badge>
-                    <span className="text-white/60 text-xs sm:text-sm font-medium">
-                      {category.questionCount} questions
-                    </span>
+                    <div className="text-right">
+                      <div className="text-white/60 text-xs sm:text-sm font-medium">
+                        {category.questionCount} questions
+                      </div>
+                      {!user && (
+                        <div className="text-orange-400 text-xs flex items-center gap-1 mt-1">
+                          <div className="w-1 h-1 bg-orange-400 rounded-full"></div>
+                          Login required
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Play Button */}
