@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Header } from "@/components/ui/header";
+import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { useState } from "react";
 import {
   Globe,
   Rabbit,
