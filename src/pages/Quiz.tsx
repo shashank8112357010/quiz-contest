@@ -399,13 +399,13 @@ const Quiz = () => {
     <div className="min-h-screen relative overflow-hidden">
       <AnimatedBackground />
       <GameStatusBar position="top" variant="compact" />
-        <FeedbackToast />
-        <DailyLimitModal
-          isOpen={showDailyLimitModal}
-          onClose={() => setShowDailyLimitModal(false)}
-          onGoToCategories={goToCategories}
-          onGoHome={goHome}
-        />
+      <FeedbackToast />
+      <DailyLimitModal
+        isOpen={showDailyLimitModal}
+        onClose={() => setShowDailyLimitModal(false)}
+        onGoToCategories={goToCategories}
+        onGoHome={goHome}
+      />
 
         <div className="relative z-40 min-h-screen p-4 pt-20">
           {/* Floating Category Change Button */}
