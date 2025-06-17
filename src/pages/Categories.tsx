@@ -122,7 +122,16 @@ export const categories: QuizCategory[] = [
 ];
 
 const Categories = () => {
+  const { user, userData } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   const handleCategorySelect = (categoryId: string) => {
+    // Check if user is logged in
+    if (!user || !userData) {
+      setShowLoginModal(true);
+      return;
+    }
+
     window.location.href = `/quiz/${categoryId}`;
   };
 
