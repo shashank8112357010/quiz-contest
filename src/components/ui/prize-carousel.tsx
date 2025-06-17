@@ -194,31 +194,66 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
 
           {/* Prize Display */}
           <div className="text-center">
-            {/* Prize Icon/Emoji */}
-            <div className={`relative inline-block mb-4`}>
-              <div
-                className={`w-24 h-24 bg-gradient-to-r ${currentPrize.gradient} rounded-full flex items-center justify-center shadow-2xl animate-pulse`}
-              >
-                <span className="text-4xl">{currentPrize.image}</span>
-              </div>
-              {/* Rarity Badge */}
-              <div
-                className={`absolute -top-2 -right-2 px-2 py-1 bg-gradient-to-r ${getRarityBadge(currentPrize.rarity).color} rounded-full text-xs font-bold text-white shadow-lg`}
-              >
-                {getRarityBadge(currentPrize.rarity).label}
-              </div>
-            </div>
+            {itemsToShow === 1 ? (
+              /* Single Item Display */
+              <>
+                {/* Prize Icon/Emoji */}
+                <div className={`relative inline-block mb-4`}>
+                  <div
+                    className={`w-24 h-24 bg-gradient-to-r ${currentPrize.gradient} rounded-full flex items-center justify-center shadow-2xl animate-pulse`}
+                  >
+                    <span className="text-4xl">{currentPrize.image}</span>
+                  </div>
+                  {/* Rarity Badge */}
+                  <div
+                    className={`absolute -top-2 -right-2 px-2 py-1 bg-gradient-to-r ${getRarityBadge(currentPrize.rarity).color} rounded-full text-xs font-bold text-white shadow-lg`}
+                  >
+                    {getRarityBadge(currentPrize.rarity).label}
+                  </div>
+                </div>
 
-            {/* Prize Info */}
-            <h4 className="text-xl font-bold text-white mb-2">
-              {currentPrize.name}
-            </h4>
-            <p className="text-purple-200 text-sm mb-3 max-w-xs mx-auto">
-              {currentPrize.description}
-            </p>
-            <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-4">
-              {currentPrize.value}
-            </div>
+                {/* Prize Info */}
+                <h4 className="text-xl font-bold text-white mb-2">
+                  {currentPrize.name}
+                </h4>
+                <p className="text-purple-200 text-sm mb-3 max-w-xs mx-auto">
+                  {currentPrize.description}
+                </p>
+                <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-4">
+                  {currentPrize.value}
+                </div>
+              </>
+            ) : (
+              /* Multiple Items Display */
+              <div className="grid grid-cols-5 gap-4 mb-4">
+                {visiblePrizes.map((prize, index) => (
+                  <div key={`${prize.id}-${index}`} className="relative">
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-r ${prize.gradient} rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform duration-300 cursor-pointer`}
+                      onClick={() =>
+                        setCurrentIndex((currentIndex + index) % prizes.length)
+                      }
+                    >
+                      <span className="text-2xl">{prize.image}</span>
+                    </div>
+                    {/* Rarity Badge */}
+                    <div
+                      className={`absolute -top-1 -right-1 px-1 py-0.5 bg-gradient-to-r ${getRarityBadge(prize.rarity).color} rounded-full text-xs font-bold text-white shadow-lg`}
+                    >
+                      {getRarityBadge(prize.rarity).label.charAt(0)}
+                    </div>
+                    {/* Prize Name */}
+                    <div className="text-white text-xs font-semibold mt-2 truncate">
+                      {prize.name}
+                    </div>
+                    {/* Prize Value */}
+                    <div className="text-green-400 text-xs font-bold">
+                      {prize.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Progress Dots */}
             <div className="flex justify-center gap-2 mb-4">
