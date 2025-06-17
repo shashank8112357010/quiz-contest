@@ -316,6 +316,17 @@ const Categories = () => {
           </div>
         </div>
       </div>
+
+      {/* Login Modal for Quiz Access */}
+      <PhoneAuthModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={() => {
+          setShowLoginModal(false);
+          // Refresh page to update auth state
+          window.location.reload();
+        }}
+      />
     </div>
   );
 };
