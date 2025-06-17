@@ -24,7 +24,6 @@ import { GameStatusBar } from "@/components/ui/game-status-bar";
 import { DailyLimitModal } from "@/components/ui/daily-limit-modal";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import {
-  QuizAudioProvider,
   useQuizAudio,
 } from "@/components/ui/quiz-audio-system";
 import {
