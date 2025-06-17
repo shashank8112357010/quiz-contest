@@ -46,7 +46,7 @@ export const categories: QuizCategory[] = [
     color: "from-neon-500 to-electric-500",
     bgColor: "bg-neon-500/10",
     borderColor: "border-neon-400/30",
-    questionCount: 85,
+    questionCount: 125,
     difficulty: "Easy",
   },
   {
@@ -57,7 +57,7 @@ export const categories: QuizCategory[] = [
     color: "from-brand-500 to-electric-500",
     bgColor: "bg-brand-500/10",
     borderColor: "border-brand-400/30",
-    questionCount: 100,
+    questionCount: 150,
     difficulty: "Medium",
   },
   {
@@ -68,7 +68,7 @@ export const categories: QuizCategory[] = [
     color: "from-electric-500 to-neon-500",
     bgColor: "bg-electric-500/10",
     borderColor: "border-electric-400/30",
-    questionCount: 130,
+    questionCount: 180,
     difficulty: "Hard",
   },
   {
@@ -79,7 +79,7 @@ export const categories: QuizCategory[] = [
     color: "from-magic-500 to-electric-500",
     bgColor: "bg-magic-500/10",
     borderColor: "border-magic-400/30",
-    questionCount: 140,
+    questionCount: 220,
     difficulty: "Hard",
   },
   {
@@ -90,7 +90,7 @@ export const categories: QuizCategory[] = [
     color: "from-magic-500 to-fire-500",
     bgColor: "bg-magic-500/10",
     borderColor: "border-magic-400/30",
-    questionCount: 200,
+    questionCount: 300,
     difficulty: "Medium",
   },
   {
@@ -101,7 +101,7 @@ export const categories: QuizCategory[] = [
     color: "from-electric-500 to-magic-500",
     bgColor: "bg-electric-500/10",
     borderColor: "border-electric-400/30",
-    questionCount: 85,
+    questionCount: 95,
     difficulty: "Medium",
   },
 ];
@@ -157,16 +157,16 @@ const Categories = () => {
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
                 <div className="text-xl sm:text-2xl font-bold text-neon-400">
-                  {categories
-                    .reduce((total, cat) => total + cat.questionCount, 0)
-                     + 2300} 
+                  {categories.reduce(
+                    (total, cat) => total + cat.questionCount,
+                    0,
+                  ) + 2300}
                   +
                 </div>
                 <div className="text-white/70 text-xs sm:text-sm">
                   Questions
                 </div>
               </div>
-          
             </div>
           </div>
 
