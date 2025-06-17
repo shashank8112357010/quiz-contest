@@ -168,9 +168,24 @@ const PhoneAuthTest = () => {
               )}
 
               {error && (
-                <Badge className="bg-red-500 text-white w-full p-2 text-center">
-                  {error}
-                </Badge>
+                <div className="space-y-2">
+                  <Badge className="bg-red-500 text-white w-full p-2 text-center">
+                    {error}
+                  </Badge>
+                  {error.includes("invalid-app-credential") && (
+                    <Button
+                      onClick={() =>
+                        window.open(
+                          "https://console.firebase.google.com/u/0/project/quiz-20372/authentication/providers",
+                          "_blank",
+                        )
+                      }
+                      className="w-full bg-orange-600 hover:bg-orange-700"
+                    >
+                      🔧 Fix in Firebase Console
+                    </Button>
+                  )}
+                </div>
               )}
             </CardContent>
           </Card>
