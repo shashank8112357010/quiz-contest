@@ -343,6 +343,8 @@ export const completeSecondConsent = async (uid: string) => {
 // Get auth error message
 export const getAuthErrorMessage = (errorCode: string): string => {
   switch (errorCode) {
+    case "auth/invalid-app-credential":
+      return "Phone authentication is not enabled in Firebase Console. Please enable Phone sign-in method.";
     case "auth/invalid-phone-number":
       return "Please enter a valid phone number.";
     case "auth/missing-phone-number":
