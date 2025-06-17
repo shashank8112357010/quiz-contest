@@ -33,11 +33,10 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
   return new Promise((resolve, reject) => {
     try {
       if (!isFirebaseReady) {
-        reject(new Error("Firebase not configured"));
-        return;
+        return reject(new Error("Firebase not ready"));
       }
 
-      // Ensure recaptcha container exists
+      // Ensure container exists
       let container = document.getElementById("recaptcha-container");
       if (!container) {
         container = document.createElement("div");
@@ -46,92 +45,74 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
         document.body.appendChild(container);
       }
 
-      // Create new verifier with improved settings
-      recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+      // Setup correct RecaptchaVerifier
+      recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
         size: "invisible",
         callback: (response: string) => {
-          console.log("reCAPTCHA solved successfully");
+          console.log("reCAPTCHA solved:", response);
         },
         "expired-callback": () => {
-          console.log("reCAPTCHA expired, cleaning up");
+          console.log("reCAPTCHA expired");
           cleanupRecaptcha();
         },
-        "error-callback": (error: any) => {
-          console.error("reCAPTCHA error:", error);
+        "error-callback": (err: any) => {
+          console.error("reCAPTCHA error:", err);
           cleanupRecaptcha();
-        },
-      });
+        }
+      }, auth);
 
       recaptchaVerifier
         .render()
         .then(() => {
-          console.log("reCAPTCHA rendered successfully");
+          console.log("reCAPTCHA rendered");
           resolve(recaptchaVerifier!);
         })
         .catch((error) => {
-          console.error("reCAPTCHA render failed:", error);
+          console.error("Failed to render reCAPTCHA:", error);
           cleanupRecaptcha();
-          reject(new Error("Failed to initialize reCAPTCHA"));
+          reject(new Error("reCAPTCHA render failed"));
         });
-    } catch (error) {
-      console.error("reCAPTCHA initialization error:", error);
+    } catch (err) {
+      console.error("initRecaptcha error:", err);
       cleanupRecaptcha();
-      reject(error);
+      reject(err);
     }
   });
 };
 
 export const sendOTP = async (
   phoneNumber: string,
-  verifier: RecaptchaVerifier,
+  verifier: RecaptchaVerifier
 ): Promise<ConfirmationResult | "demo"> => {
   if (!isFirebaseReady) {
-    console.warn("Firebase not ready, using demo mode for OTP.");
+    console.warn("Firebase not ready. Using demo fallback.");
     return "demo";
   }
 
   const formattedPhone = phoneNumber.startsWith("+")
     ? phoneNumber
     : `+91${phoneNumber}`;
-  console.log("Attempting to send OTP to:", formattedPhone);
 
   try {
-    // Send SMS with timeout
-    const confirmationResult = await Promise.race([
-      signInWithPhoneNumber(auth, formattedPhone, verifier), // Use the passed verifier
-      new Promise<never>((_, reject) =>
-        // Added error code for timeout
-        setTimeout(() => {
-          const timeoutError = new Error("OTP request timeout (15s)");
-          (timeoutError as any).code = "auth/timeout"; // Custom code for timeout
-          reject(timeoutError);
-        }, 15000),
-      ),
-    ]);
-
-    console.log("OTP sent successfully via Firebase.");
+    const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, verifier);
+    console.log("OTP sent to", formattedPhone);
     return confirmationResult;
-
   } catch (error: any) {
-    console.error("Error during OTP sending process:", error);
-    // Do NOT cleanupRecaptcha() here as the verifier is managed by the UI component
+    console.error("sendOTP error:", error);
 
-    // Specific fallback for reCAPTCHA errors.
-    // This might be less common now as verifier is initialized and passed by UI.
-    if (error.message &&
-        (error.message.toLowerCase().includes("recaptcha") ||
-         error.code === 'auth/missing-recaptcha-token' || // Check for specific reCAPTCHA error codes
-         error.code === 'auth/invalid-recaptcha-token')) {
-      console.warn("Falling back to demo mode due to reCAPTCHA related error during send.", error);
+    // Optional fallback
+    if (
+      error.code === "auth/missing-recaptcha-token" ||
+      error.code === "auth/invalid-recaptcha-token" ||
+      error.message?.toLowerCase().includes("recaptcha")
+    ) {
       return "demo";
     }
 
-    // For other errors (like invalid phone, quota exceeded, network issues during send, or our custom timeout),
-    // throw an error with a user-friendly message.
-    const errorCode = error.code || "auth/internal-error";
-    throw new Error(getAuthErrorMessage(errorCode));
+    throw new Error(getAuthErrorMessage(error.code || "auth/unknown-error"));
   }
 };
+
 
 // Verify OTP and sign in
 export const verifyOTP = async (

@@ -3,12 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ✅ Content Security Policy to support Firebase reCAPTCHA -->
+
+
+      <meta http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.google.com https://www.recaptcha.net;
+        script-src-elem 'self' https://www.gstatic.com https://www.google.com https://www.recaptcha.net;
+        frame-src https://www.gstatic.com https://www.google.com https://www.recaptcha.net;
+        connect-src 'self' https://identitytoolkit.googleapis.com https://www.google.com;
+        style-src 'self' 'unsafe-inline';
+      ">
+
+
+    <!-- ✅ reCAPTCHA Enterprise -->
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Ldp02MrAAAAAO2RtB96DpQVqN4yHIg2G9_WBuEl"></script>
+
     <title>Quiz2Play</title>
   </head>
-
   <body>
     <div id="root"></div>
 
+    <!-- ✅ Required for Firebase reCAPTCHA verifier -->
+    <div id="recaptcha-container"></div>
+
+    <!-- ✅ Your compiled JS entry point -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

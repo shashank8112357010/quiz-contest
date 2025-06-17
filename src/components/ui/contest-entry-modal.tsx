@@ -196,7 +196,7 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
   return (
     <>
       {/* reCAPTCHA container for second consent */}
-      <div id="recaptcha-container"></div>
+      {/* <div id="recaptcha-container"></div> */}
 
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-[450px] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-2 border-purple-500/20 shadow-2xl">
