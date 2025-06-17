@@ -100,7 +100,8 @@ const handleSendOTP = async (e: React.FormEvent) => {
 
     // Call the refactored sendOTP from phoneAuth.ts
     const result = await sendOTP(`+91${cleanPhone}`);
-
+    console.log(result);
+    
     if (result === "demo") {
       console.log("Using demo mode for phone authentication as per sendOTP fallback.");
       setConfirmationResult("demo" as any); // Type assertion for demo string

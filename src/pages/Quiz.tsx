@@ -389,6 +389,7 @@ const Quiz = () => {
   }
 
   return (
+    <QuizAudioProvider>
     <div className="min-h-screen relative overflow-hidden">
       <AnimatedBackground />
       <GameStatusBar position="top" variant="compact" />
