@@ -82,6 +82,8 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
     const audio = audioRef.current;
     if (!audio) return;
 
+    setHasInteracted(true);
+
     if (isPlaying) {
       audio.pause();
     } else {
@@ -153,8 +155,8 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
 
       {/* Show play hint if music hasn't started due to autoplay restrictions */}
       {!hasInteracted && (
-        <div className="absolute bottom-full right-0 mb-2 bg-black/80 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm border border-white/20 whitespace-nowrap">
-          Click anywhere to enable background music
+        <div className="absolute bottom-full right-0 mb-2 bg-black/80 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm border border-white/20 whitespace-nowrap animate-pulse">
+          Click play button to enable background music
         </div>
       )}
     </div>
