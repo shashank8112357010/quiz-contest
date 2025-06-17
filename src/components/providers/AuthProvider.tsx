@@ -1,7 +1,12 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { localStorageAuth } from "@/lib/localStorageAuth";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import {
+  getUserData,
+  signOut as firebaseSignOut,
+} from "@/lib/firebaseService";
 import { User } from "../../../lib/store";
 
 interface AuthUser {
@@ -40,34 +45,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("🚀 Running with localStorage authentication");
+    console.log("🚀 Running with Firebase authentication");
 
-    const unsubscribe = localStorageAuth.onAuthStateChanged(
-      async (authUser) => {
-        setUser(authUser);
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        // User is signed in
+        const { uid, email, displayName } = authUser;
+        setUser({ uid, email: email || "", displayName: displayName || "" }); // Ensure email and displayName are strings
 
-        if (authUser) {
-          try {
-            const data = await localStorageAuth.getUserData(authUser.uid);
-            setUserData(data);
-          } catch (error) {
-            console.error("Error fetching user data:", error);
-            setUserData(null);
-          }
-        } else {
+        try {
+          const data = await getUserData(authUser.uid);
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
           setUserData(null);
         }
-
-        setLoading(false);
-      },
-    );
+      } else {
+        // User is signed out
+        setUser(null);
+        setUserData(null);
+      }
+      setLoading(false);
+    });
 
     return () => unsubscribe();
   }, []);
 
   const handleSignOut = async () => {
     try {
-      await localStorageAuth.signOut();
+      await firebaseSignOut();
       setUser(null);
       setUserData(null);
     } catch (error) {
