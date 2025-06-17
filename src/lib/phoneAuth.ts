@@ -37,9 +37,6 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
         return;
       }
 
-      // Clear existing verifier first
-      cleanupRecaptcha();
-
       // Ensure recaptcha container exists
       let container = document.getElementById("recaptcha-container");
       if (!container) {
@@ -86,6 +83,7 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
 
 export const sendOTP = async (
   phoneNumber: string,
+  verifier: RecaptchaVerifier,
 ): Promise<ConfirmationResult | "demo"> => {
   if (!isFirebaseReady) {
     console.warn("Firebase not ready, using demo mode for OTP.");
@@ -98,18 +96,9 @@ export const sendOTP = async (
   console.log("Attempting to send OTP to:", formattedPhone);
 
   try {
-    cleanupRecaptcha(); // Clean up any existing verifier first
-    await initializeRecaptcha(); // Initialize new one
-
-    if (!recaptchaVerifier) {
-      console.error("reCAPTCHA verifier not available after initialization attempt.");
-      console.warn("Falling back to demo mode due to reCAPTCHA verifier issue.");
-      return "demo"; // Fallback if reCAPTCHA setup itself failed
-    }
-
     // Send SMS with timeout
     const confirmationResult = await Promise.race([
-      signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier),
+      signInWithPhoneNumber(auth, formattedPhone, verifier), // Use the passed verifier
       new Promise<never>((_, reject) =>
         // Added error code for timeout
         setTimeout(() => {
@@ -125,21 +114,20 @@ export const sendOTP = async (
 
   } catch (error: any) {
     console.error("Error during OTP sending process:", error);
-    cleanupRecaptcha(); // Clean up verifier on any error
+    // Do NOT cleanupRecaptcha() here as the verifier is managed by the UI component
 
-    // Specific fallback for reCAPTCHA errors not caught by the null check earlier
-    // or if initializeRecaptcha itself throws an error that gets caught here.
+    // Specific fallback for reCAPTCHA errors.
+    // This might be less common now as verifier is initialized and passed by UI.
     if (error.message &&
         (error.message.toLowerCase().includes("recaptcha") ||
-         error.message.includes("Failed to initialize reCAPTCHA") ||
-         error.code === 'auth/missing-recaptcha-token')) { // Example additional check
+         error.code === 'auth/missing-recaptcha-token' || // Check for specific reCAPTCHA error codes
+         error.code === 'auth/invalid-recaptcha-token')) {
       console.warn("Falling back to demo mode due to reCAPTCHA related error during send.", error);
       return "demo";
     }
 
     // For other errors (like invalid phone, quota exceeded, network issues during send, or our custom timeout),
     // throw an error with a user-friendly message.
-    // Ensure error.code exists, provide a default if not.
     const errorCode = error.code || "auth/internal-error";
     throw new Error(getAuthErrorMessage(errorCode));
   }

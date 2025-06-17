@@ -31,7 +31,7 @@ import {
   getAuthErrorMessage,
 } from "@/lib/phoneAuth";
 import { useToast } from "@/hooks/use-toast";
-import { ConfirmationResult } from "firebase/auth";
+import { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
 import { EmergencyAuthFallback } from "./emergency-auth-fallback";
 
 interface PhoneAuthModalProps {
@@ -58,6 +58,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   const [confirmationResult, setConfirmationResult] =
     useState<ConfirmationResult | null>(null);
   const [showEmergencyFallback, setShowEmergencyFallback] = useState(false);
+  const [recaptchaVerifierInstance, setRecaptchaVerifierInstance] = useState<RecaptchaVerifier | null>(null);
   const { toast } = useToast();
 
   // Reset state when modal closes
@@ -71,19 +72,27 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       setTermsAccepted(false);
       setConfirmationResult(null);
       setError("");
-      cleanupRecaptcha();
+      // cleanupRecaptcha(); // Managed by the other useEffect
     }
   }, [isOpen]);
 
-  // Initialize reCAPTCHA when modal opens
+  // Initialize and cleanup reCAPTCHA based on modal visibility
   useEffect(() => {
     if (isOpen) {
-      initializeRecaptcha().catch((error) => {
-        console.error("reCAPTCHA initialization failed:", error);
-        setError(
-          "Authentication service temporarily unavailable. Please try again later.",
-        );
-      });
+      initializeRecaptcha()
+        .then(verifier => {
+          setRecaptchaVerifierInstance(verifier);
+          // Clear any previous reCAPTCHA related error if successfully initialized
+          setError(prevError => prevError.includes("Authentication service temporarily unavailable") ? "" : prevError);
+        })
+        .catch((error) => {
+          console.error("reCAPTCHA initialization failed in modal:", error);
+          setError("Authentication service temporarily unavailable. Please try closing and reopening the auth window, or try again later.");
+          setRecaptchaVerifierInstance(null);
+        });
+    } else {
+      cleanupRecaptcha();
+      setRecaptchaVerifierInstance(null);
     }
   }, [isOpen]);
 
@@ -109,8 +118,14 @@ const handleSendOTP = async (e: React.FormEvent) => {
 
     const fullPhoneNumber = countryCode + nationalNumber;
 
+    if (!recaptchaVerifierInstance) {
+      setError("reCAPTCHA not ready. Please wait a moment or try reopening the authentication window.");
+      setLoading(false);
+      return;
+    }
+
     // Call the refactored sendOTP from phoneAuth.ts
-    const result = await sendOTP(fullPhoneNumber);
+    const result = await sendOTP(fullPhoneNumber, recaptchaVerifierInstance);
     console.log(result);
     
     if (result === "demo") {
