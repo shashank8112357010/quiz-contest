@@ -324,7 +324,9 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   // Simplified formatPhoneNumber for national number input (allows only digits)
   // A more robust library would be needed for proper formatting of various national numbers.
   const formatNationalPhoneNumber = (value: string) => {
-    return value.replace(/\D/g, "");
+    const digits = value.replace(/\D/g, "");
+    // Limit to reasonable phone number length
+    return digits.slice(0, 15);
   };
 
   const handleCountryCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
