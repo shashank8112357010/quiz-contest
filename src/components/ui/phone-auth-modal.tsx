@@ -459,18 +459,31 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
                   {/* Development bypass */}
                   {process.env.NODE_ENV === "development" && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="w-full mt-2 border-slate-600 text-slate-300 hover:bg-slate-700"
-                      onClick={() => {
-                        // Simulate successful auth for development
-                        onSuccess?.();
-                        onClose();
-                      }}
-                    >
-                      🔧 Dev Bypass (Skip Auth)
-                    </Button>
+                    <div className="space-y-2 mt-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                        onClick={() => {
+                          setCountryCode("+91");
+                          setPhoneNumber("9876543210");
+                        }}
+                      >
+                        🧪 Use Test Phone (+91 9876543210)
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                        onClick={() => {
+                          // Simulate successful auth for development
+                          onSuccess?.();
+                          onClose();
+                        }}
+                      >
+                        🔧 Dev Bypass (Skip Auth)
+                      </Button>
+                    </div>
                   )}
                 </form>
               </CardContent>
