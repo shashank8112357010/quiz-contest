@@ -89,6 +89,7 @@ const AppContent = () => {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/demo" element={<DemoAccess />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/phone-auth-test" element={<PhoneAuthTest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
