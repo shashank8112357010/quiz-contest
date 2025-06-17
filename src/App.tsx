@@ -77,22 +77,8 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/categories" element={<Categories />} />
-          <Route
-            path="/quiz"
-            element={
-              <QuizAudioProvider>
-                <Quiz />
-              </QuizAudioProvider>
-            }
-          />
-          <Route
-            path="/quiz/:categoryId"
-            element={
-              <QuizAudioProvider>
-                <Quiz />
-              </QuizAudioProvider>
-            }
-          />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz/:categoryId" element={<Quiz />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/contests" element={<Contests />} />
           <Route path="/rewards" element={<Rewards />} />
