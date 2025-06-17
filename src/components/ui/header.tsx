@@ -21,6 +21,7 @@ import { isFirebaseReady } from "@/lib/firebase";
 import { useOnboarding } from "@/hooks/use-onboarding";
 import { useLanguageStore, supportedLanguages } from "@/lib/languages";
 import { submitFeedback } from "@/lib/feedback";
+import { useQuizAudio } from "@/components/ui/quiz-audio-system";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
