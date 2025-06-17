@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
+import { AutoLoginModal } from "@/components/ui/auto-login-modal";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 // Static imports for now to ensure everything works
 import Index from "./pages/Index";
@@ -42,8 +45,22 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/categories" element={<Categories />} />
-            <Route path="/quiz" element={<QuizAudioProvider><Quiz /></QuizAudioProvider>} />
-            <Route path="/quiz/:categoryId" element={<QuizAudioProvider><Quiz /></QuizAudioProvider>} />
+            <Route
+              path="/quiz"
+              element={
+                <QuizAudioProvider>
+                  <Quiz />
+                </QuizAudioProvider>
+              }
+            />
+            <Route
+              path="/quiz/:categoryId"
+              element={
+                <QuizAudioProvider>
+                  <Quiz />
+                </QuizAudioProvider>
+              }
+            />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/contests" element={<Contests />} />
             <Route path="/rewards" element={<Rewards />} />
