@@ -30,6 +30,7 @@ let recaptchaVerifier: RecaptchaVerifier | null = null;
 
 // Initialize reCAPTCHA verifier with better error handling
 export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
+  console.log("Attempting to initialize reCAPTCHA...");
   return new Promise((resolve, reject) => {
     try {
       if (!isFirebaseReady) {
@@ -60,20 +61,21 @@ export const initializeRecaptcha = (): Promise<RecaptchaVerifier> => {
           cleanupRecaptcha();
         }
       }, auth);
+      console.log("reCAPTCHA verifier created.");
 
       recaptchaVerifier
         .render()
         .then(() => {
-          console.log("reCAPTCHA rendered");
+          console.log("reCAPTCHA rendered successfully.");
           resolve(recaptchaVerifier!);
         })
         .catch((error) => {
-          console.error("Failed to render reCAPTCHA:", error);
+          console.error("Failed to render reCAPTCHA during initialization:", error);
           cleanupRecaptcha();
           reject(new Error("reCAPTCHA render failed"));
         });
     } catch (err) {
-      console.error("initRecaptcha error:", err);
+      console.error("Error during overall reCAPTCHA initialization process:", err);
       cleanupRecaptcha();
       reject(err);
     }
@@ -92,22 +94,25 @@ export const sendOTP = async (
   const formattedPhone = phoneNumber.startsWith("+")
     ? phoneNumber
     : `+91${phoneNumber}`;
+  console.log(`Attempting to send OTP to: ${formattedPhone}`);
 
   try {
     const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, verifier);
     console.log("OTP sent to", formattedPhone);
+    console.log("signInWithPhoneNumber successful, confirmationResult received:", confirmationResult);
     return confirmationResult;
   } catch (error: any) {
-    console.error("sendOTP error:", error);
+    console.error(`Error during sendOTP for ${formattedPhone}: Error code: ${error.code}, Message: ${error.message}`, error);
 
     // Optional fallback
-    if (
-      error.code === "auth/missing-recaptcha-token" ||
-      error.code === "auth/invalid-recaptcha-token" ||
-      error.message?.toLowerCase().includes("recaptcha")
-    ) {
-      return "demo";
-    }
+    // if (
+    //   error.code === "auth/missing-recaptcha-token" ||
+    //   error.code === "auth/invalid-recaptcha-token" ||
+    //   error.message?.toLowerCase().includes("recaptcha")
+    // ) {
+    //   // console.warn("reCAPTCHA related error during sendOTP, falling back to demo mode:", error.code);
+    //   return "demo";
+    // }
 
     throw new Error(getAuthErrorMessage(error.code || "auth/unknown-error"));
   }
@@ -120,10 +125,12 @@ export const verifyOTP = async (
   otp: string,
 ): Promise<FirebaseUser> => {
   try {
+    console.log(`Attempting to verify OTP: ${otp}`);
     const result = await confirmationResult.confirm(otp);
+    console.log("OTP verification successful, user:", result.user);
     return result.user;
   } catch (error: any) {
-    console.error("Error verifying OTP:", error);
+    console.error(`Error verifying OTP: ${otp}. Error code: ${error.code}, Message: ${error.message}`, error);
     throw error;
   }
 };
@@ -306,6 +313,14 @@ export const getAuthErrorMessage = (errorCode: string): string => {
       return "Too many requests. Please try again later.";
     case "auth/network-request-failed":
       return "Network error. Please check your connection.";
+    // reCAPTCHA related errors
+    case "auth/missing-recaptcha-token":
+      return "reCAPTCHA challenge not completed. Please refresh and try again.";
+    case "auth/invalid-recaptcha-token":
+    case "auth/captcha-check-failed": // Grouping similar reCAPTCHA failures
+      return "reCAPTCHA verification failed. Please try again or ensure you're not a robot!";
+    case "auth/recaptcha-not-enabled":
+      return "reCAPTCHA is not enabled for this project. Please contact support."; // Should be rare if setup is correct
     default:
       return "An unexpected error occurred. Please try again.";
   }

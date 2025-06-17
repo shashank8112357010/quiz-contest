@@ -82,11 +82,12 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       initializeRecaptcha()
         .then(verifier => {
           setRecaptchaVerifierInstance(verifier);
+          console.log("reCAPTCHA verifier instance set in modal state.");
           // Clear any previous reCAPTCHA related error if successfully initialized
           setError(prevError => prevError.includes("Authentication service temporarily unavailable") ? "" : prevError);
         })
         .catch((error) => {
-          console.error("reCAPTCHA initialization failed in modal:", error);
+          console.error("reCAPTCHA initialization failed within PhoneAuthModal useEffect:", error);
           setError("Authentication service temporarily unavailable. Please try closing and reopening the auth window, or try again later.");
           setRecaptchaVerifierInstance(null);
         });
@@ -98,6 +99,7 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
 const handleSendOTP = async (e: React.FormEvent) => {
   e.preventDefault();
+  console.log("handleSendOTP called. Current phone number:", countryCode + phoneNumber);
   setLoading(true);
   setError(""); // Clear previous errors
 
@@ -119,14 +121,16 @@ const handleSendOTP = async (e: React.FormEvent) => {
     const fullPhoneNumber = countryCode + nationalNumber;
 
     if (!recaptchaVerifierInstance) {
+      console.warn("handleSendOTP: recaptchaVerifierInstance is not available.");
       setError("reCAPTCHA not ready. Please wait a moment or try reopening the authentication window.");
       setLoading(false);
       return;
     }
 
     // Call the refactored sendOTP from phoneAuth.ts
+    console.log("Calling sendOTP from phoneAuth.ts lib...");
     const result = await sendOTP(fullPhoneNumber, recaptchaVerifierInstance);
-    console.log(result);
+    console.log("sendOTP call successful in modal, result:", result);
     
     if (result === "demo") {
       console.log("Using demo mode for phone authentication as per sendOTP fallback.");
@@ -150,7 +154,7 @@ const handleSendOTP = async (e: React.FormEvent) => {
   } catch (err: any) {
     // Catch errors thrown by the refactored sendOTP.
     // err.message should contain the user-friendly string.
-    console.error("Failed to send OTP after explicit throw:", err);
+    console.error("Error in handleSendOTP:", err.message, err);
     setError(err.message || "An unexpected error occurred while trying to send the OTP. Please try again.");
 
     // Optional: Trigger emergency fallback on specific, persistent errors if desired
@@ -165,11 +169,13 @@ const handleSendOTP = async (e: React.FormEvent) => {
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("handleVerifyOTP called. Current OTP:", otp);
     setLoading(true);
     setError("");
 
     try {
       if (!confirmationResult) {
+        console.warn("handleVerifyOTP: confirmationResult is not available.");
         setError("Please request a new OTP");
         setLoading(false);
         return;
@@ -192,7 +198,9 @@ const handleSendOTP = async (e: React.FormEvent) => {
           displayName: null,
         } as any;
       } else {
+        console.log("Calling verifyOTP from phoneAuth.ts lib...");
         user = await verifyOTP(confirmationResult, otp);
+        console.log("verifyOTP call successful in modal, user:", user);
       }
 
       // Check if user profile exists
@@ -214,6 +222,7 @@ const handleSendOTP = async (e: React.FormEvent) => {
         setStep("profile");
       }
     } catch (error: any) {
+      console.error("Error in handleVerifyOTP:", getAuthErrorMessage(error.code), error);
       setError(getAuthErrorMessage(error.code));
     } finally {
       setLoading(false);
@@ -222,6 +231,7 @@ const handleSendOTP = async (e: React.FormEvent) => {
 
   const handleCreateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("handleCreateProfile called. Display name:", displayName);
     setLoading(true);
     setError("");
 
@@ -269,7 +279,7 @@ const handleSendOTP = async (e: React.FormEvent) => {
         onClose();
       }, 1500);
     } catch (error: any) {
-      console.error("Profile creation error:", error);
+      console.error("Error in handleCreateProfile:", error);
       setError("Failed to create profile. Please try again.");
     } finally {
       setLoading(false);
