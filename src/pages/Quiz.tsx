@@ -55,9 +55,7 @@ const Quiz = () => {
   const [showDailyLimitModal, setShowDailyLimitModal] = useState(false);
   const [questionsPlayedThisSession, setQuestionsPlayedThisSession] =
     useState(0);
-  const [contestProgress, setContestProgress] = useState(() =>
-    getContestProgress(),
-  );
+  const [contestProgress, setContestProgress] = useState(() => getContestProgress());
 
   // Get category info
   const category = categories.find((cat) => cat.id === categoryId);
@@ -305,104 +303,103 @@ const Quiz = () => {
         <div className="relative z-40 min-h-screen p-4 pt-20">
           <div className="container mx-auto max-w-4xl">
             {/* Results Header */}
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 mb-8 text-center">
-              <div className="mb-8">
-                {gameOver ? (
-                  <div className="text-6xl mb-4">💥</div>
-                ) : (
-                  <div className="text-6xl mb-4">🎉</div>
-                )}
-                <h2 className="text-3xl font-display font-bold text-white mb-4">
-                  {gameOver ? "Game Over!" : "Quiz Complete!"}
-                </h2>
-                <Badge
-                  className={`bg-gradient-to-r ${categoryColor} text-white px-4 py-2 mb-4`}
-                >
-                  {categoryName}
-                </Badge>
-                <div className="text-6xl font-bold bg-gradient-to-r from-neon-400 to-electric-400 bg-clip-text text-transparent mb-4">
-                  {score}
-                </div>
-                <p className="text-white/80 text-lg">
-                  You answered {correctAnswers} out of {questions.length}{" "}
-                  questions correctly
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="text-2xl font-bold text-electric-400">
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 mb-8 text-center">
+                <div className="mb-8">
+                  {gameOver ? (
+                    <div className="text-6xl mb-4">💥</div>
+                  ) : (
+                    <div className="text-6xl mb-4">🎉</div>
+                  )}
+                  <h2 className="text-3xl font-display font-bold text-white mb-4">
+                    {gameOver ? "Game Over!" : "Quiz Complete!"}
+                  </h2>
+                  <Badge
+                    className={`bg-gradient-to-r ${categoryColor} text-white px-4 py-2 mb-4`}
+                  >
+                    {categoryName}
+                  </Badge>
+                  <div className="text-6xl font-bold bg-gradient-to-r from-neon-400 to-electric-400 bg-clip-text text-transparent mb-4">
                     {score}
                   </div>
-                  <div className="text-white/70 text-sm">Final Score</div>
+                  <p className="text-white/80 text-lg">
+                    You answered {correctAnswers} out of {questions.length}{" "}
+                    questions correctly
+                  </p>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="text-2xl font-bold text-neon-400">
-                    {correctAnswers}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                  <div className="bg-white/5 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-electric-400">
+                      {score}
+                    </div>
+                    <div className="text-white/70 text-sm">Final Score</div>
                   </div>
-                  <div className="text-white/70 text-sm">Correct Answers</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="text-2xl font-bold text-magic-400">
-                    {accuracy.toFixed(0)}%
+                  <div className="bg-white/5 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-neon-400">
+                      {correctAnswers}
+                    </div>
+                    <div className="text-white/70 text-sm">Correct Answers</div>
                   </div>
-                  <div className="text-white/70 text-sm">Accuracy</div>
+                  <div className="bg-white/5 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-magic-400">
+                      {accuracy.toFixed(0)}%
+                    </div>
+                    <div className="text-white/70 text-sm">Accuracy</div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                  <Button
+                    onClick={restartQuiz}
+                    className="bg-gradient-to-r from-neon-500 to-electric-500 hover:from-neon-400 hover:to-electric-400 text-white"
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Play Again
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                    onClick={goToCategories}
+                  >
+                    <Zap className="w-4 h-4 mr-2" />
+                    Try Other Category
+                  </Button>
+                </div>
+
                 <Button
-                  onClick={restartQuiz}
-                  className="bg-gradient-to-r from-neon-500 to-electric-500 hover:from-neon-400 hover:to-electric-400 text-white"
+                  variant="ghost"
+                  className="text-white/70 hover:text-white"
+                  onClick={goHome}
                 >
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Play Again
-                </Button>
-                <Button
-                  variant="outline"
-                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                  onClick={goToCategories}
-                >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Try Other Category
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Home
                 </Button>
               </div>
 
-              <Button
-                variant="ghost"
-                className="text-white/70 hover:text-white"
-                onClick={goHome}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Home
-              </Button>
-            </div>
+              {/* Detailed Results with Explanations */}
+              <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <BookOpen className="w-6 h-6 text-electric-400" />
+                  <h3 className="text-2xl font-bold text-white">
+                    Learning Review
+                  </h3>
+                </div>
 
-            {/* Detailed Results with Explanations */}
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <BookOpen className="w-6 h-6 text-electric-400" />
-                <h3 className="text-2xl font-bold text-white">
-                  Learning Review
-                </h3>
+                <ExplanationSummary
+                  questions={questions}
+                  userAnswers={userAnswers}
+                />
               </div>
-
-              <ExplanationSummary
-                questions={questions}
-                userAnswers={userAnswers}
-              />
             </div>
           </div>
         </div>
-      </div>
     );
   }
 
   return (
-    <QuizAudioProvider>
-      <div className="min-h-screen relative overflow-hidden">
-        <AnimatedBackground />
-        <GameStatusBar position="top" variant="compact" />
+    <div className="min-h-screen relative overflow-hidden">
+      <AnimatedBackground />
+      <GameStatusBar position="top" variant="compact" />
         <FeedbackToast />
         <DailyLimitModal
           isOpen={showDailyLimitModal}
@@ -461,13 +458,7 @@ const Quiz = () => {
                 {/* Enhanced Progress Display */}
                 <div className="bg-gradient-to-r from-magic-500/20 to-electric-500/20 backdrop-blur-sm rounded-xl border border-magic-400/30 px-4 py-2 shadow-lg shadow-magic-500/10">
                   <div className="text-white text-sm font-bold text-center">
-                    <span className="text-magic-300">
-                      {currentQuestion + 1}
-                    </span>{" "}
-                    played /{" "}
-                    <span className="text-electric-300">
-                      {category?.questionCount || 125}
-                    </span>
+                    <span className="text-magic-300">{currentQuestion + 1}</span> played / <span className="text-electric-300">{category?.questionCount || 125}</span>
                   </div>
                   <div className="text-white/60 text-xs text-center">
                     Questions in bank
