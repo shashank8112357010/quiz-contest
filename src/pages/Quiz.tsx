@@ -255,6 +255,7 @@ const Quiz = () => {
     setShowExplanation(false);
     setQuestionStartTime(Date.now());
     setQuestionsPlayedThisSession(0);
+    setContestProgress(getContestProgress()); // Reset contest progress state
 
     // Restart background music
     startBackgroundMusic();
