@@ -277,105 +277,12 @@ const Leaderboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Dynamic Gratification Content */}
-              <Card className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 border-purple-500/20 backdrop-blur-xl overflow-hidden">
-                <CardContent className="p-0">
-                  {/* Dynamic Background with Animation */}
-                  <div className="relative h-32 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center overflow-hidden">
-                    {/* Animated Background Circles */}
-                    {[...Array(6)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute w-20 h-20 border border-white/20 rounded-full animate-pulse"
-                        style={{
-                          left: `${20 + i * 15}%`,
-                          top: `${30 + (i % 2) * 40}%`,
-                          animationDelay: `${i * 0.5}s`,
-                          animationDuration: `${2 + i * 0.3}s`,
-                        }}
-                      />
-                    ))}
-
-                    {/* Floating Reward Icons */}
-                    <div className="absolute left-4 top-4 w-8 h-8 bg-gold-400 rounded-full flex items-center justify-center animate-bounce">
-                      <Trophy className="w-4 h-4 text-white" />
-                    </div>
-                    <div
-                      className="absolute right-4 top-4 w-8 h-8 bg-emerald-400 rounded-full flex items-center justify-center animate-bounce"
-                      style={{ animationDelay: "0.5s" }}
-                    >
-                      <Crown className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="absolute left-6 bottom-4 w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center animate-pulse">
-                      <Star className="w-3 h-3 text-white" />
-                    </div>
-                    <div
-                      className="absolute right-6 bottom-4 w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center animate-pulse"
-                      style={{ animationDelay: "0.8s" }}
-                    >
-                      <Medal className="w-3 h-3 text-white" />
-                    </div>
-
-                    {/* Sparkling Effects */}
-                    {[...Array(8)].map((_, i) => (
-                      <div
-                        key={`spark-${i}`}
-                        className="absolute w-1 h-1 bg-white rounded-full animate-ping"
-                        style={{
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`,
-                          animationDelay: `${Math.random() * 2}s`,
-                        }}
-                      />
-                    ))}
-
-                    {/* Central Prize Display */}
-                    <div className="text-center z-10">
-                      <Crown className="w-10 h-10 text-gold-300 mx-auto mb-1 animate-bounce" />
-                      <div className="text-white font-bold text-sm">
-                        Super Bonanza
-                      </div>
-                      <div className="text-gold-200 text-xs">Championship</div>
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div className="p-4 text-center">
-                    <h3 className="font-bold text-white mb-2 bg-gradient-to-r from-gold-300 to-yellow-300 bg-clip-text text-transparent">
-                      Weekly Championship
-                    </h3>
-                    <p className="text-purple-200 text-sm mb-3">
-                      Compete for the crown and win exclusive rewards!
-                    </p>
-                    <div className="text-xl font-bold text-gold-400 mb-1">
-                      🏆 ₹25,000 Prize Pool
-                    </div>
-                    <div className="text-sm text-emerald-400 mb-2">
-                      💎 + Exclusive Rewards
-                    </div>
-
-                    {/* Dynamic Timer */}
-                    <div className="bg-black/30 rounded-lg px-3 py-2 mb-3">
-                      <p className="text-xs text-purple-300 mb-1">Ends in:</p>
-                      <div className="font-mono font-bold text-gold-200">
-                        2d 14h 23m
-                      </div>
-                    </div>
-
-                    {/* Gratification Stats */}
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="bg-purple-800/30 rounded p-2">
-                        <div className="text-gold-300 font-bold">1,247</div>
-                        <div className="text-purple-200">Participants</div>
-                      </div>
-                      <div className="bg-purple-800/30 rounded p-2">
-                        <div className="text-emerald-300 font-bold">89</div>
-                        <div className="text-purple-200">Winners</div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Prize Carousel */}
+              <PrizeCarousel
+                showControls={false}
+                autoPlay={true}
+                interval={3000}
+              />
             </div>
           </div>
         </main>
