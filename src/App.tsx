@@ -23,6 +23,7 @@ import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import DemoAccess from "./pages/DemoAccess";
 import Test from "./pages/Test";
+import PhoneAuthTest from "./pages/PhoneAuthTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
