@@ -41,21 +41,33 @@ export const FirebaseDebugInfo = () => {
 
         <div className="text-xs text-slate-300 mt-4">
           <p>
-            <strong>Troubleshooting Tips:</strong>
+            <strong>❌ Current Issue: auth/invalid-app-credential</strong>
           </p>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li>
-              Ensure your domain is added to Firebase Console → Authentication →
-              Settings → Authorized domains
-            </li>
-            <li>
-              Check that phone authentication is enabled in Firebase Console
-            </li>
-            <li>
-              Verify your Firebase project configuration matches these values
-            </li>
-            <li>Make sure reCAPTCHA is not blocked by browser/extensions</li>
-          </ul>
+          <p className="text-orange-300 mt-2 mb-3">
+            This means Phone Authentication is not enabled in Firebase Console.
+          </p>
+
+          <div className="mb-4">
+            <a
+              href="https://console.firebase.google.com/u/0/project/quiz-20372/authentication/providers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              🔧 Enable Phone Auth in Firebase Console
+            </a>
+          </div>
+
+          <p>
+            <strong>Setup Steps:</strong>
+          </p>
+          <ol className="list-decimal list-inside space-y-1 mt-2">
+            <li>Click the link above to open Firebase Console</li>
+            <li>Find "Phone" in the sign-in providers list</li>
+            <li>Click on "Phone" and toggle Enable to ON</li>
+            <li>Click Save</li>
+            <li>Come back and test again</li>
+          </ol>
         </div>
       </CardContent>
     </Card>
