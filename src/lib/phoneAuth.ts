@@ -111,6 +111,11 @@ export const sendOTP = async (
   console.log(`Attempting to send OTP to: ${formattedPhone}`);
 
   try {
+    // Validate phone number format
+    if (!formattedPhone.match(/^\+[1-9]\d{1,14}$/)) {
+      throw new Error("Please enter a valid phone number with country code");
+    }
+
     const confirmationResult = await signInWithPhoneNumber(
       auth,
       formattedPhone,
@@ -128,15 +133,25 @@ export const sendOTP = async (
       error,
     );
 
-    // Optional fallback
-    // if (
-    //   error.code === "auth/missing-recaptcha-token" ||
-    //   error.code === "auth/invalid-recaptcha-token" ||
-    //   error.message?.toLowerCase().includes("recaptcha")
-    // ) {
-    //   // console.warn("reCAPTCHA related error during sendOTP, falling back to demo mode:", error.code);
-    //   return "demo";
-    // }
+    // Handle specific errors
+    if (error.code === "auth/recaptcha-not-enabled") {
+      throw new Error(
+        "Phone authentication is not properly configured. Please contact support.",
+      );
+    }
+
+    if (
+      error.code === "auth/missing-recaptcha-token" ||
+      error.code === "auth/invalid-recaptcha-token"
+    ) {
+      throw new Error(
+        "reCAPTCHA verification failed. Please refresh the page and try again.",
+      );
+    }
+
+    if (error.code === "auth/too-many-requests") {
+      throw new Error("Too many attempts. Please wait before trying again.");
+    }
 
     throw new Error(getAuthErrorMessage(error.code || "auth/unknown-error"));
   }
