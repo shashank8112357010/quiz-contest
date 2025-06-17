@@ -118,7 +118,7 @@ const Categories = () => {
       case "Medium":
         return "text-electric-400 bg-electric-500/20 border-electric-400";
       case "Hard":
-        return "text-danger-400 bg-danger-500/20 border-danger-400";
+        return "text-red-400 bg-red-500/20 border-red-400";
       default:
         return "text-white/70 bg-white/10 border-white/20";
     }
@@ -159,19 +159,14 @@ const Categories = () => {
                 <div className="text-xl sm:text-2xl font-bold text-neon-400">
                   {categories
                     .reduce((total, cat) => total + cat.questionCount, 0)
-                    .toLocaleString()}
+                     + 2300} 
                   +
                 </div>
                 <div className="text-white/70 text-xs sm:text-sm">
                   Questions
                 </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
-                <div className="text-xl sm:text-2xl font-bold text-magic-400">
-                  50K+
-                </div>
-                <div className="text-white/70 text-xs sm:text-sm">Players</div>
-              </div>
+          
             </div>
           </div>
 

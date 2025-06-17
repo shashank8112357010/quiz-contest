@@ -304,7 +304,7 @@ const Rewards = () => {
 
           {/* Reward Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/5 backdrop-blur-sm">
+            <TabsList className="grid w-full grid-cols-3 mb-8 bg-white/5 backdrop-blur-sm">
               <TabsTrigger
                 value="daily"
                 className="data-[state=active]:bg-yellow-600 data-[state=active]:text-white"
@@ -323,14 +323,7 @@ const Rewards = () => {
               >
                 🛒 Store
               </TabsTrigger>
-              <TabsTrigger
-                value="special"
-                className="data-[state=active]:bg-pink-600 data-[state=active]:text-white"
-              >
-                ✨ Special
-              </TabsTrigger>
             </TabsList>
-
             {/* Daily Rewards */}
             <TabsContent value="daily">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -342,7 +335,9 @@ const Rewards = () => {
                       return (
                         <div
                           key={reward.day}
-                          className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${reward.borderColor} p-4 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
+                          className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${
+                            reward.borderColor
+                          } p-4 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
                             reward.current ? "ring-2 ring-yellow-500/50" : ""
                           }`}
                           style={{
@@ -470,7 +465,6 @@ const Rewards = () => {
                 </div>
               </div>
             </TabsContent>
-
             {/* Achievements */}
             <TabsContent value="achievements">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -479,7 +473,9 @@ const Rewards = () => {
                   return (
                     <div
                       key={achievement.id}
-                      className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${achievement.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
+                      className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${
+                        achievement.borderColor
+                      } p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
                         achievement.completed ? "ring-2 ring-green-500/50" : ""
                       }`}
                       style={{
@@ -519,7 +515,9 @@ const Rewards = () => {
                           </div>
                         </div>
                         <Badge
-                          className={`${getRarityColor(achievement.rarity)} text-xs px-3 py-1 capitalize`}
+                          className={`${getRarityColor(
+                            achievement.rarity,
+                          )} text-xs px-3 py-1 capitalize`}
                         >
                           {achievement.rarity}
                         </Badge>
@@ -572,199 +570,16 @@ const Rewards = () => {
                 })}
               </div>
             </TabsContent>
-
             {/* Store */}
             <TabsContent value="store">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {storeItems.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.id}
-                      className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${item.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp`}
-                      style={{
-                        animationDelay: `${index * 100}ms`,
-                        animationFillMode: "both",
-                        minHeight: "280px",
-                      }}
-                    >
-                      {/* Gradient overlay on hover */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
-
-                      {/* Icon with Enhanced Animations */}
-                      <div
-                        className={`relative w-14 h-14 ${item.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden mx-auto`}
-                      >
-                        {/* Animated background glow */}
-                        <div
-                          className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-500`}
-                        />
-                        <Icon
-                          className={`relative z-10 w-7 h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110`}
-                          style={{
-                            filter:
-                              "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
-                          }}
-                        />
-                        {/* Floating particles effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div
-                            className={`absolute top-1 right-1 w-1 h-1 bg-gradient-to-r ${item.color} rounded-full animate-ping`}
-                          />
-                          <div
-                            className={`absolute bottom-1 left-1 w-1 h-1 bg-gradient-to-r ${item.color} rounded-full animate-ping delay-100`}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="text-center">
-                        <h3 className="text-lg font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
-                          {item.name}
-                        </h3>
-                        <p className="text-white/70 text-sm leading-relaxed mb-4 group-hover:text-white/80 transition-colors duration-300">
-                          {item.description}
-                        </p>
-
-                        {/* Price */}
-                        <div className="flex items-center justify-center gap-1 mb-4">
-                          <Coins className="w-5 h-5 text-yellow-400" />
-                          <span className="text-xl font-bold text-yellow-400">
-                            {item.price}
-                          </span>
-                        </div>
-
-                        {/* Purchase Button */}
-                        <Button
-                          className={`w-full bg-gradient-to-r ${item.color} hover:shadow-lg transition-all duration-300 text-white border-0`}
-                        >
-                          Purchase
-                        </Button>
-                      </div>
-
-                      {/* Glow effect */}
-                      <div
-                        className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r ${item.color} blur-xl -z-10`}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </TabsContent>
-
-            {/* Special Rewards */}
-            <TabsContent value="special">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Lucky Spin */}
-                <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-magic-400/30 p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
-
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-14 h-14 bg-magic-500/10 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                      <div className="text-2xl">🎰</div>
-                    </div>
-                    <h3 className="text-xl font-display font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
-                      Lucky Spin Wheel
-                    </h3>
-                  </div>
-
-                  <div className="text-center space-y-4">
-                    <div className="w-32 h-32 bg-gradient-to-r from-magic-500 to-electric-500 rounded-full mx-auto flex items-center justify-center text-4xl animate-pulse">
-                      🎯
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-white mb-2">
-                        Weekly Free Spin
-                      </h4>
-                      <p className="text-white/70 text-sm">
-                        Spin the wheel for a chance to win amazing rewards!
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      {spinRewards.slice(0, 6).map((reward, index) => (
-                        <div
-                          key={index}
-                          className="bg-magic-500/20 p-2 rounded text-magic-200"
-                        >
-                          {reward}
-                        </div>
-                      ))}
-                    </div>
-
-                    {spinAvailable ? (
-                      <Button
-                        onClick={() => setSpinAvailable(false)}
-                        className="bg-gradient-to-r from-magic-500 to-electric-500 hover:shadow-lg transition-all duration-300 text-white"
-                      >
-                        Spin Now! (Free)
-                      </Button>
-                    ) : (
-                      <div className="text-magic-300">
-                        <Clock className="w-4 h-4 inline mr-1" />
-                        Next spin in 6d 14h
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r from-magic-500 to-electric-500 blur-xl -z-10" />
-                </div>
-
-                {/* Referral Program */}
-                <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-neon-400/30 p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
-                  {/* Gradient overlay on hover */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
-
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-14 h-14 bg-neon-500/10 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                      <Users className="w-7 h-7 text-neon-400" />
-                    </div>
-                    <h3 className="text-xl font-display font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
-                      Refer Friends
-                    </h3>
-                  </div>
-
-                  <div className="text-center space-y-4">
-                    <div className="text-6xl">🤝</div>
-
-                    <div>
-                      <h4 className="font-bold text-white mb-2">
-                        Earn Together
-                      </h4>
-                      <p className="text-white/70 text-sm">
-                        Invite friends and earn rewards when they join!
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center p-2 bg-neon-500/20 rounded">
-                        <span className="text-neon-200 text-sm">You earn:</span>
-                        <span className="text-neon-300 font-bold">
-                          200 Coins
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center p-2 bg-neon-500/20 rounded">
-                        <span className="text-neon-200 text-sm">
-                          Friend earns:
-                        </span>
-                        <span className="text-neon-300 font-bold">
-                          100 Coins
-                        </span>
-                      </div>
-                    </div>
-
-                    <Button className="bg-gradient-to-r from-neon-500 to-electric-500 hover:shadow-lg transition-all duration-300 text-white">
-                      Share Invite Link
-                    </Button>
-                  </div>
-
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r from-neon-500 to-electric-500 blur-xl -z-10" />
+                <div className="col-span-full text-center py-20">
+                  <h2 className="text-4xl md:text-5xl font-bold text-white/80 animate-pulse tracking-wider">
+                    Coming Soon...
+                  </h2>
+                  <p className="mt-4 text-white/50 text-lg">
+                    New features are on the way. Stay tuned!
+                  </p>
                 </div>
               </div>
             </TabsContent>

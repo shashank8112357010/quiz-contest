@@ -41,7 +41,7 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative py-20 lg:py-32">
+    <section className="relative pt-5 pb-2">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto text-center">
           {/* Enhanced Phone Icon with multiple animations */}
