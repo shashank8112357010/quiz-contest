@@ -407,7 +407,7 @@ const Quiz = () => {
         onGoHome={goHome}
       />
 
-        <div className="relative z-40 min-h-screen p-4 pt-20">
+      <div className="relative z-40 min-h-screen p-4 pt-20">
           {/* Floating Category Change Button */}
           <div className="fixed bottom-6 right-6 z-50 lg:hidden">
             <Button
