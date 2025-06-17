@@ -102,6 +102,9 @@ const Quiz = () => {
     setUserAnswers(new Array(10).fill(null));
     setQuestionStartTime(Date.now());
 
+    // Initialize contest progress
+    setContestProgress(getContestProgress());
+
     // Start background music when quiz loads
     startBackgroundMusic();
 
