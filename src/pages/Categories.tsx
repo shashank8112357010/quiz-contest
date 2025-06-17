@@ -312,10 +312,9 @@ const Categories = () => {
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
                 <div className="text-xl sm:text-2xl font-bold text-neon-400">
-                  {categories.reduce(
-                    (total, cat) => total + cat.questionCount,
-                    0,
-                  ) + 2300}
+                  {categories
+                    .reduce((total, cat) => total + cat.questionCount, 0)
+                    .toLocaleString()}
                   +
                 </div>
                 <div className="text-white/70 text-xs sm:text-sm">
