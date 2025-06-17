@@ -153,8 +153,8 @@ const Categories = () => {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
-              Boost your IQ in the most classic categories. Select your
-              expertise and start your quiz journey!
+              Join our 90-Day Quiz Contest! Play 10 questions daily across 6
+              categories and compete with others.
             </p>
 
             {/* Stats */}
