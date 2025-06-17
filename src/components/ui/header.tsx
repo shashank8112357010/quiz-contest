@@ -10,6 +10,9 @@ import {
   ThumbsUp,
   ThumbsDown,
   Globe,
+  Volume2,
+  VolumeX,
+  Music,
 } from "lucide-react";
 import { useState } from "react";
 import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
