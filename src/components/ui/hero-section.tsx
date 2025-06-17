@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
 import { ContestEntryModal } from "@/components/ui/contest-entry-modal";
+import { PrizeCarousel } from "@/components/ui/prize-carousel";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 export const HeroSection = () => {
