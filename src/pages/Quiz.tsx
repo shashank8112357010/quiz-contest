@@ -56,6 +56,9 @@ const Quiz = () => {
   const [showDailyLimitModal, setShowDailyLimitModal] = useState(false);
   const [questionsPlayedThisSession, setQuestionsPlayedThisSession] =
     useState(0);
+  const [contestProgress, setContestProgress] = useState(() =>
+    getContestProgress(),
+  );
 
   // Get category info
   const category = categories.find((cat) => cat.id === categoryId);
