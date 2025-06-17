@@ -14,7 +14,6 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import Index from "./pages/Index";
 import Categories from "./pages/Categories";
 import Quiz from "./pages/Quiz";
-import { QuizAudioProvider } from "@/components/ui/quiz-audio-system";
 import Leaderboard from "./pages/Leaderboard";
 import Contests from "./pages/Contests";
 import Rewards from "./pages/Rewards";
