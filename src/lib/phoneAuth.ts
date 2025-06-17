@@ -347,6 +347,48 @@ export const updateSubscriptionStatus = async (
   }
 };
 
+// --- Daily Unlock Logic ---
+
+// Returns YYYY-MM-DD in local time
+function getTodayString(): string {
+  const today = new Date();
+  return today.toISOString().slice(0, 10);
+}
+
+// Check if a new day has started and reset daily unlocks if needed
+export const checkAndResetDailyUnlock = async (uid: string): Promise<User | null> => {
+  const user = await getUserData(uid);
+  if (!user) return null;
+  const today = getTodayString();
+  if (user.lastUnlockDate !== today) {
+    // Only reset if within subscription period
+    const now = new Date();
+    const start = user.subscriptionStart ? new Date(user.subscriptionStart) : null;
+    const end = user.subscriptionEnd ? new Date(user.subscriptionEnd) : null;
+    if (start && end && now >= start && now <= end) {
+      const seasonDay = user.seasonDay ? user.seasonDay + 1 : 1;
+      await updateUserData(uid, {
+        lastUnlockDate: today,
+        questionsUnlockedToday: 0,
+        seasonDay,
+      });
+      return { ...user, lastUnlockDate: today, questionsUnlockedToday: 0, seasonDay };
+    }
+  }
+  return user;
+};
+
+export const incrementQuestionsUnlocked = async (uid: string) => {
+  const user = await getUserData(uid);
+  if (!user) return;
+  const questionsUnlockedToday = (user.questionsUnlockedToday || 0) + 1;
+  await updateUserData(uid, { questionsUnlockedToday });
+};
+
+export const isDailyLimitReached = (user: User): boolean => {
+  return (user.questionsUnlockedToday || 0) >= 10;
+};
+
 // Complete second consent (for new users)
 export const completeSecondConsent = async (uid: string) => {
   try {

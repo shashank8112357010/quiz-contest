@@ -1,0 +1,15 @@
+/* Fix for Google reCAPTCHA inside modals */
+#recaptcha-container {
+  z-index: 999999 !important;
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: auto !important;
+}
+
+/* Prevent modal overlays from blocking recaptcha */
+.modal-backdrop, .DialogOverlay, .dialog-backdrop {
+  pointer-events: auto !important;
+}

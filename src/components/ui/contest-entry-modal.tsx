@@ -161,11 +161,7 @@ export const ContestEntryModal: React.FC<ContestEntryModalProps> = ({
   };
 
   const handleUpgradeSubscription = () => {
-    // This would typically open a payment modal or redirect to subscription page
-    toast({
-      title: "Coming Soon!",
-      description: "Subscription upgrade feature will be available soon.",
-    });
+    navigate("/subscribe");
   };
 
   return (

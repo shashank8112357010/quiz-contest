@@ -42,6 +42,13 @@ export const QUIZ_SOUNDS = {
     loop: false,
   },
 
+  tick: {
+    name: "Tick",
+    url: "/audio/tick.mp3",
+    volume: 0.6,
+    loop: false,
+  },
+
   timeWarning: {
     name: "Time Warning",
     url: "/audio/tick-tock.mp3",
@@ -82,6 +89,7 @@ interface QuizAudioContextType {
   playTimeWarning: () => void;
   playTimeUp: () => void;
   playQuizComplete: () => void;
+  playTick: () => void;
 }
 
 const QuizAudioContext = createContext<QuizAudioContextType | undefined>(
@@ -380,6 +388,7 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
   const playTimeWarning = () => playSound("timeWarning");
   const playTimeUp = () => playSound("timeUp");
   const playQuizComplete = () => playSound("quizComplete");
+  const playTick = () => playSound("tick");
 
   const value: QuizAudioContextType = {
     isEnabled,
@@ -399,6 +408,7 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
     playTimeWarning,
     playTimeUp,
     playQuizComplete,
+    playTick,
   };
 
   return (

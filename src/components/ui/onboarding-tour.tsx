@@ -96,7 +96,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-4">
             <Card className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-yellow-500/20">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-4 flex items-center justify-between bg-yellow-500/20">
                 <div className="flex items-center gap-3">
                   <Coins className="w-8 h-8 text-yellow-400" />
                   <div>
@@ -108,7 +108,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-500/20">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-4 flex items-center justify-between bg-red-500/20">
                 <div className="flex items-center gap-3">
                   <Heart className="w-8 h-8 text-red-400" />
                   <div>
@@ -120,7 +120,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/20">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-4 flex items-center justify-between bg-purple-500/20">
                 <div className="flex items-center gap-3">
                   <Zap className="w-8 h-8 text-purple-400" />
                   <div>

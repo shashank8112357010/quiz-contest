@@ -30,6 +30,12 @@ export interface User {
   profileCreated?: boolean;
   termsAccepted?: boolean;
   secondConsentCompleted?: boolean;
+  // --- Daily unlock and subscription fields ---
+  lastUnlockDate?: string;
+  questionsUnlockedToday?: number;
+  seasonDay?: number;
+  subscriptionStart?: string | Date;
+  subscriptionEnd?: string | Date;
 }
 
 export interface QuizSession {

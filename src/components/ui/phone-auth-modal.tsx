@@ -238,19 +238,20 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       // Check if user profile exists
       const existingUser = await checkUserExists(user.phoneNumber!);
 
-      if (existingUser && existingUser.profileCreated) {
-        // Existing user with complete profile
+      if (existingUser) {
+        // Existing user (regardless of profileCreated field)
         setStep("complete");
         toast({
           title: "Welcome back!",
           description: "You have successfully logged in.",
         });
         setTimeout(() => {
+          // IMPORTANT: Ensure onSuccess fetches and sets user profile in context/global state!
           onSuccess?.();
           onClose();
         }, 1500);
       } else {
-        // New user or incomplete profile - need profile creation
+        // New user - need profile creation
         setStep("profile");
       }
     } catch (error: any) {

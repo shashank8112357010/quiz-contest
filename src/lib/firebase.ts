@@ -13,7 +13,7 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "quiz-20372",
   storageBucket:
     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
-    "quiz-20372.firebasestorage.app",
+    "quiz-20372.appspot.com", // FIXED: correct Firebase storage bucket domain
   messagingSenderId:
     import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "483541012215",
   appId:
@@ -22,6 +22,9 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-0NKQ1F0CE2",
 };
 
+if (!import.meta.env.VITE_FIREBASE_API_KEY || !import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || !import.meta.env.VITE_FIREBASE_PROJECT_ID) {
+  console.warn("[FIREBASE WARNING] Using fallback Firebase config! Check your .env file for missing or incorrect keys.");
+}
 console.log("Firebase Config:", firebaseConfig);
 
 // Check if Firebase is configured
