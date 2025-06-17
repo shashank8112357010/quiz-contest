@@ -26,7 +26,6 @@ import { FeedbackToast } from "@/components/ui/feedback-toast";
 import {
   QuizAudioProvider,
   useQuizAudio,
-  QuizAudioControls,
 } from "@/components/ui/quiz-audio-system";
 import {
   useLanguageStore,
