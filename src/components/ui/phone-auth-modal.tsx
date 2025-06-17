@@ -133,6 +133,13 @@ export const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
       const fullPhoneNumber = countryCode + nationalNumber;
 
+      // Validate full phone number
+      if (fullPhoneNumber.length < 10 || fullPhoneNumber.length > 17) {
+        setError("Please enter a valid phone number");
+        setLoading(false);
+        return;
+      }
+
       if (!recaptchaVerifierInstance) {
         console.warn(
           "handleSendOTP: recaptchaVerifierInstance is not available.",
