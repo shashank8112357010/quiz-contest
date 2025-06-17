@@ -23,6 +23,18 @@ import {
   Tag,
   Telescope,
   Brain,
+  History,
+  Star,
+  Music,
+  Target,
+  Dumbbell,
+  MapPin,
+  Utensils,
+  HeartPulse,
+  TestTube,
+  Zap as ZapIcon,
+  BookText,
+  Award,
 } from "lucide-react";
 
 export interface QuizCategory {
