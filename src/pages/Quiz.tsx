@@ -451,19 +451,22 @@ const Quiz = () => {
 
               {/* Right side: Progress, Lives, and Score */}
               <div className="flex items-center gap-3 lg:gap-4 w-full lg:w-auto justify-between lg:justify-end">
-                {/* Enhanced Progress Display */}
+                {/* Enhanced Contest Progress Display */}
                 <div className="bg-gradient-to-r from-magic-500/20 to-electric-500/20 backdrop-blur-sm rounded-xl border border-magic-400/30 px-4 py-2 shadow-lg shadow-magic-500/10">
                   <div className="text-white text-sm font-bold text-center">
                     <span className="text-magic-300">
-                      {currentQuestion + 1}
+                      {(() => {
+                        const contestProgress = getContestProgress();
+                        return (
+                          contestProgress.totalQuestionsPlayed +
+                          questionsPlayedThisSession
+                        );
+                      })()}
                     </span>{" "}
-                    played /{" "}
-                    <span className="text-electric-300">
-                      {category?.questionCount || 100}
-                    </span>
+                    played / <span className="text-electric-300">900</span>
                   </div>
                   <div className="text-white/60 text-xs text-center">
-                    {t("questionsInBank")}
+                    90-Day Contest
                   </div>
                 </div>
 
