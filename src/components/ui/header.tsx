@@ -214,62 +214,31 @@ export const Header = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-3 mt-6 px-4">
-                {!loading && (
-                  <>
-                    {user && userData ? (
-                      <div className="text-center text-white">
-                        <div
-                          onClick={() => {
-                            window.location.href = "/profile";
-                            setIsMenuOpen(false);
-                          }}
-                          className="font-bold text-lg mb-2 cursor-pointer hover:text-electric-300 transition-colors"
-                        >
-                          {userData.displayName}
-                        </div>
-                        <div className="text-sm text-electric-300 flex justify-center gap-4 mb-4">
-                          <span>💰 {userData.coins}</span>
-                          <span>❤️ {userData.lives}</span>
-                          <span>⭐ {userData.totalStars}</span>
-                        </div>
-                        <Button
-                          variant="outline"
-                          onClick={signOut}
-                          className="w-full bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
-                        >
-                          <LogOut className="w-4 h-4 mr-2" />
-                          {t("signOut")}
-                        </Button>
-                      </div>
-                    ) : (
-                      <>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            setPhoneAuthModalOpen(true);
-                            setIsMenuOpen(false);
-                          }}
-                          className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
-                        >
-                          <User className="w-4 h-4 mr-2" />
-                          {t("login")}
-                        </Button>
-                        {user && (
-                          <Button
-                            onClick={() => {
-                              signOut();
-                              setIsMenuOpen(false);
-                            }}
-                            className="bg-gradient-to-r from-red-500 via-red-600 to-red-500 hover:from-red-400 hover:via-red-500 hover:to-red-400 text-white font-bold transition-all duration-300 hover:scale-105"
-                          >
-                            <Trophy className="w-4 h-4 mr-2" />
-                            {t("signOut")}
-                            <Zap className="w-4 h-4 ml-2" />
-                          </Button>
-                        )}
-                      </>
-                    )}
-                  </>
+                {!loading && user && userData && (
+                  <div className="text-center text-white">
+                    <div
+                      onClick={() => {
+                        window.location.href = "/profile";
+                        setIsMenuOpen(false);
+                      }}
+                      className="font-bold text-lg mb-2 cursor-pointer hover:text-electric-300 transition-colors"
+                    >
+                      {userData.displayName}
+                    </div>
+                    <div className="text-sm text-electric-300 flex justify-center gap-4 mb-4">
+                      <span>💰 {userData.coins}</span>
+                      <span>❤️ {userData.lives}</span>
+                      <span>⭐ {userData.totalStars}</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={signOut}
+                      className="w-full bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      {t("signOut")}
+                    </Button>
+                  </div>
                 )}
               </div>
             </nav>
