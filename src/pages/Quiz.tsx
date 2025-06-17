@@ -529,6 +529,24 @@ const Quiz = () => {
                   question={question}
                   isCorrect={selectedAnswer === question.correctAnswer}
                 />
+
+                {/* Category change reminder every 5 questions */}
+                {(currentQuestion + 1) % 5 === 0 && (
+                  <div className="mt-4 bg-gradient-to-r from-electric-500/10 to-neon-500/10 backdrop-blur-sm rounded-xl border border-electric-400/30 p-4 text-center">
+                    <p className="text-white/80 text-sm mb-3">
+                      🎯 Want to try a different category?
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-gradient-to-r from-electric-500/20 to-neon-500/20 border-electric-400/50 text-electric-100 hover:bg-electric-500/30 hover:border-electric-400 text-xs px-4 py-2 h-auto font-semibold transition-all duration-300"
+                      onClick={goToCategories}
+                    >
+                      <Zap className="w-3 h-3 mr-1" />
+                      Explore Other Categories
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
 
