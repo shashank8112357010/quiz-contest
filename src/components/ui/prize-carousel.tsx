@@ -214,13 +214,35 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
               <>
                 <div className={`relative inline-block mb-4`}>
                   <div
-                    className={`w-64 h-48 bg-gradient-to-r ${currentPrize.gradient} rounded-2xl flex items-center justify-center shadow-2xl animate-pulse overflow-hidden`}
+                    className={`w-80 h-56 bg-gradient-to-r ${currentPrize.gradient} rounded-2xl flex items-center justify-center shadow-2xl animate-pulse overflow-hidden border-4 border-white/30`}
                   >
                     <img
                       src={currentPrize.imagePath || "/placeholder.svg"}
                       alt={currentPrize.name}
-                      className="object-cover w-full h-full rounded-2xl"
+                      className="object-cover w-full h-full rounded-2xl hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        console.log(
+                          `Failed to load image for ${currentPrize.name}:`,
+                          currentPrize.imagePath,
+                        );
+                        e.currentTarget.style.display = "none";
+                      }}
+                      onLoad={() => {
+                        console.log(
+                          `Successfully loaded image for ${currentPrize.name}`,
+                        );
+                      }}
                     />
+                    {/* Price overlay */}
+                    <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-2 rounded-xl font-bold text-lg border border-white/20">
+                      {currentPrize.value}
+                    </div>
+                    {/* Rarity badge */}
+                    <div
+                      className={`absolute top-4 left-4 px-3 py-1 rounded-lg text-xs font-bold uppercase ${getRarityBadge(currentPrize.rarity).color}`}
+                    >
+                      {getRarityBadge(currentPrize.rarity).label}
+                    </div>
                   </div>
                 </div>
                 <h4 className="text-xl font-bold text-white mb-2">
