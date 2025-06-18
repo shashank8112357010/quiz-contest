@@ -279,7 +279,7 @@ const Categories = () => {
                     <Badge
                       className={`${getDifficultyColor(category.difficulty)} text-xs px-2 py-1`}
                     >
-                      {category.difficulty}
+                      {t(`categoryCards.${category.difficulty.toLowerCase()}`)}
                     </Badge>
                     {!user && (
                       <div className="text-orange-400 text-xs flex items-center gap-1 ml-3 mt-1">
