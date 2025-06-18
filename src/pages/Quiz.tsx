@@ -71,9 +71,13 @@ const Quiz = () => {
   const [showDailyLimitModal, setShowDailyLimitModal] = useState(false);
   const [questionsPlayedThisSession, setQuestionsPlayedThisSession] =
     useState(0);
-  const [contestProgress, setContestProgress] = useState(() =>
-    getContestProgress(),
-  );
+  const [contestProgress, setContestProgress] = useState({
+    contestStartDate: "2024-01-01",
+    totalQuestionsPlayed: 0,
+    dayNumber: 1,
+    maxContestDays: 90,
+    maxQuestionsPerContest: 900,
+  });
   const [firestoreUser, setFirestoreUser] = useState(user);
   const [loadingUnlock, setLoadingUnlock] = useState(true);
 
@@ -136,7 +140,7 @@ const Quiz = () => {
           setQuestions(categoryQuestions);
           setUserAnswers(new Array(categoryQuestions.length).fill(null));
           setQuestionStartTime(Date.now());
-          setContestProgress(getContestProgress());
+          // setContestProgress(getContestProgress());
           setLoadingUnlock(false);
           startBackgroundMusic();
 
