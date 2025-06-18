@@ -237,7 +237,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
               // Marquee Images Display
               <div
                 className="relative overflow-x-hidden mb-4"
-                style={{ height: "9rem" }}
+                style={{ height: "10rem" }}
               >
                 <div
                   className="flex items-center gap-8 animate-prize-marquee"
@@ -252,15 +252,15 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
                       className="relative flex flex-col items-center"
                     >
                       <div
-                        className={`w-28 h-28 bg-gradient-to-r ${prize.gradient} rounded-full flex items-center justify-center shadow-xl`}
+                        className={`w-32 h-24 bg-gradient-to-r ${prize.gradient} rounded-xl flex items-center justify-center shadow-xl overflow-hidden`}
                       >
                         <img
                           src={prize.imagePath || "/placeholder.svg"}
                           alt={prize.name}
-                          className="object-contain w-26 h-26 rounded-full"
+                          className="object-cover w-full h-full rounded-xl"
                         />
                       </div>
-                      <div className="text-white text-xs font-semibold mt-2 truncate w-28 text-center">
+                      <div className="text-white text-xs font-semibold mt-2 truncate w-32 text-center">
                         {prize.name}
                       </div>
                     </div>
