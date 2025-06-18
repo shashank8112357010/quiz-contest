@@ -256,9 +256,12 @@ const Quiz = () => {
       }
     }
     // const userId = user?.uid || localStorage.getItem("anonymous-user-id") || generateAnonymousId();
-    // The userId was previously used as a seed, but getRandomQuestions no longer uses it.
     // Fetch 10 questions for the selected category, or "gk" if none selected
-    const categoryQuestions = getRandomQuestions(categoryId || "gk", 10);
+    const categoryQuestions = getRandomQuestions(
+      categoryId || "gk",
+      10,
+      user?.uid,
+    );
     setQuestions(categoryQuestions);
     setUserAnswers(new Array(categoryQuestions.length).fill(null)); // Use actual length
     setCurrentQuestion(0);
