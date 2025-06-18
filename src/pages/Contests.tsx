@@ -30,6 +30,7 @@ import {
 import { useLanguageStore } from "@/lib/languages";
 
 const Contests = () => {
+  const { t } = useLanguageStore();
   const [activeTab, setActiveTab] = useState("live");
 
   // Mock contests data with enhanced styling properties
