@@ -527,13 +527,13 @@ const Quiz = () => {
                   Daily Questions
                 </div>
               </div>
-              <div className="flex items-center gap-1">
-                {[...Array(3)].map((_, i) => (
-                  <Heart
-                    key={i}
-                    className={`w-6 h-6 ${i < lives ? "text-danger-400 fill-current" : "text-white/20"}`}
-                  />
-                ))}
+              <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm rounded-xl border border-red-400/30 px-4 py-2 shadow-lg shadow-red-500/10">
+                <div className="text-white text-sm font-bold text-center flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-red-400 fill-current" />
+                  <span className="text-red-300">{lives}</span> /{" "}
+                  <span className="text-pink-300">10</span>
+                </div>
+                <div className="text-white/60 text-xs text-center">Lives</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2">
                 <div className="text-white font-mono text-lg font-bold text-center">
