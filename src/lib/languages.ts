@@ -370,13 +370,13 @@ export const translations: Record<string, Translations> = {
         name: "العلوم",
         description: "العلوم العامة والاكتشافات والمبادئ العلمية",
       },
-      geography: {
-        name: "الجغرافيا",
-        description: "البلدان والعواصم والمعالم وميزات الأرض",
+      gk: {
+        name: "المعرفة العامة",
+        description: "مزيج من كل ما يجب أن تعرفه",
       },
-      literature: {
-        name: "الأدب",
-        description: "الكتب والمؤلفون والشعر والكلاسيكيات الأدبية",
+      astronomy: {
+        name: "علم الفلك",
+        description: "الفضاء والكواكب والنجوم والظواهر الكونية",
       },
       easy: "سهل",
       medium: "متوسط",
@@ -465,7 +465,7 @@ export const translations: Record<string, Translations> = {
       thisWeek: "Esta Semana",
       enterContest: "Entrar no Concurso",
       categoryLeaders: "Líderes por Categoria",
-      score: "Pontuação",
+      score: "Pontua��ão",
       points: "Pontos",
       viewFullRankings: "Ver Classificações Completas",
       badge: {
