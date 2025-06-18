@@ -172,7 +172,9 @@ const Categories = () => {
                 <div className="text-lg font-bold text-electric-400">
                   {categories.length}
                 </div>
-                <div className="text-white text-xs">Categories</div>
+                <div className="text-white text-xs">
+                  {t("categoriesPage.categories")}
+                </div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20 text-right">
                 <div className="text-lg font-bold text-neon-400">
@@ -181,7 +183,9 @@ const Categories = () => {
                     .toLocaleString()}
                   +
                 </div>
-                <div className="text-white text-xs">Questions</div>
+                <div className="text-white text-xs">
+                  {t("categoriesPage.questions")}
+                </div>
               </div>
             </div>
           </div>
