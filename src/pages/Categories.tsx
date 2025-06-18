@@ -5,6 +5,7 @@ import { Header } from "@/components/ui/header";
 import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Globe,
   Rabbit,
@@ -123,6 +124,7 @@ export const categories: QuizCategory[] = [
 
 const Categories = () => {
   const { user, userData } = useAuth();
+  const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleCategorySelect = (categoryId: string) => {
@@ -132,7 +134,7 @@ const Categories = () => {
       return;
     }
 
-    window.location.href = `/quiz/${categoryId}`;
+    navigate(`/quiz/${categoryId}`);
   };
 
   const getDifficultyColor = (difficulty: string) => {

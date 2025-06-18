@@ -76,10 +76,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           (docSnap) => {
             if (docSnap.exists()) {
               setUserData({ uid: docSnap.id, ...docSnap.data() } as User);
-              console.log("AuthProvider: User data updated from Firestore snapshot:", docSnap.data());
             } else {
               setUserData(null);
-              console.log("AuthProvider: User document does not exist in Firestore.");
             }
             setLoading(false);
           },

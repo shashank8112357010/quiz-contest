@@ -120,19 +120,7 @@ export const preloadUIDependencies = async () => {
   }
 };
 
-// Dependency health check
-export const checkDependencyHealth = () => {
-  const requiredGlobals = ["React", "ReactDOM"];
-  const missingDependencies = requiredGlobals.filter((dep) => !(dep in window));
 
-  if (missingDependencies.length > 0) {
-    console.warn("⚠️ Missing global dependencies:", missingDependencies);
-    return false;
-  }
-
-  console.log("✅ All required dependencies are available");
-  return true;
-};
 
 // Export all loaders
 export const dependencyLoaders = {
@@ -157,8 +145,7 @@ export const initializeDependencies = async () => {
     // Preload UI dependencies in background
     preloadUIDependencies();
 
-    // Check dependency health
-    checkDependencyHealth();
+
 
     console.log("✅ Application dependencies initialized successfully");
   } catch (error) {

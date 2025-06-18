@@ -13,7 +13,7 @@ import { GameStatusBar } from "@/components/ui/game-status-bar";
 import { DailyLimitModal } from "@/components/ui/daily-limit-modal";
 import { FeedbackToast } from "@/components/ui/feedback-toast";
 import { useQuizAudio } from "@/components/ui/quiz-audio-system";
-import { useLanguageStore, canPlayQuiz, getAvailableQuestions, updateDailyQuestionCount, getContestProgress, updateContestProgress } from "@/lib/languages";
+import { useLanguageStore, updateDailyQuestionCount, getContestProgress, updateContestProgress } from "@/lib/languages";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 const Quiz = () => {
@@ -21,42 +21,10 @@ const Quiz = () => {
   const parsedDay = day ? parseInt(day, 10) : undefined;
   const TOTAL_DAYS = 90;
 
-  // Validate day param if present
-  if (parsedDay !== undefined && (isNaN(parsedDay) || parsedDay < 1 || parsedDay > TOTAL_DAYS)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-red-400 mb-4">Invalid Quiz Day</h1>
-          <p className="text-lg text-white mb-6">Please select a valid day between 1 and {TOTAL_DAYS}.</p>
-          <button className="px-4 py-2 bg-electric-500 text-white rounded" onClick={() => window.location.href = '/rewards'}>Go to Rewards</button>
-        </div>
-      </div>
-    );
-  }
-
-  // Use parsedDay for daily quiz logic if present, otherwise use categoryId as before
+  const { user } = useAuth();
+  const { t } = useLanguageStore();
 
   const [questions, setQuestions] = useState<Question[]>([]);
-
-  // If day param is present, load questions for that day (category-agnostic or default category)
-  useEffect(() => {
-    if (parsedDay !== undefined) {
-      // Generate a deterministic seed/userId for the day to keep the questions same for all users on that day
-      const userId = user?.uid || localStorage.getItem("anonymous-user-id") || generateAnonymousId();
-      // Optionally, use a default category or rotate categories
-      const defaultCategory = "gk";
-      const categoryQuestions = getRandomQuestions(defaultCategory, 10, `${userId}-day${parsedDay}`);
-      setQuestions(categoryQuestions);
-      setUserAnswers(new Array(10).fill(null));
-      setQuestionStartTime(Date.now());
-      setContestProgress(getContestProgress());
-      setLoadingUnlock(false);
-      startBackgroundMusic();
-    }
-  // Only run on mount or when parsedDay changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parsedDay]);
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [userAnswers, setUserAnswers] = useState<(number | null)[]>([]);
@@ -72,49 +40,59 @@ const Quiz = () => {
   const [showDailyLimitModal, setShowDailyLimitModal] = useState(false);
   const [questionsPlayedThisSession, setQuestionsPlayedThisSession] = useState(0);
   const [contestProgress, setContestProgress] = useState(() => getContestProgress());
-
-  const category = categories.find((cat) => cat.id === categoryId);
-  const categoryName = category?.name || "General Knowledge";
-  const categoryColor = category?.color || "from-brand-500 to-electric-500";
-
-  const { t } = useLanguageStore();
-  const { user } = useAuth();
   const [firestoreUser, setFirestoreUser] = useState(user);
   const [loadingUnlock, setLoadingUnlock] = useState(true);
 
   const { startBackgroundMusic, stopBackgroundMusic, playCorrectAnswer, playWrongAnswer, playQuestionStart, playTimeWarning, playTimeUp, playQuizComplete, playTick } = useQuizAudio();
 
+  const category = categories.find((cat) => cat.id === categoryId);
+  const categoryName = category?.name || "General Knowledge";
+  const categoryColor = category?.color || "from-brand-500 to-electric-500";
+
   useEffect(() => {
     let isMounted = true;
-    const checkUnlock = async () => {
-      if (!user?.uid) {
-        setLoadingUnlock(false);
-        return;
-      }
+
+    const loadQuiz = async () => {
       setLoadingUnlock(true);
-      const updatedUser = await checkAndResetDailyUnlock(user.uid);
-      if (!isMounted) return;
-      setFirestoreUser(updatedUser);
-      if (updatedUser && isDailyLimitReached(updatedUser)) {
-        setShowDailyLimitModal(true);
-        setLoadingUnlock(false);
-        return;
+
+      if (user?.uid) {
+        const updatedUser = await checkAndResetDailyUnlock(user.uid);
+        if (!isMounted) return;
+        setFirestoreUser(updatedUser);
+        if (updatedUser && isDailyLimitReached(updatedUser)) {
+          setShowDailyLimitModal(true);
+          setLoadingUnlock(false);
+          return;
+        }
       }
+
       const userId = user?.uid || localStorage.getItem("anonymous-user-id") || generateAnonymousId();
-      const categoryQuestions = getRandomQuestions(categoryId || "gk", 10, userId);
-      setQuestions(categoryQuestions);
-      setUserAnswers(new Array(10).fill(null));
-      setQuestionStartTime(Date.now());
-      setContestProgress(getContestProgress());
-      setLoadingUnlock(false);
-      startBackgroundMusic();
+      let categoryQuestions = [];
+
+      if (parsedDay !== undefined) {
+        const defaultCategory = "gk";
+        categoryQuestions = getRandomQuestions(defaultCategory, 10, `${userId}-day${parsedDay}`);
+      } else {
+        categoryQuestions = getRandomQuestions(categoryId || "gk", 10, userId);
+      }
+
+      if (isMounted) {
+        setQuestions(categoryQuestions);
+        setUserAnswers(new Array(categoryQuestions.length).fill(null));
+        setQuestionStartTime(Date.now());
+        setContestProgress(getContestProgress());
+        setLoadingUnlock(false);
+        startBackgroundMusic();
+      }
     };
-    checkUnlock();
+
+    loadQuiz();
+
     return () => {
       isMounted = false;
       stopBackgroundMusic();
     };
-  }, [categoryId, user?.uid]);
+  }, [categoryId, parsedDay, user?.uid, startBackgroundMusic, stopBackgroundMusic]);
 
   useEffect(() => {
     if (timeLeft > 0 && !isAnswered && !gameOver && questions.length > 0) {
@@ -248,19 +226,24 @@ const Quiz = () => {
     return id;
   };
 
-  if (loadingUnlock) {
+  if (parsedDay !== undefined && (isNaN(parsedDay) || parsedDay < 1 || parsedDay > TOTAL_DAYS)) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-900">
-        <span className="text-white text-xl">Loading daily unlock...</span>
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-red-400 mb-4">Invalid Quiz Day</h1>
+          <p className="text-lg text-white mb-6">Please select a valid day between 1 and {TOTAL_DAYS}.</p>
+          <button className="px-4 py-2 bg-electric-500 text-white rounded" onClick={() => window.location.href = '/rewards'}>Go to Rewards</button>
+        </div>
       </div>
     );
   }
+
+
 
   if (questions.length === 0) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <AnimatedBackground />
-        {/* <GameStatusBar position="top" variant="compact" /> */}
         <div className="relative z-40 min-h-screen flex items-center justify-center pt-16">
           <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 text-center">
             <div className="animate-spin w-8 h-8 border-2 border-electric-400 border-t-transparent rounded-full mx-auto mb-4"></div>
@@ -279,7 +262,6 @@ const Quiz = () => {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <AnimatedBackground />
-        {/* <GameStatusBar position="top" variant="compact" /> */}
         <div className="relative z-40 min-h-screen p-4 pt-20">
           <div className="container mx-auto max-w-4xl">
             <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 mb-8 text-center">

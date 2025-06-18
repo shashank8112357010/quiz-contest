@@ -126,7 +126,7 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
       const audio = new Audio();
 
       audio.addEventListener("error", () => {
-        console.warn(`Quiz sound not found: ${sound.url}`);
+        // Silently register the error. The playSound function will handle the fallback.
         setAudioErrors((prev) => new Set(prev).add(key));
       });
 
