@@ -185,6 +185,7 @@ export const translations: Record<string, Translations> = {
     continue: "Continue",
     cancel: "Cancel",
     ok: "OK",
+    amazingPrizes: "Amazing Prizes",
   },
   ar: {
     hero: {
@@ -211,7 +212,7 @@ export const translations: Record<string, Translations> = {
         description: "أحدث هاتف ذكي رائد مع كاميرا مذهلة",
       },
       car: {
-        name: "سيارة BMW فاخرة",
+        name: "سيار�� BMW فاخرة",
         description: "سيارة فاخرة ممتازة لتجربة قيادة مثالية",
       },
       laptop: {
@@ -244,11 +245,11 @@ export const translations: Record<string, Translations> = {
     finalScore: "النتيجة النهائية",
     correctAnswers: "الإجابات الصحيحة",
     accuracy: "الدقة",
-    playAgain: "ال��ب مرة أخرى",
+    playAgain: "العب مرة أخرى",
     tryOtherCategory: "جرب فئة أخرى",
     backToHome: "العودة للرئيسية",
 
-    dailyLimitReached: "تم الوصول للحد اليومي!",
+    dailyLimitReached: "ت�� الوصول للحد اليومي!",
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
