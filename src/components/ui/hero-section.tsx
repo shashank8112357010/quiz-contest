@@ -85,19 +85,19 @@ export const HeroSection = () => {
 
           {/* Enhanced Main Headline */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-white mb-8 animate-fade-in">
-  <span className="block bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
-    {t('hero.contestTitle')}
-  </span>
-  <span className="block text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
-    {t('hero.season')}
-  </span>
-</h1>
+            <span className="block bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
+              {t("hero.contestTitle")}
+            </span>
+            <span className="block text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
+              {t("hero.season")}
+            </span>
+          </h1>
 
           {/* Enhanced Subtitle */}
           <p className="text-2xl md:text-3xl text-white font-bold mb-12 max-w-4xl mx-auto leading-relaxed drop-shadow-lg animate-slide-up">
             Complete 10 quiz games and stand a chance to{" "}
             <span className="bg-gradient-to-r from-neon-300 to-electric-300 bg-clip-text text-transparent font-black animate-pulse">
-              win amazing prizes
+              win {t("amazingPrizes").toLowerCase()}
             </span>{" "}
             including the latest iPhone! 🚀✨
           </p>
@@ -125,7 +125,7 @@ export const HeroSection = () => {
                 className="w-6 h-6 mr-3 animate-spin"
                 style={{ animationDuration: "3s" }}
               />
-              {t('leaderboard.globalTitle')}
+              {t("leaderboard.globalTitle")}
             </Button>
           </div>
         </div>
