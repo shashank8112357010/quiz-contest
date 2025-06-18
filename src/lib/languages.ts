@@ -38,6 +38,32 @@ export interface Translations {
   leaderboard: {
     globalTitle: string;
     subtitle: string;
+    topQuizMasters: string;
+    live: string;
+    yourStats: string;
+    currentRank: string;
+    bestRank: string;
+    totalScore: string;
+    thisWeek: string;
+    enterContest: string;
+    categoryLeaders: string;
+    score: string;
+    points: string;
+    viewFullRankings: string;
+    badge: {
+      champion: string;
+      expert: string;
+      rising: string;
+      veteran: string;
+    };
+    category: {
+      science: string;
+      history: string;
+      sports: string;
+      technology: string;
+      movies: string;
+      music: string;
+    };
   };
   gratifications: string;
   faq: string;
@@ -304,7 +330,7 @@ export const translations: Record<string, Translations> = {
     dailyLimitReached: "تم الوصول للحد اليومي!",
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
-    comeBackTomorrow: "��د غداً",
+    comeBackTomorrow: "عد غداً",
     questionsRemaining: "أسئلة متبقية اليوم",
 
     likePortal: "أعجبني البوابة",
