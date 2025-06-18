@@ -331,7 +331,7 @@ export const translations: Record<string, Translations> = {
       },
       category: {
         science: "العلوم",
-        history: "التاريخ",
+        history: "الت��ريخ",
         sports: "الرياضة",
         technology: "التكنولوجيا",
         movies: "الأفلام",
@@ -435,7 +435,7 @@ export const translations: Record<string, Translations> = {
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
-    questionsRemaining: "أسئلة متبقية اليوم",
+    questionsRemaining: "أسئ��ة متبقية اليوم",
 
     likePortal: "أعجبني البوابة",
     dislikePortal: "لم يعجبني البوابة",
@@ -496,6 +496,36 @@ export const translations: Record<string, Translations> = {
       newCategoriesDescription:
         "Estamos constantemente adicionando novas categorias para desafiar seu conhecimento. Fique atento às atualizações!",
       newCategoriesWeekly: "🚀 Novas categorias toda semana",
+    },
+    categoryCards: {
+      animal: {
+        name: "Animal",
+        description:
+          "Vida selvagem, animais de estimação e criaturas fascinantes do nosso planeta",
+      },
+      world: {
+        name: "Mundo",
+        description: "Conhecimento global, culturas e assuntos internacionais",
+      },
+      computer: {
+        name: "Computador",
+        description: "Tecnologia, programação e mundo digital",
+      },
+      science: {
+        name: "Ciência",
+        description: "Ciência geral, descobertas e princípios científicos",
+      },
+      geography: {
+        name: "Geografia",
+        description: "Países, capitais, marcos e características da Terra",
+      },
+      literature: {
+        name: "Literatura",
+        description: "Livros, autores, poesia e clássicos literários",
+      },
+      easy: "Fácil",
+      medium: "Médio",
+      hard: "Difícil",
     },
     gratifications: "Gratificações",
     faq: "FAQ",
