@@ -50,8 +50,8 @@ export interface Translations {
     world: { name: string; description: string };
     computer: { name: string; description: string };
     science: { name: string; description: string };
-    geography: { name: string; description: string };
-    literature: { name: string; description: string };
+    gk: { name: string; description: string };
+    astronomy: { name: string; description: string };
     easy: string;
     medium: string;
     hard: string;
@@ -331,7 +331,7 @@ export const translations: Record<string, Translations> = {
       },
       category: {
         science: "العلوم",
-        history: "الت��ريخ",
+        history: "التاريخ",
         sports: "الرياضة",
         technology: "التكنولوجيا",
         movies: "الأفلام",
@@ -403,7 +403,7 @@ export const translations: Record<string, Translations> = {
       },
       watch: {
         name: "آبل واتش ألترا",
-        desc: "ساعة ذكية متقدمة مع تتبع اللياقة البدنية",
+        desc: "ساعة ذكية متقدمة مع تتبع الل��اقة البدنية",
       },
       ps5: {
         name: "بلايستيشن 5",
@@ -435,7 +435,7 @@ export const translations: Record<string, Translations> = {
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
-    questionsRemaining: "أسئ��ة متبقية اليوم",
+    questionsRemaining: "أسئل�� متبقية اليوم",
 
     likePortal: "أعجبني البوابة",
     dislikePortal: "لم يعجبني البوابة",
