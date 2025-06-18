@@ -11,10 +11,7 @@ import { FloatingAudioControl } from "@/components/ui/floating-audio-control";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 
-// Temporary audio debugging
-import "./utils/audio-debug";
-// Comprehensive audio error fix
-import "./utils/audio-error-fix";
+// Audio debugging removed due to infinite recursion
 
 // Static imports for now to ensure everything works
 import Index from "./pages/Index";
