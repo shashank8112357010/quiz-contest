@@ -100,6 +100,20 @@ const Quiz = () => {
       setLoadingUnlock(true);
 
       try {
+        // Check daily limit first for authenticated users
+        if (user?.uid) {
+          const updatedUser = await checkAndResetDailyUnlock(user.uid);
+          if (updatedUser) {
+            setFirestoreUser(updatedUser);
+            // Allow up to 10 quiz sessions per day (each session has 10 questions)
+            if (isDailyLimitReached(updatedUser)) {
+              setShowDailyLimitModal(true);
+              setLoadingUnlock(false);
+              return;
+            }
+          }
+        }
+
         const userId = user?.uid || generateAnonymousId();
         let categoryQuestions = [];
 
