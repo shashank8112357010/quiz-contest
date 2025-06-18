@@ -55,8 +55,8 @@ export const SOUND_EFFECTS: Record<string, SoundEffect> = {
 
   // Special Effects
   magic: { name: "Magic", url: "/audio/aww-sound.mp3", volume: 0.5 },
-  explosion: { name: "Explosion", url: "/audio/explosion.mp3", volume: 0.6 },
-  whoosh: { name: "Whoosh", url: "/audio/whoosh.mp3", volume: 0.4 },
+  explosion: { name: "Explosion", url: "/audio/buzzer.mp3", volume: 0.6 },
+  whoosh: { name: "Whoosh", url: "/audio/aww-sound.mp3", volume: 0.4 },
 };
 
 interface SoundEffectsControllerProps {
