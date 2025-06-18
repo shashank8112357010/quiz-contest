@@ -156,7 +156,12 @@ export const MusicPlayer = ({
 
       if (isPlaying && isAudioLoaded && !hasAudioError) {
         audio.play().catch((error) => {
-          console.warn("Audio play failed:", error);
+          console.warn("Audio play failed:", {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            trackName: tracks[currentTrack].name,
+          });
           setIsPlaying(false);
         });
       } else {
