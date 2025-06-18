@@ -24,7 +24,7 @@ export const Header = () => {
   const [phoneAuthModalOpen, setPhoneAuthModalOpen] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const { user, userData, loading, signOut } = useAuth();
-  const { triggerTour } = useOnboarding();
+  const { triggerTour, onboardingState } = useOnboarding();
   const { currentLanguage, setLanguage, t } = useLanguageStore();
 
   const handleFeedback = (type: "like" | "dislike") => {
