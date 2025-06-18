@@ -570,23 +570,44 @@ const Rewards = () => {
                         <div
                           className={`w-full h-32 ${item.bgColor} rounded-xl flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300`}
                         >
-                          {item.type === "powerup" && (
+                          {item.name === "50/50 Power-up" && (
                             <img
-                              src="https://images.pexels.com/photos/30746011/pexels-photo-30746011.jpeg"
+                              src="https://images.pexels.com/photos/27499331/pexels-photo-27499331.jpeg"
                               alt={item.name}
                               className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                             />
                           )}
-                          {item.type === "life" && (
+                          {item.name === "Extra Life" && (
+                            <img
+                              src="https://images.pexels.com/photos/6320167/pexels-photo-6320167.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Time Freeze" && (
+                            <img
+                              src="https://images.pexels.com/photos/191414/pexels-photo-191414.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Double Coins" && (
                             <img
                               src="https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg"
                               alt={item.name}
                               className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                             />
                           )}
-                          {item.type === "boost" && (
+                          {item.name === "Hint Master" && (
                             <img
-                              src="https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg"
+                              src="https://images.pexels.com/photos/4254548/pexels-photo-4254548.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Lucky Charm" && (
+                            <img
+                              src="https://images.pexels.com/photos/11975693/pexels-photo-11975693.jpeg"
                               alt={item.name}
                               className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                             />
