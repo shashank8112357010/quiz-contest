@@ -287,7 +287,7 @@ export const translations: Record<string, Translations> = {
         champion: "بطل",
         expert: "خبير",
         rising: "نجم صاعد",
-        veteran: "محارب قديم",
+        veteran: "محارب قد��م",
       },
       category: {
         science: "العلوم",
@@ -300,6 +300,18 @@ export const translations: Record<string, Translations> = {
     },
     home: "الرئيسية",
     categories: "الفئات",
+    categoriesPage: {
+      chooseYour: "اختر",
+      category: "فئتك",
+      categories: "الفئات",
+      questions: "الأسئلة",
+      contestDescription:
+        "انضم إلى مسابقة الـ 90 يوماً! العب 10 أسئلة يومياً عبر 6 فئات وتنافس مع الآخرين.",
+      moreComingSoon: "المزيد من الفئات قريباً!",
+      newCategoriesDescription:
+        "نضيف باستمرار فئات جديدة لتحدي معرفتك. ترقب التحديثات!",
+      newCategoriesWeekly: "🚀 فئات جديدة كل أسبوع",
+    },
     gratifications: "المكافآت",
     faq: "الأسئلة الشائعة",
     login: "تسجيل الدخول",
@@ -347,7 +359,7 @@ export const translations: Record<string, Translations> = {
     accuracy: "الدقة",
     playAgain: "العب مرة أخرى",
     tryOtherCategory: "جرب فئة أخرى",
-    backToHome: "العودة للرئيسية",
+    backToHome: "العو��ة للرئيسية",
 
     dailyLimitReached: "تم الوصول للحد اليومي!",
     dailyLimitMessage:
@@ -467,7 +479,7 @@ export const translations: Record<string, Translations> = {
     continue: "Continuar",
     cancel: "Cancelar",
     ok: "OK",
-    amazingPrizes: "Prêmios Incríveis",
+    amazingPrizes: "Prêmios Incr��veis",
   },
 };
 
