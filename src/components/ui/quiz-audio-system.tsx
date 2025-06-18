@@ -189,175 +189,112 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
   }, [masterVolume]);
 
   // Fallback sound generation for missing audio files
-  const generateFallbackSound = (
-    type: "correct" | "wrong" | "warning" | "complete",
-  ) => {
-    if (!isEnabled || !hasUserInteracted) return;
+  const generateFallbackSound = useCallback(
+    (type: "correct" | "wrong" | "warning" | "complete") => {
+      if (!isEnabled || !hasUserInteracted) return;
 
-    try {
-      const audioContext = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      try {
+        const audioContext =
+          new (window.AudioContext || (window as any).webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
 
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-      switch (type) {
-        case "correct":
-          // Happy ascending tone sequence (clapping replacement)
-          [523, 659, 784, 1047].forEach((freq, i) => {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.setValueAtTime(
-              freq,
-              audioContext.currentTime + i * 0.1,
+        switch (type) {
+          case "correct":
+            // Happy ascending tone sequence (clapping replacement)
+            [523, 659, 784, 1047].forEach((freq, i) => {
+              const osc = audioContext.createOscillator();
+              const gain = audioContext.createGain();
+              osc.connect(gain);
+              gain.connect(audioContext.destination);
+              osc.frequency.setValueAtTime(
+                freq,
+                audioContext.currentTime + i * 0.1,
+              );
+              osc.type = "sine";
+              gain.gain.setValueAtTime(
+                0.1 * masterVolume,
+                audioContext.currentTime + i * 0.1,
+              );
+              gain.gain.exponentialRampToValueAtTime(
+                0.01,
+                audioContext.currentTime + i * 0.1 + 0.3,
+              );
+              osc.start(audioContext.currentTime + i * 0.1);
+              osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
+            });
+            break;
+
+          case "wrong":
+            // Sad descending tone (aww replacement)
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(
+              200,
+              audioContext.currentTime + 0.5,
             );
-            osc.type = "sine";
-            gain.gain.setValueAtTime(
-              0.1 * masterVolume,
-              audioContext.currentTime + i * 0.1,
+            oscillator.type = "sawtooth";
+            gainNode.gain.setValueAtTime(
+              0.2 * masterVolume,
+              audioContext.currentTime,
             );
-            gain.gain.exponentialRampToValueAtTime(
+            gainNode.gain.exponentialRampToValueAtTime(
               0.01,
-              audioContext.currentTime + i * 0.1 + 0.3,
+              audioContext.currentTime + 0.5,
             );
-            osc.start(audioContext.currentTime + i * 0.1);
-            osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
-          });
-          break;
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+            break;
 
-        case "wrong":
-          // Sad descending tone (aww replacement)
-          oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-          oscillator.frequency.exponentialRampToValueAtTime(
-            200,
-            audioContext.currentTime + 0.5,
-          );
-          oscillator.type = "sawtooth";
-          gainNode.gain.setValueAtTime(
-            0.2 * masterVolume,
-            audioContext.currentTime,
-          );
-          gainNode.gain.exponentialRampToValueAtTime(
-            0.01,
-            audioContext.currentTime + 0.5,
-          );
-          oscillator.start(audioContext.currentTime);
-          oscillator.stop(audioContext.currentTime + 0.5);
-          break;
-
-        case "warning":
-          // Urgent beeping
-          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-          oscillator.type = "square";
-          gainNode.gain.setValueAtTime(
-            0.15 * masterVolume,
-            audioContext.currentTime,
-          );
-          gainNode.gain.exponentialRampToValueAtTime(
-            0.01,
-            audioContext.currentTime + 0.2,
-          );
-          oscillator.start(audioContext.currentTime);
-          oscillator.stop(audioContext.currentTime + 0.2);
-          break;
-
-        case "complete":
-          // Victory fanfare
-          [523, 659, 784, 1047, 1319].forEach((freq, i) => {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.setValueAtTime(
-              freq,
-              audioContext.currentTime + i * 0.15,
-            );
-            osc.type = "triangle";
-            gain.gain.setValueAtTime(
+          case "warning":
+            // Urgent beeping
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.type = "square";
+            gainNode.gain.setValueAtTime(
               0.15 * masterVolume,
-              audioContext.currentTime + i * 0.15,
+              audioContext.currentTime,
             );
-            gain.gain.exponentialRampToValueAtTime(
+            gainNode.gain.exponentialRampToValueAtTime(
               0.01,
-              audioContext.currentTime + i * 0.15 + 0.4,
+              audioContext.currentTime + 0.2,
             );
-            osc.start(audioContext.currentTime + i * 0.15);
-            osc.stop(audioContext.currentTime + i * 0.15 + 0.4);
-          });
-          break;
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+            break;
+
+          case "complete":
+            // Victory fanfare
+            [523, 659, 784, 1047, 1319].forEach((freq, i) => {
+              const osc = audioContext.createOscillator();
+              const gain = audioContext.createGain();
+              osc.connect(gain);
+              gain.connect(audioContext.destination);
+              osc.frequency.setValueAtTime(
+                freq,
+                audioContext.currentTime + i * 0.15,
+              );
+              osc.type = "triangle";
+              gain.gain.setValueAtTime(
+                0.15 * masterVolume,
+                audioContext.currentTime + i * 0.15,
+              );
+              gain.gain.exponentialRampToValueAtTime(
+                0.01,
+                audioContext.currentTime + i * 0.15 + 0.4,
+              );
+              osc.start(audioContext.currentTime + i * 0.15);
+              osc.stop(audioContext.currentTime + i * 0.15 + 0.4);
+            });
+            break;
+        }
+      } catch (error) {
+        console.warn("Web Audio API not supported for fallback sounds");
       }
-    } catch (error) {
-      console.warn("Web Audio API not supported for fallback sounds");
-    }
-  };
-
-  // Memoize generateFallbackSound as it's a dependency for playSound
-  const generateFallbackSound = useCallback((type: "correct" | "wrong" | "warning" | "complete") => {
-    if (!isEnabled || !hasUserInteracted) return;
-
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      switch (type) {
-        case "correct":
-          [523, 659, 784, 1047].forEach((freq, i) => {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.1);
-            osc.type = "sine";
-            gain.gain.setValueAtTime(0.1 * masterVolume, audioContext.currentTime + i * 0.1);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.3);
-            osc.start(audioContext.currentTime + i * 0.1);
-            osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
-          });
-          break;
-        case "wrong":
-          oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-          oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.5);
-          oscillator.type = "sawtooth";
-          gainNode.gain.setValueAtTime(0.2 * masterVolume, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-          oscillator.start(audioContext.currentTime);
-          oscillator.stop(audioContext.currentTime + 0.5);
-          break;
-        case "warning":
-          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-          oscillator.type = "square";
-          gainNode.gain.setValueAtTime(0.15 * masterVolume, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-          oscillator.start(audioContext.currentTime);
-          oscillator.stop(audioContext.currentTime + 0.2);
-          break;
-        case "complete":
-          [523, 659, 784, 1047, 1319].forEach((freq, i) => {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.15);
-            osc.type = "triangle";
-            gain.gain.setValueAtTime(0.15 * masterVolume, audioContext.currentTime + i * 0.15);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.4);
-            osc.start(audioContext.currentTime + i * 0.15);
-            osc.stop(audioContext.currentTime + i * 0.15 + 0.4);
-          });
-          break;
-      }
-    } catch (error) {
-      console.warn("Web Audio API not supported for fallback sounds");
-    }
-  }, [isEnabled, hasUserInteracted, masterVolume]);
+    },
+    [isEnabled, hasUserInteracted, masterVolume],
+  );
 
   const playSound = useCallback((soundKey: keyof typeof QUIZ_SOUNDS) => {
     if (!isEnabled || !soundEffectsEnabled || !hasUserInteracted) return;
