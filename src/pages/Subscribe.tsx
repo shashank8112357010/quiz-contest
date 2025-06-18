@@ -20,6 +20,7 @@ const SUBSCRIPTION_PRICE_ID =
 const Subscribe: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguageStore();
 
   const handleSubscribe = async () => {
     if (!user) {
