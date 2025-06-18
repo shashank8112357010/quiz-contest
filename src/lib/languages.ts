@@ -35,6 +35,16 @@ export interface Translations {
   // Header
   home: string;
   categories: string;
+  categoriesPage: {
+    chooseYour: string;
+    category: string;
+    categories: string;
+    questions: string;
+    contestDescription: string;
+    moreComingSoon: string;
+    newCategoriesDescription: string;
+    newCategoriesWeekly: string;
+  };
   leaderboard: {
     globalTitle: string;
     subtitle: string;
