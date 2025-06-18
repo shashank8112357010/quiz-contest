@@ -62,7 +62,7 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [lives, setLives] = useState(3);
+  const [lives, setLives] = useState(10); // Allow enough lives to complete all 10 questions
   const [gameOver, setGameOver] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState(0);
@@ -305,7 +305,7 @@ const Quiz = () => {
     setScore(0);
     setTimeLeft(30);
     setIsAnswered(false);
-    setLives(3);
+    setLives(10);
     setGameOver(false);
     setShowResult(false);
     setCorrectAnswers(0);
