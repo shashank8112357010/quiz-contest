@@ -155,8 +155,24 @@ const Quiz = () => {
 
     loadQuiz();
 
+    // Failsafe: if questions don't load within 5 seconds, force load default questions
+    const failsafeTimer = setTimeout(() => {
+      if (questions.length === 0 && isMounted) {
+        console.log(
+          "🔍 Quiz Debug - Failsafe triggered, loading default questions",
+        );
+        const defaultQuestions = getRandomQuestions("gk", 5, "failsafe-user");
+        if (defaultQuestions.length > 0) {
+          setQuestions(defaultQuestions);
+          setUserAnswers(new Array(defaultQuestions.length).fill(null));
+          setLoadingUnlock(false);
+        }
+      }
+    }, 5000);
+
     return () => {
       isMounted = false;
+      clearTimeout(failsafeTimer);
       stopBackgroundMusic();
     };
   }, [
@@ -165,6 +181,7 @@ const Quiz = () => {
     user?.uid,
     startBackgroundMusic,
     stopBackgroundMusic,
+    questions.length,
   ]);
 
   useEffect(() => {
