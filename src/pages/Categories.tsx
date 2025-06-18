@@ -162,9 +162,9 @@ const Categories = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="flex flex-col sm:flex-row lg:px-8 sm:items-center sm:justify-between mb-4">
             <h1 className="text-3xl sm:text-4xl font-display font-bold text-white">
-              Choose Your{" "}
+              {t("categoriesPage.chooseYour")}{" "}
               <span className="bg-gradient-to-r from-electric-400 via-neon-400 to-magic-400 bg-clip-text text-transparent">
-                Category
+                {t("categoriesPage.category")}
               </span>
             </h1>
             <div className="flex gap-3 mt-4 sm:mt-0">
