@@ -1020,23 +1020,12 @@ export const getRandomQuestions = (
   count: number = 10,
   userId?: string,
 ): Question[] => {
-  console.log("🔍 getRandomQuestions called with:", {
-    categoryId,
-    count,
-    userId,
-  });
-  console.log("🔍 Available categories:", Object.keys(questionDatabase));
-
   const categoryQuestions = questionDatabase[categoryId] || [];
-  console.log("🔍 Found questions for category:", categoryQuestions.length);
 
   if (categoryQuestions.length === 0) {
-    console.log("🔍 No questions found for category, trying fallback");
     // Fallback to general knowledge if category not found
     const fallbackQuestions = questionDatabase.gk || [];
-    console.log("🔍 Fallback questions found:", fallbackQuestions.length);
     if (fallbackQuestions.length === 0) {
-      console.log("🔍 No fallback questions, generating default");
       return generateDefaultQuestions(count);
     }
     return ensureQuestionProperties(fallbackQuestions.slice(0, count));
