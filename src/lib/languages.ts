@@ -45,6 +45,36 @@ export interface Translations {
   signOut: string;
   changeCategory: string;
 
+  // Prizes
+  prizes: {
+    iphone15: {
+      name: string;
+      description: string;
+    };
+    car: {
+      name: string;
+      description: string;
+    };
+    laptop: {
+      name: string;
+      description: string;
+    };
+    watch: {
+      name: string;
+      desc: string;
+    };
+    ps5: {
+      name: string;
+    };
+    gamepad: {
+      name: string;
+      desc: string;
+    };
+    giftcard: {
+      desc: string;
+    };
+  };
+
   // Quiz
   question: string;
   questionsInBank: string;
@@ -134,7 +164,8 @@ export const translations: Record<string, Translations> = {
     },
     leaderboard: {
       globalTitle: "لوحة المتصدرين العالمية",
-      subtitle: "تنافس مع أساتذة الاختبار من جميع أنحاء العالم وتسلق إلى القمة!",
+      subtitle:
+        "تنافس مع أساتذة الاختبار من جميع أنحاء العالم وتسلق إلى القمة!",
     },
     home: "الرئيسية",
     categories: "الفئات",
@@ -241,7 +272,13 @@ export const useLanguageStore = create<LanguageStore>()(
         const currentLang = get().currentLanguage;
         // Try to resolve nested keys (e.g., 'dashboard.offers.weekendBonus.title')
         const resolve = (obj: any, path: string): any => {
-          return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
+          return path
+            .split(".")
+            .reduce(
+              (acc, part) =>
+                acc && acc[part] !== undefined ? acc[part] : undefined,
+              obj,
+            );
         };
         return (
           resolve(translations[currentLang], key) ||
