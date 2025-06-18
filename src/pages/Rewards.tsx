@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Header } from "@/components/ui/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,9 +27,55 @@ import {
   ShoppingCart,
 } from "lucide-react";
 
+import { useAuth } from "@/components/providers/AuthProvider";
+import { db } from "@/lib/firebase";
+import { doc, getDoc, onSnapshot, updateDoc, setDoc } from "firebase/firestore";
+import DailyProgress from "@/components/ui/daily-progress";
+
+const TOTAL_DAYS = 90;
+
 const Rewards = () => {
   const [activeTab, setActiveTab] = useState("daily");
   const [spinAvailable, setSpinAvailable] = useState(true);
+
+  // Real-time daily progress state
+  const { user } = useAuth();
+  const [progress, setProgress] = useState({ unlockedDays: 1, completedDays: [] });
+  const [loadingProgress, setLoadingProgress] = useState(true);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+    const ref = doc(db, "users", user.uid);
+    setLoadingProgress(true);
+    // Listen to real-time updates
+    const unsub = onSnapshot(ref, (snap) => {
+      if (snap.exists() && snap.data().dailyProgress) {
+        setProgress(snap.data().dailyProgress);
+      } else {
+        // If no progress, initialize
+        setDoc(ref, { dailyProgress: { unlockedDays: 1, completedDays: [] } }, { merge: true });
+        setProgress({ unlockedDays: 1, completedDays: [] });
+      }
+      setLoadingProgress(false);
+    });
+    return () => unsub();
+  }, [user?.uid]);
+
+  // Mark a day as completed and unlock next
+  const markDayCompleted = async (day: number) => {
+    if (!user?.uid) return;
+    const ref = doc(db, "users", user.uid);
+    const newCompleted = progress.completedDays.includes(day)
+      ? progress.completedDays
+      : [...progress.completedDays, day];
+    const newUnlocked = Math.max(progress.unlockedDays, day + 1);
+    await updateDoc(ref, {
+      "dailyProgress.completedDays": newCompleted,
+      "dailyProgress.unlockedDays": newUnlocked,
+    });
+    // Local update for instant UI
+    setProgress({ unlockedDays: newUnlocked, completedDays: newCompleted });
+  };
 
   // Enhanced daily rewards with styling properties
   const dailyRewards = [
@@ -328,94 +374,20 @@ const Rewards = () => {
             <TabsContent value="daily">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
-                  {/* Daily Login Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-                    {dailyRewards.map((reward, index) => {
-                      const Icon = reward.icon;
-                      return (
-                        <div
-                          key={reward.day}
-                          className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${
-                            reward.borderColor
-                          } p-4 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp ${
-                            reward.current ? "ring-2 ring-yellow-500/50" : ""
-                          }`}
-                          style={{
-                            animationDelay: `${index * 100}ms`,
-                            animationFillMode: "both",
-                            minHeight: "200px",
-                          }}
-                        >
-                          {/* Gradient overlay on hover */}
-                          <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
-
-                          {/* Icon with Enhanced Animations */}
-                          <div
-                            className={`relative w-12 h-12 ${reward.bgColor} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out overflow-hidden`}
-                          >
-                            {/* Animated background glow */}
-                            <div
-                              className={`absolute inset-0 bg-gradient-to-r ${reward.color} opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-500`}
-                            />
-                            <Icon
-                              className={`relative z-10 w-6 h-6 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${
-                                reward.current ? "animate-bounce" : ""
-                              }`}
-                              style={{
-                                filter:
-                                  "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
-                              }}
-                            />
-                            {/* Floating particles effect */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                              <div
-                                className={`absolute top-1 right-1 w-1 h-1 bg-gradient-to-r ${reward.color} rounded-full animate-ping`}
-                              />
-                              <div
-                                className={`absolute bottom-1 left-1 w-1 h-1 bg-gradient-to-r ${reward.color} rounded-full animate-ping delay-100`}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Content */}
-                          <div className="text-center">
-                            <h3 className="text-sm font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
-                              Day {reward.day}
-                            </h3>
-                            <p className="text-white/70 text-xs leading-relaxed mb-3 group-hover:text-white/80 transition-colors duration-300">
-                              {reward.reward}
-                            </p>
-
-                            {/* Status */}
-                            <div className="flex justify-center">
-                              {reward.claimed ? (
-                                <Badge className="bg-green-500/20 border-green-400 text-green-100 text-xs">
-                                  ✓ Claimed
-                                </Badge>
-                              ) : reward.current ? (
-                                <Button
-                                  className={`w-full bg-gradient-to-r ${reward.color} hover:shadow-lg transition-all duration-300 text-white border-0 h-8 text-xs`}
-                                >
-                                  Claim Now
-                                </Button>
-                              ) : (
-                                <Badge className="bg-gray-500/20 border-gray-400 text-gray-300 text-xs">
-                                  🔒 Locked
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Glow effect */}
-                          <div
-                            className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r ${reward.color} blur-xl -z-10`}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
+                  {/* Dynamic Daily Progress Grid (real-time) */}
+                  {loadingProgress ? (
+                    <div className="text-white text-center p-8">Loading progress...</div>
+                  ) : (
+                    <DailyProgress
+                      unlockedDays={progress.unlockedDays}
+                      completedDays={progress.completedDays}
+                      onPlay={(day) => {
+                        // Navigate to quiz for that day
+                        window.location.href = `/quiz/day/${day}`;
+                      }}
+                    />
+                  )}
                 </div>
-
                 <div className="space-y-6">
                   {/* Progress Card */}
                   <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-6">

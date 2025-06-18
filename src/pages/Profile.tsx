@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { db } from "@/lib/firebase";
+import { doc, onSnapshot, setDoc, collection } from "firebase/firestore";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Header } from "@/components/ui/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,194 +43,73 @@ import { AuthDebug } from "@/components/ui/auth-debug";
 
 const Profile = () => {
   const { user, userData, loading } = useAuth();
+  const [streak, setStreak] = useState<number | null>(null);
+  const [loadingStreak, setLoadingStreak] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
+  useEffect(() => {
+    if (!user?.uid) return;
+    const ref = doc(db, "users", user.uid);
+    setLoadingStreak(true);
+    // Listen to real-time streak updates
+    const unsub = onSnapshot(ref, (snap) => {
+      if (snap.exists() && typeof snap.data().streak === "number") {
+        setStreak(snap.data().streak);
+      } else {
+        // If streak is missing, initialize
+        setDoc(ref, { streak: 0 }, { merge: true });
+        setStreak(0);
+      }
+      setLoadingStreak(false);
+    });
+    return () => unsub();
+  }, [user?.uid]);
 
-  // Mock data for demonstration
-  const activityData = [
-    {
-      id: 1,
-      type: "quiz_completed",
-      title: "Completed Science Quiz",
-      description: "Scored 85% in Advanced Physics",
-      time: "2 hours ago",
-      icon: <BookOpen className="w-4 h-4" />,
-      points: 150,
-      color: "text-blue-400",
-    },
-    {
-      id: 2,
-      type: "achievement",
-      title: "Achievement Unlocked",
-      description: "Knowledge Seeker - 100 correct answers",
-      time: "5 hours ago",
-      icon: <Trophy className="w-4 h-4" />,
-      points: 200,
-      color: "text-yellow-400",
-    },
-    {
-      id: 3,
-      type: "streak",
-      title: "Login Streak",
-      description: "5 days in a row!",
-      time: "1 day ago",
-      icon: <Flame className="w-4 h-4" />,
-      points: 50,
-      color: "text-orange-400",
-    },
-    {
-      id: 4,
-      type: "level_up",
-      title: "Level Up!",
-      description: "Reached Level 15",
-      time: "2 days ago",
-      icon: <Star className="w-4 h-4" />,
-      points: 300,
-      color: "text-purple-400",
-    },
-    {
-      id: 5,
-      type: "quiz_completed",
-      title: "Completed History Quiz",
-      description: "Perfect score in World War II",
-      time: "3 days ago",
-      icon: <BookOpen className="w-4 h-4" />,
-      points: 200,
-      color: "text-green-400",
-    },
-  ];
 
-  const recentQuizzes = [
-    {
-      category: "Science",
-      topic: "Physics",
-      score: 85,
-      questions: 20,
-      correct: 17,
-      time: "12:34",
-      date: "Today",
-      status: "completed",
-    },
-    {
-      category: "History",
-      topic: "World War II",
-      score: 100,
-      questions: 15,
-      correct: 15,
-      time: "08:22",
-      date: "Yesterday",
-      status: "perfect",
-    },
-    {
-      category: "Geography",
-      topic: "Asian Countries",
-      score: 73,
-      questions: 25,
-      correct: 18,
-      time: "15:45",
-      date: "2 days ago",
-      status: "completed",
-    },
-    {
-      category: "Sports",
-      topic: "Football",
-      score: 60,
-      questions: 10,
-      correct: 6,
-      time: "09:15",
-      date: "3 days ago",
-      status: "failed",
-    },
-  ];
+  // Real-time Firestore data
+  const [activityData, setActivityData] = useState<any[]>([]);
+  const [recentQuizzes, setRecentQuizzes] = useState<any[]>([]);
+  const [achievements, setAchievements] = useState<any[]>([]);
+  const [loadingActivity, setLoadingActivity] = useState(true);
+  const [loadingQuizzes, setLoadingQuizzes] = useState(true);
+  const [loadingAchievements, setLoadingAchievements] = useState(true);
+  // Example: weeklyStats, categoryProgress, recommendations can be computed from quizzes or userData
+  const [weeklyStats, setWeeklyStats] = useState<any[]>([]);
+  const [categoryProgress, setCategoryProgress] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
 
-  const achievements = [
-    {
-      id: 1,
-      title: "First Steps",
-      description: "Complete your first quiz",
-      icon: <PlayCircle className="w-6 h-6" />,
-      unlocked: true,
-      rarity: "common",
-      date: "5 days ago",
-    },
-    {
-      id: 2,
-      title: "Knowledge Seeker",
-      description: "Answer 100 questions correctly",
-      icon: <BookOpen className="w-6 h-6" />,
-      unlocked: true,
-      rarity: "rare",
-      date: "5 hours ago",
-    },
-    {
-      id: 3,
-      title: "Perfect Score",
-      description: "Get 100% in any quiz",
-      icon: <Star className="w-6 h-6" />,
-      unlocked: true,
-      rarity: "epic",
-      date: "Yesterday",
-    },
-    {
-      id: 4,
-      title: "Speed Demon",
-      description: "Complete a quiz in under 5 minutes",
-      icon: <Zap className="w-6 h-6" />,
-      unlocked: false,
-      rarity: "legendary",
-      date: null,
-    },
-    {
-      id: 5,
-      title: "Quiz Master",
-      description: "Reach level 50",
-      icon: <Crown className="w-6 h-6" />,
-      unlocked: false,
-      rarity: "legendary",
-      date: null,
-    },
-  ];
+  useEffect(() => {
+    if (!user?.uid) return;
+    // Activities
+    const activityRef = collection(db, "users", user.uid, "activities");
+    const unsubActivity = onSnapshot(activityRef, (snap) => {
+      setActivityData(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setLoadingActivity(false);
+    });
+    // Quizzes
+    const quizzesRef = collection(db, "users", user.uid, "quizzes");
+    const unsubQuizzes = onSnapshot(quizzesRef, (snap) => {
+      setRecentQuizzes(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setLoadingQuizzes(false);
+    });
+    // Achievements
+    const achievementsRef = collection(db, "users", user.uid, "achievements");
+    const unsubAchievements = onSnapshot(achievementsRef, (snap) => {
+      setAchievements(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setLoadingAchievements(false);
+    });
+    // Cleanup
+    return () => {
+      unsubActivity();
+      unsubQuizzes();
+      unsubAchievements();
+    };
+  }, [user?.uid]);
 
-  const weeklyStats = [
-    { day: "Mon", quizzes: 3, score: 85 },
-    { day: "Tue", quizzes: 5, score: 92 },
-    { day: "Wed", quizzes: 2, score: 78 },
-    { day: "Thu", quizzes: 4, score: 88 },
-    { day: "Fri", quizzes: 6, score: 95 },
-    { day: "Sat", quizzes: 3, score: 82 },
-    { day: "Sun", quizzes: 4, score: 90 },
-  ];
+  // weeklyStats can be computed from recentQuizzes, or left as an empty array for now
 
-  const categoryProgress = [
-    { name: "Science", progress: 85, level: 12, color: "bg-blue-500" },
-    { name: "History", progress: 92, level: 15, color: "bg-green-500" },
-    { name: "Geography", progress: 67, level: 8, color: "bg-yellow-500" },
-    { name: "Sports", progress: 54, level: 6, color: "bg-red-500" },
-    { name: "Literature", progress: 73, level: 9, color: "bg-purple-500" },
-  ];
+  // categoryProgress can be computed from recentQuizzes/userData, or left as an empty array for now
 
-  const recommendations = [
-    {
-      type: "weak_category",
-      title: "Improve Sports Knowledge",
-      description: "You scored 60% in Sports. Try practicing more!",
-      action: "Take Sports Quiz",
-      icon: <Target className="w-5 h-5 text-red-400" />,
-    },
-    {
-      type: "streak_opportunity",
-      title: "Maintain Your Streak",
-      description: "You're on a 5-day streak! Don't break it.",
-      action: "Play Today",
-      icon: <Flame className="w-5 h-5 text-orange-400" />,
-    },
-    {
-      type: "new_category",
-      title: "Try Mathematics",
-      description: "Unlock a new category with your progress!",
-      action: "Explore Math",
-      icon: <Brain className="w-5 h-5 text-blue-400" />,
-    },
-  ];
+  // recommendations can be computed based on userData and quiz stats, or left as an empty array for now
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -310,7 +191,7 @@ const Profile = () => {
 
         <main className="container mx-auto px-4 py-8">
           {/* Debug Component - Remove this after fixing */}
-          <AuthDebug />
+          {/* <AuthDebug /> */}
 
           {/* Profile Header */}
           <Card className="bg-gradient-to-r from-slate-900/90 to-purple-900/90 border-purple-500/20 backdrop-blur-xl mb-8 mt-8">
@@ -460,12 +341,7 @@ const Profile = () => {
               >
                 🏆 Achievements
               </TabsTrigger>
-              <TabsTrigger
-                value="analytics"
-                className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
-              >
-                📋 Analytics
-              </TabsTrigger>
+           
             </TabsList>
 
             {/* Overview Tab */}
@@ -584,11 +460,11 @@ const Profile = () => {
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-300">Current Streak</span>
-                          <span className="font-bold text-orange-400">
-                            {userData.streak} days
-                          </span>
-                        </div>
+  <span className="text-gray-300">Current Streak</span>
+  <span className="font-bold text-orange-400">
+    {loadingStreak ? "..." : streak !== null ? `${streak} days` : "0 days"}
+  </span>
+</div>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-300">Time Played</span>
                           <span className="font-bold text-blue-400">
@@ -774,134 +650,7 @@ const Profile = () => {
               </div>
             </TabsContent>
 
-            {/* Analytics Tab */}
-            <TabsContent value="analytics">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-white">
-                      <BarChart3 className="w-6 h-6 text-purple-400" />
-                      Performance Analytics
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="font-semibold text-white mb-4">
-                          Strongest Categories
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">History</span>
-                            <span className="text-green-400 font-bold">
-                              92% avg
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Science</span>
-                            <span className="text-green-400 font-bold">
-                              85% avg
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Literature</span>
-                            <span className="text-yellow-400 font-bold">
-                              73% avg
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold text-white mb-4">
-                          Areas for Improvement
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Sports</span>
-                            <span className="text-red-400 font-bold">
-                              54% avg
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Geography</span>
-                            <span className="text-yellow-400 font-bold">
-                              67% avg
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-white">
-                      <Clock className="w-6 h-6 text-blue-400" />
-                      Time & Habits
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="font-semibold text-white mb-4">
-                          Best Playing Times
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">
-                              Evening (6-9 PM)
-                            </span>
-                            <span className="text-green-400 font-bold">
-                              89% avg
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">
-                              Morning (9-12 PM)
-                            </span>
-                            <span className="text-yellow-400 font-bold">
-                              82% avg
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">
-                              Afternoon (1-5 PM)
-                            </span>
-                            <span className="text-yellow-400 font-bold">
-                              76% avg
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold text-white mb-4">
-                          Quiz Patterns
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">
-                              Avg Quiz Length
-                            </span>
-                            <span className="text-white font-bold">8:32</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Questions/Day</span>
-                            <span className="text-white font-bold">47</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-300">Favorite Day</span>
-                            <span className="text-white font-bold">Friday</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
+         
           </Tabs>
         </main>
       </div>

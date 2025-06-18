@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 import {
   doc,
-  setDoc, // Already there from previous step
+  setDoc,
   getDoc,
   updateDoc,
   collection,
@@ -16,9 +16,10 @@ import {
   getDocs,
   limit,
   orderBy,
-  Timestamp, // For date fields if needed
-  arrayUnion, // For adding to arrays like unlockedCategories
-  increment // For atomic increments like coins/lives
+  Timestamp,
+  arrayUnion,
+  increment,
+  serverTimestamp // <-- FIXED: add this import
 } from "firebase/firestore";
 import { auth, db } from "./firebase"; // Assuming firebase.ts is in the same directory
 import { User, QuizSession } from "./store";
@@ -108,9 +109,8 @@ export const getUserData = async (uid: string): Promise<User | null> => {
 export const updateUserData = async (uid: string, updates: Partial<User>) => {
   try {
     const userDocRef = doc(db, "users", uid);
-    // Add/update a lastModified timestamp if desired
-    // const finalUpdates = { ...updates, lastModified: serverTimestamp() };
-    await updateDoc(userDocRef, updates);
+    const finalUpdates = { ...updates, lastModified: serverTimestamp() };
+    await updateDoc(userDocRef, finalUpdates);
   } catch (error) {
     console.error("Error updating user data in Firestore:", error);
     throw error;

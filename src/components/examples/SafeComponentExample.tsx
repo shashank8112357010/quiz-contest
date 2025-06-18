@@ -81,7 +81,7 @@ const SafeComponentExample: React.FC<{ enableFeature: boolean }> = ({
 
       {/* ✅ Correct: Dynamic component loading with Suspense */}
       <Suspense fallback={<div>Loading heavy component...</div>}>
-        <HeavyComponent data={achievementData.activeToasts} />
+        <HeavyComponentInner data={achievementData.activeToasts} />
       </Suspense>
     </div>
   );
@@ -109,7 +109,7 @@ export default SafeComponentExample;
  */
 
 // Example of a placeholder heavy component for demonstration
-const HeavyComponent: React.FC<{ data: any[] }> = ({ data }) => (
+const HeavyComponentInner: React.FC<{ data: any[] }> = ({ data }) => (
   <div className="mt-4 p-2 bg-gray-100 rounded">
     <p>Heavy Component Loaded</p>
     <p>Data items: {data.length}</p>

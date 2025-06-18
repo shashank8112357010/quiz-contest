@@ -16,6 +16,8 @@ import {
   Star,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { updateUserData } from "@/lib/firebaseService";
+
 
 interface ProfileCompletionProps {
   className?: string;
@@ -25,6 +27,9 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
   className = "",
 }) => {
   const { userData } = useAuth();
+  const [updatingItem, setUpdatingItem] = React.useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = React.useState<string | null>(null);
+  const [showError, setShowError] = React.useState<string | null>(null);
 
   const completionItems = [
     {
@@ -60,17 +65,25 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
       id: "profile_picture",
       title: "Profile Picture",
       description: "Upload a custom avatar",
-      completed: false,
-      icon: <Circle className="w-4 h-4" />,
-      action: "Upload Photo",
+      completed: !!userData?.avatar,
+      icon: !!userData?.avatar ? (
+        <CheckCircle className="w-4 h-4" />
+      ) : (
+        <Circle className="w-4 h-4" />
+      ),
+      action: !!userData?.avatar ? null : "Upload Photo",
     },
     {
       id: "social_connect",
       title: "Connect Social",
       description: "Link your social accounts",
-      completed: false,
-      icon: <Circle className="w-4 h-4" />,
-      action: "Connect",
+      completed: !!userData?.socialConnected,
+      icon: !!userData?.socialConnected ? (
+        <CheckCircle className="w-4 h-4" />
+      ) : (
+        <Circle className="w-4 h-4" />
+      ),
+      action: !!userData?.socialConnected ? null : "Connect",
     },
     {
       id: "achievements",
@@ -93,9 +106,13 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
       id: "preferences",
       title: "Set Preferences",
       description: "Customize your quiz experience",
-      completed: false,
-      icon: <Circle className="w-4 h-4" />,
-      action: "Settings",
+      completed: !!userData?.preferencesSet,
+      icon: !!userData?.preferencesSet ? (
+        <CheckCircle className="w-4 h-4" />
+      ) : (
+        <Circle className="w-4 h-4" />
+      ),
+      action: !!userData?.preferencesSet ? null : "Settings",
     },
   ];
 
@@ -166,6 +183,12 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
             <p className="text-sm text-gray-400">
               {completedCount} of {completionItems.length} items completed
             </p>
+            {showSuccess && (
+              <div className="text-green-400 text-xs mt-2">{showSuccess}</div>
+            )}
+            {showError && (
+              <div className="text-red-400 text-xs mt-2">{showError}</div>
+            )}
           </div>
 
           {/* Completion Items */}
@@ -203,9 +226,28 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
                 {!item.completed && item.action && (
                   <Button
                     size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className={`bg-blue-600 hover:bg-blue-700 text-white ${updatingItem === item.id ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    disabled={!!updatingItem}
+                    onClick={async () => {
+                      setShowSuccess(null);
+                      setShowError(null);
+                      setUpdatingItem(item.id);
+                      try {
+                        if (item.id === "social_connect") {
+                          await updateUserData(userData.uid, { socialConnected: true });
+                          setShowSuccess("Social account connected!");
+                        } else if (item.id === "preferences") {
+                          await updateUserData(userData.uid, { preferencesSet: true });
+                          setShowSuccess("Preferences saved!");
+                        }
+                      } catch (err) {
+                        setShowError("Failed to update. Please try again.");
+                      } finally {
+                        setUpdatingItem(null);
+                      }
+                    }}
                   >
-                    {item.action}
+                    {updatingItem === item.id ? 'Saving...' : item.action}
                   </Button>
                 )}
                 {item.completed && (

@@ -63,18 +63,18 @@ export const WelcomeBackModal: React.FC<WelcomeBackModalProps> = ({
         <div className="space-y-6 py-6">
           {/* Current Stats */}
           <div className="grid grid-cols-3 gap-3">
-            <Card className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-yellow-500/20">
+            <Card className="bg-gradient-to-r from-orange-500/20 to-orange-800/20 border-orange-500/20">
               <CardContent className="p-3 text-center">
-                <Coins className="w-6 h-6 text-yellow-400 mx-auto mb-1" />
+                <Coins className="w-6 h-6 text-orange-400 mx-auto mb-1" />
                 <p className="text-lg font-bold text-white">{userData.coins}</p>
-                <p className="text-xs text-gray-300">Coins</p>
+                <p className="text-xs text-orangewhy -900">Coins</p>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-500/20">
               <CardContent className="p-3 text-center">
                 <Heart className="w-6 h-6 text-red-400 mx-auto mb-1" />
                 <p className="text-lg font-bold text-white">{userData.lives}</p>
-                <p className="text-xs text-gray-300">Lives</p>
+                <p className="text-xs text-red-900">Lives</p>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/20">
@@ -83,13 +83,13 @@ export const WelcomeBackModal: React.FC<WelcomeBackModalProps> = ({
                 <p className="text-lg font-bold text-white">
                   {userData.totalStars}
                 </p>
-                <p className="text-xs text-gray-300">Stars</p>
+                <p className="text-xs text-purple-800">Stars</p>
               </CardContent>
             </Card>
           </div>
 
           {/* Daily Bonus Available */}
-          <Card className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-500/20">
+          <Card className="bg-gradient-to-r from-green-800/20 to-emerald-500/20 border-green-500/20">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -97,8 +97,8 @@ export const WelcomeBackModal: React.FC<WelcomeBackModalProps> = ({
                     <Gift className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">Daily Bonus</h4>
-                    <p className="text-sm text-gray-300">
+                    <h4 className="font-semibold text-green-500">Daily Bonus</h4>
+                    <p className="text-sm text-green-500">
                       +25 coins available!
                     </p>
                   </div>

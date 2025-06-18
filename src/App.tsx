@@ -81,6 +81,7 @@ const AppContent = () => {
           <Route path="/categories" element={<Categories />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quiz/:categoryId" element={<Quiz />} />
+          <Route path="/quiz/day/:day" element={<Quiz />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/contests" element={<Contests />} />
           <Route path="/rewards" element={<Rewards />} />

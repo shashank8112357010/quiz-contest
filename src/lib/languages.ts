@@ -194,7 +194,13 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 // Language store
-export const useLanguageStore = create(
+interface LanguageStore {
+  currentLanguage: string;
+  setLanguage: (language: string) => void;
+  t: (key: keyof Translations) => string;
+}
+
+export const useLanguageStore = create<LanguageStore>()(
   persist(
     (set, get) => ({
       currentLanguage: "en",

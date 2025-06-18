@@ -36,6 +36,9 @@ export interface User {
   seasonDay?: number;
   subscriptionStart?: string | Date;
   subscriptionEnd?: string | Date;
+  // --- Profile Completion Dynamic Fields ---
+  socialConnected?: boolean;
+  preferencesSet?: boolean;
 }
 
 export interface QuizSession {
