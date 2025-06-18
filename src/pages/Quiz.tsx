@@ -284,14 +284,13 @@ const Quiz = () => {
   };
 
   const restartQuiz = async () => {
-    // Temporarily allow restart regardless of daily limit to test 10 questions
     if (user) {
       const updatedUser = await checkAndResetDailyUnlock(user.uid);
       setFirestoreUser(updatedUser);
-      // if (updatedUser && isDailyLimitReached(updatedUser)) {
-      //   setShowDailyLimitModal(true);
-      //   return;
-      // }
+      if (updatedUser && isDailyLimitReached(updatedUser)) {
+        setShowDailyLimitModal(true);
+        return;
+      }
     }
     // Fetch 10 questions for the selected category, or "gk" if none selected
     const categoryQuestions = getRandomQuestions(
