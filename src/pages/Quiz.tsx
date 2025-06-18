@@ -280,34 +280,6 @@ const Quiz = () => {
         <div className="relative z-40 min-h-screen p-4 pt-20">
           <div className="container mx-auto max-w-4xl">
             <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 mb-8 text-center">
-            <div className="flex items-center gap-3 lg:gap-4 w-full lg:w-auto justify-between lg:justify-end">
-              <div className="bg-gradient-to-r from-magic-500/20 to-electric-500/20 backdrop-blur-sm rounded-xl border border-magic-400/30 px-4 py-2 shadow-lg shadow-magic-500/10">
-                <div className="text-white text-sm font-bold text-center">
-                  Question {currentQuestion + 1} of {questions.length}
-                </div>
-              </div>
-              <Progress
-                value={progress}
-                className="w-32 lg:w-40 h-3 bg-white/20 rounded-full overflow-hidden"
-              />
-              <div className="bg-gradient-to-r from-neon-500/20 to-electric-500/20 backdrop-blur-sm rounded-xl border border-neon-400/30 px-4 py-2 shadow-lg shadow-neon-500/10">
-                <div className="text-white text-sm font-bold text-center">
-                  {Math.round(progress)}% Complete
-                </div>
-              </div>
-              <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl border border-blue-400/30 px-4 py-2 shadow-lg shadow-blue-500/10">
-                <div className="text-white text-sm font-bold text-center">
-                  Daily: {(firestoreUser?.questionsUnlockedToday || 0)}/10
-                </div>
-                <div className="text-white/60 text-xs text-center">Questions</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2">
-                <div className="text-white font-mono text-lg font-bold text-center">
-                  {score}
-                </div>
-                <div className="text-white/60 text-xs text-center">Points</div>
-              </div>
-            </div>
                   <div className="text-white/70 text-sm">Correct Answers</div>
                 </div>
                 <div className="bg-white/5 rounded-xl p-4">
