@@ -552,10 +552,10 @@ const Quiz = () => {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
               <span className="text-white/70 text-sm">
-                {t("question")} {currentQuestion + 1} of {questions.length}
+                Question {currentQuestion + 1} of 10
               </span>
               <span className="text-white/70 text-sm">
-                {Math.round(progress)}% {t("complete")}
+                {Math.round(((currentQuestion + 1) / 10) * 100)}% Complete
               </span>
             </div>
             <Progress value={progress} className="h-2 bg-white/20" />
