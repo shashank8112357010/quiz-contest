@@ -267,11 +267,11 @@ const Categories = () => {
 
                   {/* Content */}
                   <h3 className="text-base sm:text-lg font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300 leading-tight text-left">
-                    {category.name}
+                    {t(`categoryCards.${category.id}.name`)}
                   </h3>
 
                   <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 group-hover:text-white/80 transition-colors duration-300 line-clamp-3 text-left">
-                    {category.description}
+                    {t(`categoryCards.${category.id}.description`)}
                   </p>
 
                   {/* Stats */}
