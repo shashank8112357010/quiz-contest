@@ -60,7 +60,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
       gradient: "from-blue-500 via-purple-500 to-pink-500",
       rarity: "legendary",
       imagePath:
-        "https://images.pexels.com/photos/3568518/pexels-photo-3568518.jpeg",
+        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop&crop=center",
     },
     {
       id: "bmw",
@@ -72,7 +72,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
       gradient: "from-red-500 via-orange-500 to-yellow-500",
       rarity: "legendary",
       imagePath:
-        "https://images.pexels.com/photos/14776716/pexels-photo-14776716.jpeg",
+        "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=400&fit=crop&crop=center",
     },
     {
       id: "macbook",
@@ -84,7 +84,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
       gradient: "from-slate-500 via-gray-500 to-zinc-500",
       rarity: "epic",
       imagePath:
-        "https://images.pexels.com/photos/57690/pexels-photo-57690.jpeg",
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop&crop=center",
     },
     {
       id: "applewatch",
@@ -96,7 +96,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
       gradient: "from-green-500 via-emerald-500 to-teal-500",
       rarity: "epic",
       imagePath:
-        "https://images.pexels.com/photos/12564670/pexels-photo-12564670.jpeg",
+        "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=400&h=400&fit=crop&crop=center",
     },
     {
       id: "ps5",
@@ -108,7 +108,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
       gradient: "from-indigo-500 via-blue-500 to-cyan-500",
       rarity: "rare",
       imagePath:
-        "https://images.pexels.com/photos/14642112/pexels-photo-14642112.jpeg",
+        "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=400&fit=crop&crop=center",
     },
     {
       id: "goldcup",
@@ -120,7 +120,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
       gradient: "from-yellow-400 via-gold-500 to-amber-500",
       rarity: "rare",
       imagePath:
-        "https://images.pexels.com/photos/12026054/pexels-photo-12026054.jpeg",
+        "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=400&h=400&fit=crop&crop=center",
     },
   ];
 
