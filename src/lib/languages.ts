@@ -45,6 +45,17 @@ export interface Translations {
     newCategoriesDescription: string;
     newCategoriesWeekly: string;
   };
+  categoryCards: {
+    animal: { name: string; description: string };
+    world: { name: string; description: string };
+    computer: { name: string; description: string };
+    science: { name: string; description: string };
+    geography: { name: string; description: string };
+    literature: { name: string; description: string };
+    easy: string;
+    medium: string;
+    hard: string;
+  };
   leaderboard: {
     globalTitle: string;
     subtitle: string;
