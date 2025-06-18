@@ -48,6 +48,13 @@ const Quiz = () => {
   const { user } = useAuth();
   const { t } = useLanguageStore();
 
+  // Generate anonymous user ID for quiz tracking
+  const generateAnonymousId = () => {
+    const id = `anonymous_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem("anonymous-user-id", id);
+    return id;
+  };
+
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
