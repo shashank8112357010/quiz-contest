@@ -638,6 +638,14 @@ const Quiz = () => {
           )}
         </div>
       </div>
+
+      {/* Daily Limit Modal */}
+      <DailyLimitModal
+        isOpen={showDailyLimitModal}
+        onClose={() => setShowDailyLimitModal(false)}
+        onGoToCategories={goToCategories}
+        onGoHome={goHome}
+      />
     </div>
   );
 };
