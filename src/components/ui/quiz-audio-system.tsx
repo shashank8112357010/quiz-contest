@@ -312,7 +312,12 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
         try {
           audio.currentTime = 0;
           audio.play().catch((error) => {
-            console.warn(`Failed to play ${soundKey}:`, error);
+            console.warn(`Failed to play ${soundKey}:`, {
+              name: error.name,
+              message: error.message,
+              code: error.code || "Unknown",
+              soundKey,
+            });
             setAudioErrors((prev) => new Set(prev).add(soundKey));
             if (soundKey === "correctAnswer") generateFallbackSound("correct");
             else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
@@ -321,8 +326,13 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
             else if (soundKey === "quizComplete")
               generateFallbackSound("complete");
           });
-        } catch (error) {
-          console.warn(`Sound playback error for ${soundKey}:`, error);
+        } catch (error: any) {
+          console.warn(`Sound playback error for ${soundKey}:`, {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            soundKey,
+          });
         }
       } else {
         if (soundKey === "correctAnswer") generateFallbackSound("correct");
@@ -351,10 +361,19 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
     try {
       backgroundMusicRef.current.currentTime = 0;
       backgroundMusicRef.current.play().catch((error) => {
-        console.warn("Background music play failed:", error);
+        console.warn("Background music play failed:", {
+          name: error.name,
+          message: error.message,
+          code: error.code || "Unknown",
+          src: backgroundMusicRef.current?.src,
+        });
       });
-    } catch (error) {
-      console.warn("Background music error:", error);
+    } catch (error: any) {
+      console.warn("Background music error:", {
+        name: error.name,
+        message: error.message,
+        code: error.code || "Unknown",
+      });
     }
   }, [isEnabled, backgroundMusicEnabled, hasUserInteracted]);
 
