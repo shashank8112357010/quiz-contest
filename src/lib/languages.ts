@@ -207,6 +207,35 @@ export const translations: Record<string, Translations> = {
         "We're constantly adding new categories to challenge your knowledge. Stay tuned for updates!",
       newCategoriesWeekly: "🚀 New categories every week",
     },
+    categoryCards: {
+      animal: {
+        name: "Animal",
+        description: "Wildlife, pets, and fascinating creatures of our planet",
+      },
+      world: {
+        name: "World",
+        description: "Global knowledge, cultures, and international affairs",
+      },
+      computer: {
+        name: "Computer",
+        description: "Technology, programming, and digital world",
+      },
+      science: {
+        name: "Science",
+        description: "General science, discoveries, and scientific principles",
+      },
+      geography: {
+        name: "Geography",
+        description: "Countries, capitals, landmarks, and Earth's features",
+      },
+      literature: {
+        name: "Literature",
+        description: "Books, authors, poetry, and literary classics",
+      },
+      easy: "Easy",
+      medium: "Medium",
+      hard: "Hard",
+    },
     gratifications: "Gratifications",
     faq: "FAQ",
     login: "Login",
