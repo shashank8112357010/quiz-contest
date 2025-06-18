@@ -263,11 +263,11 @@ const Quiz = () => {
       setQuestionStartTime(Date.now());
       playQuestionStart();
     } else {
-      // Quiz completed - now increment daily count
-      updateDailyQuestionCount(1);
-      updateContestProgress(1);
+      // Quiz completed - increment contest progress but handle daily limit separately
+      updateDailyQuestionCount(10); // Count all 10 questions as completed
+      updateContestProgress(10);
       setContestProgress(getContestProgress());
-      if (user) await incrementQuestionsUnlocked(user.uid);
+      if (user) await incrementQuestionsUnlocked(user.uid); // This increments quiz sessions, not individual questions
 
       stopBackgroundMusic();
       playQuizComplete();
