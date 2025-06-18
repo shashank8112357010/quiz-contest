@@ -111,6 +111,11 @@ const Quiz = () => {
           categoryQuestions = getRandomQuestions(targetCategory, 10, userId);
         }
 
+        console.log(
+          "📝 Quiz loaded with",
+          categoryQuestions.length,
+          "questions",
+        );
         if (isMounted && categoryQuestions.length > 0) {
           setQuestions(categoryQuestions);
           setUserAnswers(new Array(categoryQuestions.length).fill(null));
@@ -119,6 +124,7 @@ const Quiz = () => {
           setLoadingUnlock(false);
           startBackgroundMusic();
         } else {
+          console.error("❌ No questions loaded or component unmounted");
           setLoadingUnlock(false);
         }
       } catch (error) {
