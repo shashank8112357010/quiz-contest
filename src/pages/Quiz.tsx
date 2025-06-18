@@ -132,7 +132,7 @@ const Quiz = () => {
     // Failsafe: if questions don't load within 5 seconds, force load default questions
     const failsafeTimer = setTimeout(() => {
       if (questions.length === 0 && isMounted) {
-        const defaultQuestions = getRandomQuestions("gk", 5, "failsafe-user");
+        const defaultQuestions = getRandomQuestions("gk", 10, "failsafe-user");
         if (defaultQuestions.length > 0) {
           setQuestions(defaultQuestions);
           setUserAnswers(new Array(defaultQuestions.length).fill(null));
