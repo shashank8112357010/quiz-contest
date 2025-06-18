@@ -109,7 +109,17 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
         preload="auto"
         className="hidden"
         onLoadedData={() => console.log("Audio loaded successfully")}
-        onError={(e) => console.error("Audio loading error:", e)}
+        onError={(e) => {
+          const target = e.target as HTMLAudioElement;
+          const error = target.error;
+          console.error("Audio loading error:", {
+            code: error?.code,
+            message: error?.message || "Unknown audio error",
+            src: target.src,
+            networkState: target.networkState,
+            readyState: target.readyState,
+          });
+        }}
         onCanPlayThrough={() => {
           if (hasInteracted && autoPlay && !isPlaying) {
             audioRef.current?.play().catch(console.error);
@@ -118,7 +128,6 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
       >
         <source src="/audio/background-music.mp3" type="audio/mpeg" />
         <source src="/audio/background-music.ogg" type="audio/ogg" />
-      
       </audio>
 
       {/* Music Control Buttons */}

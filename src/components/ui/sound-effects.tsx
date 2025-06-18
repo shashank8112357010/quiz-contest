@@ -104,8 +104,16 @@ export const SoundEffectsController = ({
       const audio = new Audio();
 
       // Error handling
-      audio.addEventListener("error", () => {
-        console.warn(`Sound effect not found: ${sound.url}`);
+      audio.addEventListener("error", (e) => {
+        const target = e.target as HTMLAudioElement;
+        const error = target.error;
+        console.warn(`Sound effect loading failed for ${key}:`, {
+          code: error?.code,
+          message: error?.message || "Unknown audio error",
+          url: sound.url,
+          networkState: target.networkState,
+          readyState: target.readyState,
+        });
         setAudioErrors((prev) => new Set(prev).add(key));
       });
 
