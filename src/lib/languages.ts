@@ -184,6 +184,18 @@ export const translations: Record<string, Translations> = {
     },
     home: "Home",
     categories: "Categories",
+    categoriesPage: {
+      chooseYour: "Choose Your",
+      category: "Category",
+      categories: "Categories",
+      questions: "Questions",
+      contestDescription:
+        "Join our 90-Day Quiz Contest! Play 10 questions daily across 6 categories and compete with others.",
+      moreComingSoon: "More Categories Coming Soon!",
+      newCategoriesDescription:
+        "We're constantly adding new categories to challenge your knowledge. Stay tuned for updates!",
+      newCategoriesWeekly: "🚀 New categories every week",
+    },
     gratifications: "Gratifications",
     faq: "FAQ",
     login: "Login",
