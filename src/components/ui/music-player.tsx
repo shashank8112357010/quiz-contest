@@ -205,11 +205,14 @@ export const MusicPlayer = ({
           const target = e.target as HTMLAudioElement;
           const error = target.error;
           console.warn(`Audio error in music player:`, {
-            code: error?.code,
-            message: error?.message || "Unknown audio error",
+            code: error?.code || "Unknown",
+            message: error?.message || "Audio file failed to load",
             src: target.src,
             networkState: target.networkState,
             readyState: target.readyState,
+            errorType: error
+              ? `MediaError code ${error.code}`
+              : "No error details available",
           });
           setHasAudioError(true);
         }}

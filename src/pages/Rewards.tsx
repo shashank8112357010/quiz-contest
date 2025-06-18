@@ -40,7 +40,10 @@ const Rewards = () => {
 
   // Real-time daily progress state
   const { user } = useAuth();
-  const [progress, setProgress] = useState({ unlockedDays: 1, completedDays: [] });
+  const [progress, setProgress] = useState({
+    unlockedDays: 1,
+    completedDays: [],
+  });
   const [loadingProgress, setLoadingProgress] = useState(true);
 
   useEffect(() => {
@@ -53,7 +56,11 @@ const Rewards = () => {
         setProgress(snap.data().dailyProgress);
       } else {
         // If no progress, initialize
-        setDoc(ref, { dailyProgress: { unlockedDays: 1, completedDays: [] } }, { merge: true });
+        setDoc(
+          ref,
+          { dailyProgress: { unlockedDays: 1, completedDays: [] } },
+          { merge: true },
+        );
         setProgress({ unlockedDays: 1, completedDays: [] });
       }
       setLoadingProgress(false);
@@ -376,7 +383,9 @@ const Rewards = () => {
                 <div className="lg:col-span-2">
                   {/* Dynamic Daily Progress Grid (real-time) */}
                   {loadingProgress ? (
-                    <div className="text-white text-center p-8">Loading progress...</div>
+                    <div className="text-white text-center p-8">
+                      Loading progress...
+                    </div>
                   ) : (
                     <DailyProgress
                       unlockedDays={progress.unlockedDays}
@@ -545,14 +554,116 @@ const Rewards = () => {
             {/* Store */}
             <TabsContent value="store">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="col-span-full text-center py-20">
-                  <h2 className="text-4xl md:text-5xl font-bold text-white/80 animate-pulse tracking-wider">
-                    Coming Soon...
-                  </h2>
-                  <p className="mt-4 text-white/50 text-lg">
-                    New features are on the way. Stay tuned!
-                  </p>
-                </div>
+                {storeItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.id}
+                      className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${item.borderColor} p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp`}
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animationFillMode: "both",
+                      }}
+                    >
+                      {/* Product Image */}
+                      <div className="relative mb-4">
+                        <div
+                          className={`w-full h-32 ${item.bgColor} rounded-xl flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300`}
+                        >
+                          {item.name === "50/50 Power-up" && (
+                            <img
+                              src="https://images.pexels.com/photos/27499331/pexels-photo-27499331.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Extra Life" && (
+                            <img
+                              src="https://images.pexels.com/photos/6320167/pexels-photo-6320167.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Time Freeze" && (
+                            <img
+                              src="https://images.pexels.com/photos/191414/pexels-photo-191414.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Double Coins" && (
+                            <img
+                              src="https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Hint Master" && (
+                            <img
+                              src="https://images.pexels.com/photos/4254548/pexels-photo-4254548.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {item.name === "Lucky Charm" && (
+                            <img
+                              src="https://images.pexels.com/photos/11975693/pexels-photo-11975693.jpeg"
+                              alt={item.name}
+                              className="object-cover w-full h-full rounded-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                            />
+                          )}
+                          {/* Icon overlay */}
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl">
+                            <Icon className="w-8 h-8 text-white drop-shadow-lg" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Item Info */}
+                      <div className="space-y-3">
+                        <div>
+                          <h3 className="text-lg font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300">
+                            {item.name}
+                          </h3>
+                          <p className="text-white/70 text-sm group-hover:text-white/80 transition-colors duration-300">
+                            {item.description}
+                          </p>
+                        </div>
+
+                        {/* Price */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
+                                ₹
+                              </span>
+                            </div>
+                            <span className="text-xl font-bold text-white">
+                              {item.price}
+                            </span>
+                          </div>
+                          <Badge
+                            className={`${item.bgColor} ${item.borderColor} text-white text-xs px-3 py-1 capitalize`}
+                          >
+                            {item.type}
+                          </Badge>
+                        </div>
+
+                        {/* Buy Button */}
+                        <Button
+                          className={`w-full bg-gradient-to-r ${item.color} hover:shadow-lg transition-all duration-300 text-white border-0 group-hover:scale-105`}
+                        >
+                          Purchase
+                        </Button>
+                      </div>
+
+                      {/* Glow effect */}
+                      <div
+                        className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl bg-gradient-to-r ${item.color} blur-xl -z-10`}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </TabsContent>
           </Tabs>

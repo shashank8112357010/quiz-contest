@@ -48,11 +48,34 @@ export const useOnboarding = () => {
   useEffect(() => {
     if (user && userData && !onboardingState.hasSeenTour) {
       // New user or user who hasn't seen the tour
+      console.log("🎯 Triggering onboarding tour for new user:", user.uid);
       const timer = setTimeout(() => {
         setShowTour(true);
-      }, 1000); // Small delay to let the page load
+      }, 2000); // Slightly longer delay to ensure everything is loaded
 
       return () => clearTimeout(timer);
+    } else if (user && userData && onboardingState.hasSeenTour) {
+      console.log("✅ User has already seen onboarding tour");
+    }
+  }, [user, userData, onboardingState.hasSeenTour]);
+
+  // Additional check for completely new users (first time authentication)
+  useEffect(() => {
+    if (user && userData) {
+      // Check if this is a brand new user (just created account)
+      const userCreationTime = new Date(userData.createdAt || 0).getTime();
+      const now = new Date().getTime();
+      const timeDifference = now - userCreationTime;
+
+      // If user was created within the last 5 minutes and hasn't seen tour
+      if (timeDifference < 5 * 60 * 1000 && !onboardingState.hasSeenTour) {
+        console.log("🆕 Brand new user detected, forcing onboarding tour");
+        const timer = setTimeout(() => {
+          setShowTour(true);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+      }
     }
   }, [user, userData, onboardingState.hasSeenTour]);
 

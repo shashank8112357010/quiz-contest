@@ -2,7 +2,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
-  updateProfile
+  updateProfile,
 } from "firebase/auth";
 import {
   doc,
@@ -19,24 +19,40 @@ import {
   Timestamp,
   arrayUnion,
   increment,
-  serverTimestamp // <-- FIXED: add this import
+  serverTimestamp, // <-- FIXED: add this import
 } from "firebase/firestore";
 import { auth, db, storage } from "./firebase"; // Import storage for profile image upload
 import { User, QuizSession } from "./store";
 
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 
 // Uploads a profile image to Firebase Storage and returns the download URL
-export const uploadProfileImage = async (uid: string, file: File): Promise<string> => {
-  alert(uid );
+export const uploadProfileImage = async (
+  uid: string,
+  file: File,
+): Promise<string> => {
   try {
-    const fileRef = storageRef(storage, `profileImages/${uid}/${file.name}`);
+    // Create a unique filename to avoid conflicts
+    const timestamp = new Date().getTime();
+    const fileExtension = file.name.split(".").pop() || "jpg";
+    const fileName = `profile_${timestamp}.${fileExtension}`;
+
+    const fileRef = storageRef(storage, `profileImages/${uid}/${fileName}`);
+
+    console.log("Uploading profile image for user:", uid);
     await uploadBytes(fileRef, file);
     const url = await getDownloadURL(fileRef);
+    console.log("Profile image uploaded successfully:", url);
     return url;
   } catch (error) {
     console.error("Error uploading profile image:", error);
-    throw error;
+    throw new Error(
+      `Failed to upload profile image: ${error.message || error}`,
+    );
   }
 };
 
@@ -58,14 +74,19 @@ export const signUp = async (
   displayName: string,
 ) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     const user = userCredential.user;
 
     // Update Firebase auth profile for displayName
     await updateProfile(user, { displayName });
 
     // Create user document in Firestore
-    const userDataFromAuth = { // Renamed to avoid conflict with User type if imported
+    const userDataFromAuth = {
+      // Renamed to avoid conflict with User type if imported
       uid: user.uid,
       email: user.email,
       phoneNumber: user.phoneNumber || "", // Ensure phoneNumber is part of the structure if needed
@@ -102,7 +123,11 @@ export const signUp = async (
 
 export const signIn = async (email: string, password: string) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     return userCredential;
   } catch (error) {
     console.error("Error in Firebase signIn:", error);
@@ -149,7 +174,7 @@ export const updateUserCoins = async (uid: string, amount: number) => {
   try {
     const userDocRef = doc(db, "users", uid);
     await updateDoc(userDocRef, {
-      coins: increment(amount) // amount can be positive or negative
+      coins: increment(amount), // amount can be positive or negative
     });
   } catch (error) {
     console.error("Error updating user coins in Firestore:", error);
@@ -161,7 +186,7 @@ export const updateUserLives = async (uid: string, amount: number) => {
   try {
     const userDocRef = doc(db, "users", uid);
     await updateDoc(userDocRef, {
-      lives: increment(amount) // amount can be positive or negative
+      lives: increment(amount), // amount can be positive or negative
     });
   } catch (error) {
     console.error("Error updating user lives in Firestore:", error);
@@ -173,7 +198,7 @@ export const unlockCategory = async (uid: string, categoryId: string) => {
   try {
     const userDocRef = doc(db, "users", uid);
     await updateDoc(userDocRef, {
-      unlockedCategories: arrayUnion(categoryId)
+      unlockedCategories: arrayUnion(categoryId),
     });
   } catch (error) {
     console.error("Error unlocking category in Firestore:", error);
@@ -187,7 +212,7 @@ export const saveQuizSession = async (session: QuizSession) => {
     // Add a server timestamp if not already present
     const sessionWithTimestamp = {
       ...session,
-      timestamp: session.timestamp || Timestamp.now() // Or serverTimestamp() from Firestore
+      timestamp: session.timestamp || Timestamp.now(), // Or serverTimestamp() from Firestore
     };
     await addDoc(collection(db, "quizSessions"), sessionWithTimestamp);
   } catch (error) {
@@ -206,10 +231,12 @@ export const getUserSessions = async (
       sessionsRef,
       where("uid", "==", uid),
       orderBy("timestamp", "desc"), // Assuming 'timestamp' field exists and is sortable
-      limit(limit_count)
+      limit(limit_count),
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as QuizSession));
+    return querySnapshot.docs.map(
+      (doc) => ({ id: doc.id, ...doc.data() }) as QuizSession,
+    );
   } catch (error) {
     console.error("Error getting user sessions from Firestore:", error);
     return []; // Or throw error
@@ -217,18 +244,21 @@ export const getUserSessions = async (
 };
 
 // Leaderboard Services
-export const getLeaderboard = async (limit_count: number = 10): Promise<User[]> => {
+export const getLeaderboard = async (
+  limit_count: number = 10,
+): Promise<User[]> => {
   try {
     const usersRef = collection(db, "users");
     const q = query(
       usersRef,
       orderBy("totalStars", "desc"),
-      limit(limit_count)
+      limit(limit_count),
     );
     const querySnapshot = await getDocs(q);
     // Filter out users who might not have displayName, or handle appropriately
-    return querySnapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as User))
-                                .filter(user => user.displayName);
+    return querySnapshot.docs
+      .map((doc) => ({ uid: doc.id, ...doc.data() }) as User)
+      .filter((user) => user.displayName);
   } catch (error) {
     console.error("Error getting leaderboard from Firestore:", error);
     return []; // Or throw error

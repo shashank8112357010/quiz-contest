@@ -210,8 +210,15 @@ export const VIPMembershipCard = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-gold-400 to-yellow-500 rounded-xl flex items-center justify-center animate-glow">
-              <Crown className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-r from-gold-400 to-yellow-500 rounded-xl flex items-center justify-center animate-glow overflow-hidden">
+              <img
+                src="https://images.pexels.com/photos/10976653/pexels-photo-10976653.jpeg"
+                alt="VIP Membership"
+                className="object-cover w-full h-full rounded-xl opacity-80"
+              />
+              <div className="absolute inset-0 bg-black/30 rounded-xl flex items-center justify-center">
+                <Crown className="w-6 h-6 text-white drop-shadow-lg" />
+              </div>
             </div>
             <div>
               <div className="text-gold-300 text-sm font-bold">EXCLUSIVE</div>
@@ -307,10 +314,17 @@ export const CoinPackageOffer = ({
       </div>
 
       <div className="relative z-10 text-center">
-        {/* Coin stack */}
+        {/* Coin stack with image */}
         <div className="mb-4">
-          <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-gold-500 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-bounce-subtle">
-            <Coins className="w-10 h-10 text-white" />
+          <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-gold-500 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-bounce-subtle overflow-hidden">
+            <img
+              src="https://images.pexels.com/photos/210600/pexels-photo-210600.jpeg"
+              alt="Coins"
+              className="object-cover w-full h-full rounded-full opacity-90"
+            />
+            <div className="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center">
+              <Coins className="w-8 h-8 text-white drop-shadow-lg" />
+            </div>
           </div>
         </div>
 

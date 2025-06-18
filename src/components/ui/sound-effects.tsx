@@ -9,46 +9,54 @@ export interface SoundEffect {
 // Predefined sound effects for the game
 export const SOUND_EFFECTS: Record<string, SoundEffect> = {
   // UI Sounds
-  click: { name: "Click", url: "/audio/click.mp3", volume: 0.3 },
-  hover: { name: "Hover", url: "/audio/hover.mp3", volume: 0.2 },
+  click: { name: "Click", url: "/audio/tick.mp3", volume: 0.3 },
+  hover: { name: "Hover", url: "/audio/tick.mp3", volume: 0.2 },
 
   // Game Sounds
-  correct: { name: "Correct Answer", url: "/audio/correct.mp3", volume: 0.5 },
-  incorrect: { name: "Wrong Answer", url: "/audio/incorrect.mp3", volume: 0.4 },
+  correct: { name: "Correct Answer", url: "/audio/clapping.mp3", volume: 0.5 },
+  incorrect: { name: "Wrong Answer", url: "/audio/buzzer.mp3", volume: 0.4 },
   timeWarning: {
     name: "Time Warning",
-    url: "/audio/time-warning.mp3",
+    url: "/audio/tick-tock.mp3",
     volume: 0.6,
   },
-  timeUp: { name: "Time Up", url: "/audio/time-up.mp3", volume: 0.7 },
+  timeUp: { name: "Time Up", url: "/audio/buzzer.mp3", volume: 0.7 },
 
   // Achievement Sounds
-  levelUp: { name: "Level Up", url: "/audio/level-up.mp3", volume: 0.8 },
+  levelUp: { name: "Level Up", url: "/audio/victory-fanfare.mp3", volume: 0.8 },
   achievement: {
     name: "Achievement",
-    url: "/audio/achievement.mp3",
+    url: "/audio/victory-fanfare.mp3",
     volume: 0.6,
   },
-  powerUp: { name: "Power Up", url: "/audio/power-up.mp3", volume: 0.5 },
+  powerUp: { name: "Power Up", url: "/audio/victory-fanfare.mp3", volume: 0.5 },
 
   // Prize/Reward Sounds
   coinCollect: {
     name: "Coin Collect",
-    url: "/audio/coin-collect.mp3",
+    url: "/audio/tick.mp3",
     volume: 0.4,
   },
-  prizeDrop: { name: "Prize Drop", url: "/audio/prize-drop.mp3", volume: 0.7 },
-  fanfare: { name: "Victory Fanfare", url: "/audio/fanfare.mp3", volume: 0.8 },
+  prizeDrop: { name: "Prize Drop", url: "/audio/clapping.mp3", volume: 0.7 },
+  fanfare: {
+    name: "Victory Fanfare",
+    url: "/audio/victory-fanfare.mp3",
+    volume: 0.8,
+  },
 
   // Streak Sounds
-  streak3: { name: "3 Streak", url: "/audio/streak-3.mp3", volume: 0.5 },
-  streak5: { name: "5 Streak", url: "/audio/streak-5.mp3", volume: 0.6 },
-  streak10: { name: "10 Streak", url: "/audio/streak-10.mp3", volume: 0.8 },
+  streak3: { name: "3 Streak", url: "/audio/clapping.mp3", volume: 0.5 },
+  streak5: { name: "5 Streak", url: "/audio/clapping.mp3", volume: 0.6 },
+  streak10: {
+    name: "10 Streak",
+    url: "/audio/victory-fanfare.mp3",
+    volume: 0.8,
+  },
 
   // Special Effects
-  magic: { name: "Magic", url: "/audio/magic.mp3", volume: 0.5 },
-  explosion: { name: "Explosion", url: "/audio/explosion.mp3", volume: 0.6 },
-  whoosh: { name: "Whoosh", url: "/audio/whoosh.mp3", volume: 0.4 },
+  magic: { name: "Magic", url: "/audio/aww-sound.mp3", volume: 0.5 },
+  explosion: { name: "Explosion", url: "/audio/buzzer.mp3", volume: 0.6 },
+  whoosh: { name: "Whoosh", url: "/audio/aww-sound.mp3", volume: 0.4 },
 };
 
 interface SoundEffectsControllerProps {
@@ -108,11 +116,14 @@ export const SoundEffectsController = ({
         const target = e.target as HTMLAudioElement;
         const error = target.error;
         console.warn(`Sound effect loading failed for ${key}:`, {
-          code: error?.code,
-          message: error?.message || "Unknown audio error",
+          code: error?.code || "Unknown",
+          message: error?.message || "Audio file failed to load",
           url: sound.url,
           networkState: target.networkState,
           readyState: target.readyState,
+          errorType: error
+            ? `MediaError code ${error.code}`
+            : "No error details available",
         });
         setAudioErrors((prev) => new Set(prev).add(key));
       });

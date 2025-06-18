@@ -38,6 +38,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useLanguageStore } from "@/lib/languages";
 import { ProfileCompletion } from "@/components/ui/profile-completion";
 import { AuthDebug } from "@/components/ui/auth-debug";
 
@@ -45,6 +46,7 @@ import { uploadProfileImage, updateUserPhotoURL } from "@/lib/firebaseService";
 
 const Profile = () => {
   const { user, userData, loading } = useAuth();
+  const { t } = useLanguageStore();
   const [streak, setStreak] = useState<number | null>(null);
   const [loadingStreak, setLoadingStreak] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
@@ -71,7 +73,6 @@ const Profile = () => {
     return () => unsub();
   }, [user?.uid]);
 
-
   // Real-time Firestore data
   const [activityData, setActivityData] = useState<any[]>([]);
   const [recentQuizzes, setRecentQuizzes] = useState<any[]>([]);
@@ -89,19 +90,19 @@ const Profile = () => {
     // Activities
     const activityRef = collection(db, "users", user.uid, "activities");
     const unsubActivity = onSnapshot(activityRef, (snap) => {
-      setActivityData(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setActivityData(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       setLoadingActivity(false);
     });
     // Quizzes
     const quizzesRef = collection(db, "users", user.uid, "quizzes");
     const unsubQuizzes = onSnapshot(quizzesRef, (snap) => {
-      setRecentQuizzes(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setRecentQuizzes(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       setLoadingQuizzes(false);
     });
     // Achievements
     const achievementsRef = collection(db, "users", user.uid, "achievements");
     const unsubAchievements = onSnapshot(achievementsRef, (snap) => {
-      setAchievements(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setAchievements(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       setLoadingAchievements(false);
     });
     // Cleanup
@@ -172,7 +173,8 @@ const Profile = () => {
                   Please Sign In
                 </h1>
                 <p className="text-gray-300 mb-6">
-                  You need to be signed in to view your profile and track your progress.
+                  You need to be signed in to view your profile and track your
+                  progress.
                 </p>
                 <Button
                   onClick={() => (window.location.href = "/")}
@@ -234,12 +236,17 @@ const Profile = () => {
                       setUploading(true);
                       setUploadError("");
                       try {
-                        const url = await uploadProfileImage(user.uid, e.target.files[0]);
+                        const url = await uploadProfileImage(
+                          user.uid,
+                          e.target.files[0],
+                        );
                         await updateUserPhotoURL(user.uid, url);
                         setUploadSuccess(true);
                         setTimeout(() => setUploadSuccess(false), 2000);
                       } catch (err) {
-                        setUploadError("Failed to upload image. Please try again.");
+                        setUploadError(
+                          "Failed to upload image. Please try again.",
+                        );
                       } finally {
                         setUploading(false);
                       }
@@ -248,7 +255,9 @@ const Profile = () => {
                   <Button
                     size="icon"
                     className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-purple-600 hover:bg-purple-700"
-                    onClick={() => document.getElementById("profile-image-input")?.click()}
+                    onClick={() =>
+                      document.getElementById("profile-image-input")?.click()
+                    }
                     disabled={uploading}
                   >
                     {uploading ? (
@@ -385,7 +394,6 @@ const Profile = () => {
               >
                 🏆 Achievements
               </TabsTrigger>
-
             </TabsList>
 
             {/* Overview Tab */}
@@ -506,7 +514,11 @@ const Profile = () => {
                         <div className="flex justify-between items-center">
                           <span className="text-gray-300">Current Streak</span>
                           <span className="font-bold text-orange-400">
-                            {loadingStreak ? "..." : streak !== null ? `${streak} days` : "0 days"}
+                            {loadingStreak
+                              ? "..."
+                              : streak !== null
+                                ? `${streak} days`
+                                : "0 days"}
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
@@ -642,39 +654,44 @@ const Profile = () => {
                 {achievements.map((achievement) => (
                   <Card
                     key={achievement.id}
-                    className={`${achievement.unlocked
+                    className={`${
+                      achievement.unlocked
                         ? `bg-gradient-to-r ${getRarityColor(achievement.rarity)}/20 border-slate-600`
                         : "bg-slate-800/50 border-slate-700"
-                      } backdrop-blur-xl transition-all duration-300 hover:scale-105`}
+                    } backdrop-blur-xl transition-all duration-300 hover:scale-105`}
                   >
                     <CardContent className="p-6 text-center">
                       <div
-                        className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${achievement.unlocked
+                        className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                          achievement.unlocked
                             ? `bg-gradient-to-r ${getRarityColor(achievement.rarity)}`
                             : "bg-slate-700"
-                          }`}
+                        }`}
                       >
                         {achievement.icon}
                       </div>
                       <h3
-                        className={`font-bold mb-2 ${achievement.unlocked ? "text-white" : "text-gray-400"
-                          }`}
+                        className={`font-bold mb-2 ${
+                          achievement.unlocked ? "text-white" : "text-gray-400"
+                        }`}
                       >
                         {achievement.title}
                       </h3>
                       <p
-                        className={`text-sm mb-3 ${achievement.unlocked
+                        className={`text-sm mb-3 ${
+                          achievement.unlocked
                             ? "text-gray-300"
                             : "text-gray-500"
-                          }`}
+                        }`}
                       >
                         {achievement.description}
                       </p>
                       <Badge
-                        className={`capitalize ${achievement.unlocked
+                        className={`capitalize ${
+                          achievement.unlocked
                             ? `bg-gradient-to-r ${getRarityColor(achievement.rarity)} text-white`
                             : "bg-slate-600 text-gray-300"
-                          }`}
+                        }`}
                       >
                         {achievement.rarity}
                       </Badge>
@@ -688,8 +705,6 @@ const Profile = () => {
                 ))}
               </div>
             </TabsContent>
-
-
           </Tabs>
         </main>
       </div>

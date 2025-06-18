@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useLanguageStore } from "@/lib/languages";
 import { Trophy, Zap, Star, Gift, User, Smartphone } from "lucide-react";
 
 interface AutoLoginModalProps {
@@ -27,6 +28,7 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
 }) => {
   const [showPhoneAuth, setShowPhoneAuth] = useState(false);
   const { user, userData } = useAuth();
+  const { t } = useLanguageStore();
 
   // Close modal if user becomes authenticated
   useEffect(() => {
@@ -84,7 +86,7 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
                   <Star className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                   <div className="text-white font-bold">90-Day Contest</div>
                   <div className="text-purple-300 text-sm">
-                    Win Amazing Prizes
+                    Win {t("amazingPrizes")}
                   </div>
                 </div>
               </div>

@@ -38,12 +38,68 @@ export interface Translations {
   leaderboard: {
     globalTitle: string;
     subtitle: string;
+    topQuizMasters: string;
+    live: string;
+    yourStats: string;
+    currentRank: string;
+    bestRank: string;
+    totalScore: string;
+    thisWeek: string;
+    enterContest: string;
+    categoryLeaders: string;
+    score: string;
+    points: string;
+    viewFullRankings: string;
+    badge: {
+      champion: string;
+      expert: string;
+      rising: string;
+      veteran: string;
+    };
+    category: {
+      science: string;
+      history: string;
+      sports: string;
+      technology: string;
+      movies: string;
+      music: string;
+    };
   };
   gratifications: string;
   faq: string;
   login: string;
   signOut: string;
   changeCategory: string;
+
+  // Prizes
+  prizes: {
+    iphone15: {
+      name: string;
+      description: string;
+    };
+    car: {
+      name: string;
+      description: string;
+    };
+    laptop: {
+      name: string;
+      description: string;
+    };
+    watch: {
+      name: string;
+      desc: string;
+    };
+    ps5: {
+      name: string;
+    };
+    gamepad: {
+      name: string;
+      desc: string;
+    };
+    giftcard: {
+      desc: string;
+    };
+  };
 
   // Quiz
   question: string;
@@ -76,6 +132,7 @@ export interface Translations {
   continue: string;
   cancel: string;
   ok: string;
+  amazingPrizes: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -88,6 +145,32 @@ export const translations: Record<string, Translations> = {
     leaderboard: {
       globalTitle: "Global Leaderboard",
       subtitle: "Compete with quiz masters worldwide and climb to the top!",
+      topQuizMasters: "Top Quiz Masters",
+      live: "Live",
+      yourStats: "Your Stats",
+      currentRank: "Current Rank",
+      bestRank: "Best Rank",
+      totalScore: "Total Score",
+      thisWeek: "This Week",
+      enterContest: "Enter Contest",
+      categoryLeaders: "Category Leaders",
+      score: "Score",
+      points: "Points",
+      viewFullRankings: "View Full Rankings",
+      badge: {
+        champion: "Champion",
+        expert: "Expert",
+        rising: "Rising Star",
+        veteran: "Veteran",
+      },
+      category: {
+        science: "Science",
+        history: "History",
+        sports: "Sports",
+        technology: "Technology",
+        movies: "Movies",
+        music: "Music",
+      },
     },
     home: "Home",
     categories: "Categories",
@@ -96,6 +179,35 @@ export const translations: Record<string, Translations> = {
     login: "Login",
     signOut: "Sign Out",
     changeCategory: "Change Category",
+
+    prizes: {
+      iphone15: {
+        name: "iPhone 15 Pro",
+        description: "Latest flagship smartphone with incredible camera",
+      },
+      car: {
+        name: "BMW Luxury Car",
+        description: "Premium luxury vehicle for ultimate driving experience",
+      },
+      laptop: {
+        name: "MacBook Pro",
+        description: "High-performance laptop for professionals",
+      },
+      watch: {
+        name: "Apple Watch Ultra",
+        desc: "Advanced smartwatch with fitness tracking",
+      },
+      ps5: {
+        name: "PlayStation 5",
+      },
+      gamepad: {
+        name: "Golden Trophy",
+        desc: "Exclusive winner's trophy and cash prize",
+      },
+      giftcard: {
+        desc: "Premium gift voucher for shopping",
+      },
+    },
 
     question: "Question",
     questionsInBank: "Questions in bank",
@@ -125,6 +237,7 @@ export const translations: Record<string, Translations> = {
     continue: "Continue",
     cancel: "Cancel",
     ok: "OK",
+    amazingPrizes: "Amazing Prizes",
   },
   ar: {
     hero: {
@@ -134,7 +247,34 @@ export const translations: Record<string, Translations> = {
     },
     leaderboard: {
       globalTitle: "لوحة المتصدرين العالمية",
-      subtitle: "تنافس مع أساتذة الاختبار من جميع أنحاء العالم وتسلق إلى القمة!",
+      subtitle:
+        "تنافس مع أساتذة الاختبار من جميع أنحاء العالم وتسلق إلى القمة!",
+      topQuizMasters: "أفضل أساتذة الاختبار",
+      live: "مباشر",
+      yourStats: "إحصائياتك",
+      currentRank: "الترتيب الحالي",
+      bestRank: "أفضل ترتيب",
+      totalScore: "النتيجة الإجمالية",
+      thisWeek: "هذا الأسبوع",
+      enterContest: "دخول المسابقة",
+      categoryLeaders: "متصدرو الفئات",
+      score: "النتيجة",
+      points: "النقاط",
+      viewFullRankings: "عرض جميع التصنيفات",
+      badge: {
+        champion: "بطل",
+        expert: "خبير",
+        rising: "نجم صاعد",
+        veteran: "محارب قديم",
+      },
+      category: {
+        science: "العلوم",
+        history: "التاريخ",
+        sports: "الرياضة",
+        technology: "التكنولوجيا",
+        movies: "الأفلام",
+        music: "الموسيقى",
+      },
     },
     home: "الرئيسية",
     categories: "الفئات",
@@ -143,6 +283,35 @@ export const translations: Record<string, Translations> = {
     login: "تسجيل الدخول",
     signOut: "تسجيل الخروج",
     changeCategory: "تغيير الفئة",
+
+    prizes: {
+      iphone15: {
+        name: "آيفون 15 برو",
+        description: "أحدث هاتف ذكي رائد مع كاميرا مذهلة",
+      },
+      car: {
+        name: "سيارة BMW فاخرة",
+        description: "سيارة فاخرة ممتازة لتجربة قيادة مثالية",
+      },
+      laptop: {
+        name: "ماك بوك برو",
+        description: "كمبيوتر محمول عالي الأداء للمحترفين",
+      },
+      watch: {
+        name: "آبل واتش ألترا",
+        desc: "ساعة ذكية متقدمة مع تتبع اللياقة البدنية",
+      },
+      ps5: {
+        name: "بلايستيشن 5",
+      },
+      gamepad: {
+        name: "كأس ذهبي",
+        desc: "كأس حصري للفائز وجائزة نقدية",
+      },
+      giftcard: {
+        desc: "قسيمة هدايا ممتازة للتسوق",
+      },
+    },
 
     question: "سؤال",
     questionsInBank: "أسئلة في البنك",
@@ -172,6 +341,7 @@ export const translations: Record<string, Translations> = {
     continue: "متابعة",
     cancel: "إلغاء",
     ok: "موافق",
+    amazingPrizes: "جوائز مذهلة",
   },
   pt: {
     hero: {
@@ -182,6 +352,32 @@ export const translations: Record<string, Translations> = {
     leaderboard: {
       globalTitle: "Classificação Global",
       subtitle: "Compita com mestres do quiz no mundo todo e chegue ao topo!",
+      topQuizMasters: "Top Mestres do Quiz",
+      live: "Ao Vivo",
+      yourStats: "Suas Estatísticas",
+      currentRank: "Classificação Atual",
+      bestRank: "Melhor Classificação",
+      totalScore: "Pontuação Total",
+      thisWeek: "Esta Semana",
+      enterContest: "Entrar no Concurso",
+      categoryLeaders: "Líderes por Categoria",
+      score: "Pontuação",
+      points: "Pontos",
+      viewFullRankings: "Ver Classificações Completas",
+      badge: {
+        champion: "Campeão",
+        expert: "Especialista",
+        rising: "Estrela em Ascensão",
+        veteran: "Veterano",
+      },
+      category: {
+        science: "Ciência",
+        history: "História",
+        sports: "Esportes",
+        technology: "Tecnologia",
+        movies: "Filmes",
+        music: "Música",
+      },
     },
     home: "Início",
     categories: "Categorias",
@@ -190,6 +386,36 @@ export const translations: Record<string, Translations> = {
     login: "Entrar",
     signOut: "Sair",
     changeCategory: "Alterar Categoria",
+
+    prizes: {
+      iphone15: {
+        name: "iPhone 15 Pro",
+        description: "Smartphone flagship mais recente com câmera incrível",
+      },
+      car: {
+        name: "Carro BMW de Luxo",
+        description:
+          "Veículo de luxo premium para experiência de direção definitiva",
+      },
+      laptop: {
+        name: "MacBook Pro",
+        description: "Laptop de alto desempenho para profissionais",
+      },
+      watch: {
+        name: "Apple Watch Ultra",
+        desc: "Smartwatch avançado com rastreamento de fitness",
+      },
+      ps5: {
+        name: "PlayStation 5",
+      },
+      gamepad: {
+        name: "Troféu Dourado",
+        desc: "Troféu exclusivo do vencedor e prêmio em dinheiro",
+      },
+      giftcard: {
+        desc: "Voucher de presente premium para compras",
+      },
+    },
 
     question: "Pergunta",
     questionsInBank: "Perguntas no banco",
@@ -219,6 +445,7 @@ export const translations: Record<string, Translations> = {
     continue: "Continuar",
     cancel: "Cancelar",
     ok: "OK",
+    amazingPrizes: "Prêmios Incríveis",
   },
 };
 
@@ -241,7 +468,13 @@ export const useLanguageStore = create<LanguageStore>()(
         const currentLang = get().currentLanguage;
         // Try to resolve nested keys (e.g., 'dashboard.offers.weekendBonus.title')
         const resolve = (obj: any, path: string): any => {
-          return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
+          return path
+            .split(".")
+            .reduce(
+              (acc, part) =>
+                acc && acc[part] !== undefined ? acc[part] : undefined,
+              obj,
+            );
         };
         return (
           resolve(translations[currentLang], key) ||
