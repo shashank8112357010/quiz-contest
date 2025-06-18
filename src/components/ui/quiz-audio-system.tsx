@@ -122,12 +122,20 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
 
   // Initialize audio elements
   useEffect(() => {
-    
     Object.entries(QUIZ_SOUNDS).forEach(([key, sound]) => {
       const audio = new Audio();
 
-      audio.addEventListener("error", () => {
-        // Silently register the error. The playSound function will handle the fallback.
+      audio.addEventListener("error", (e) => {
+        const target = e.target as HTMLAudioElement;
+        const error = target.error;
+        console.warn(`Audio loading failed for ${key}:`, {
+          code: error?.code,
+          message: error?.message || "Unknown audio error",
+          src: target.src,
+          networkState: target.networkState,
+          readyState: target.readyState,
+        });
+        // Register the error. The playSound function will handle the fallback.
         setAudioErrors((prev) => new Set(prev).add(key));
       });
 
@@ -194,8 +202,8 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
       if (!isEnabled || !hasUserInteracted) return;
 
       try {
-        const audioContext =
-          new (window.AudioContext || (window as any).webkitAudioContext)();
+        const audioContext = new (window.AudioContext ||
+          (window as any).webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
@@ -296,40 +304,76 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
     [isEnabled, hasUserInteracted, masterVolume],
   );
 
-  const playSound = useCallback((soundKey: keyof typeof QUIZ_SOUNDS) => {
-    if (!isEnabled || !soundEffectsEnabled || !hasUserInteracted) return;
-    const audio = audioRefs.current[soundKey];
-    if (audio && !audioErrors.has(soundKey)) {
-      try {
-        audio.currentTime = 0;
-        audio.play().catch((error) => {
-          console.warn(`Failed to play ${soundKey}:`, error);
-          setAudioErrors((prev) => new Set(prev).add(soundKey));
-          if (soundKey === "correctAnswer") generateFallbackSound("correct");
-          else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
-          else if (soundKey === "timeWarning") generateFallbackSound("warning");
-          else if (soundKey === "quizComplete") generateFallbackSound("complete");
-        });
-      } catch (error) {
-        console.warn(`Sound playback error for ${soundKey}:`, error);
+  const playSound = useCallback(
+    (soundKey: keyof typeof QUIZ_SOUNDS) => {
+      if (!isEnabled || !soundEffectsEnabled || !hasUserInteracted) return;
+      const audio = audioRefs.current[soundKey];
+      if (audio && !audioErrors.has(soundKey)) {
+        try {
+          audio.currentTime = 0;
+          audio.play().catch((error) => {
+            console.warn(`Failed to play ${soundKey}:`, {
+              name: error.name,
+              message: error.message,
+              code: error.code || "Unknown",
+              soundKey,
+            });
+            setAudioErrors((prev) => new Set(prev).add(soundKey));
+            if (soundKey === "correctAnswer") generateFallbackSound("correct");
+            else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
+            else if (soundKey === "timeWarning")
+              generateFallbackSound("warning");
+            else if (soundKey === "quizComplete")
+              generateFallbackSound("complete");
+          });
+        } catch (error: any) {
+          console.warn(`Sound playback error for ${soundKey}:`, {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            soundKey,
+          });
+        }
+      } else {
+        if (soundKey === "correctAnswer") generateFallbackSound("correct");
+        else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
+        else if (soundKey === "timeWarning") generateFallbackSound("warning");
+        else if (soundKey === "quizComplete") generateFallbackSound("complete");
       }
-    } else {
-      if (soundKey === "correctAnswer") generateFallbackSound("correct");
-      else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
-      else if (soundKey === "timeWarning") generateFallbackSound("warning");
-      else if (soundKey === "quizComplete") generateFallbackSound("complete");
-    }
-  }, [isEnabled, soundEffectsEnabled, hasUserInteracted, audioErrors, generateFallbackSound]);
+    },
+    [
+      isEnabled,
+      soundEffectsEnabled,
+      hasUserInteracted,
+      audioErrors,
+      generateFallbackSound,
+    ],
+  );
 
   const startBackgroundMusic = useCallback(() => {
-    if (!isEnabled || !backgroundMusicEnabled || !hasUserInteracted || !backgroundMusicRef.current) return;
+    if (
+      !isEnabled ||
+      !backgroundMusicEnabled ||
+      !hasUserInteracted ||
+      !backgroundMusicRef.current
+    )
+      return;
     try {
       backgroundMusicRef.current.currentTime = 0;
       backgroundMusicRef.current.play().catch((error) => {
-        console.warn("Background music play failed:", error);
+        console.warn("Background music play failed:", {
+          name: error.name,
+          message: error.message,
+          code: error.code || "Unknown",
+          src: backgroundMusicRef.current?.src,
+        });
       });
-    } catch (error) {
-      console.warn("Background music error:", error);
+    } catch (error: any) {
+      console.warn("Background music error:", {
+        name: error.name,
+        message: error.message,
+        code: error.code || "Unknown",
+      });
     }
   }, [isEnabled, backgroundMusicEnabled, hasUserInteracted]);
 
@@ -352,18 +396,25 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
       }
       return newState;
     });
-  }, [backgroundMusicEnabled, hasUserInteracted, startBackgroundMusic, stopBackgroundMusic]);
-  
+  }, [
+    backgroundMusicEnabled,
+    hasUserInteracted,
+    startBackgroundMusic,
+    stopBackgroundMusic,
+  ]);
+
   const setMasterVolume = useCallback((volume: number) => {
     setMasterVolumeState(Math.max(0, Math.min(1, volume)));
   }, []);
 
   const toggleBackgroundMusic = useCallback(() => {
-    setBackgroundMusicEnabled(prev => {
+    setBackgroundMusicEnabled((prev) => {
       const newState = !prev;
-      if (newState && isEnabled && hasUserInteracted) { // Check isEnabled here
+      if (newState && isEnabled && hasUserInteracted) {
+        // Check isEnabled here
         startBackgroundMusic();
-      } else if (!newState) { // If turning off
+      } else if (!newState) {
+        // If turning off
         stopBackgroundMusic();
       }
       return newState;
@@ -371,16 +422,31 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
   }, [isEnabled, hasUserInteracted, startBackgroundMusic, stopBackgroundMusic]);
 
   const toggleSoundEffects = useCallback(() => {
-    setSoundEffectsEnabled(prev => !prev);
+    setSoundEffectsEnabled((prev) => !prev);
   }, []);
 
   // Convenience methods using the memoized playSound
-  const playCorrectAnswer = useCallback(() => playSound("correctAnswer"), [playSound]);
-  const playWrongAnswer = useCallback(() => playSound("wrongAnswer"), [playSound]);
-  const playQuestionStart = useCallback(() => playSound("questionStart"), [playSound]);
-  const playTimeWarning = useCallback(() => playSound("timeWarning"), [playSound]);
+  const playCorrectAnswer = useCallback(
+    () => playSound("correctAnswer"),
+    [playSound],
+  );
+  const playWrongAnswer = useCallback(
+    () => playSound("wrongAnswer"),
+    [playSound],
+  );
+  const playQuestionStart = useCallback(
+    () => playSound("questionStart"),
+    [playSound],
+  );
+  const playTimeWarning = useCallback(
+    () => playSound("timeWarning"),
+    [playSound],
+  );
   const playTimeUp = useCallback(() => playSound("timeUp"), [playSound]);
-  const playQuizComplete = useCallback(() => playSound("quizComplete"), [playSound]);
+  const playQuizComplete = useCallback(
+    () => playSound("quizComplete"),
+    [playSound],
+  );
   const playTick = useCallback(() => playSound("tick"), [playSound]);
 
   const value: QuizAudioContextType = {

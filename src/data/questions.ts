@@ -1021,6 +1021,7 @@ export const getRandomQuestions = (
   userId?: string,
 ): Question[] => {
   const categoryQuestions = questionDatabase[categoryId] || [];
+
   if (categoryQuestions.length === 0) {
     // Fallback to general knowledge if category not found
     const fallbackQuestions = questionDatabase.gk || [];

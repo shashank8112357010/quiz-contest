@@ -104,8 +104,16 @@ export const SoundEffectsController = ({
       const audio = new Audio();
 
       // Error handling
-      audio.addEventListener("error", () => {
-        console.warn(`Sound effect not found: ${sound.url}`);
+      audio.addEventListener("error", (e) => {
+        const target = e.target as HTMLAudioElement;
+        const error = target.error;
+        console.warn(`Sound effect loading failed for ${key}:`, {
+          code: error?.code,
+          message: error?.message || "Unknown audio error",
+          url: sound.url,
+          networkState: target.networkState,
+          readyState: target.readyState,
+        });
         setAudioErrors((prev) => new Set(prev).add(key));
       });
 
@@ -182,7 +190,12 @@ export const SoundEffectsController = ({
           audio.volume = volumeOverride * globalVolume;
         }
         audio.play().catch((error) => {
-          console.warn(`Failed to play sound ${soundKey}:`, error);
+          console.warn(`Failed to play sound ${soundKey}:`, {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            soundKey,
+          });
           // Mark as error and try beep fallback
           setAudioErrors((prev) => new Set(prev).add(soundKey));
           const frequencies: Record<string, number> = {
@@ -192,8 +205,13 @@ export const SoundEffectsController = ({
           };
           generateBeep(frequencies[soundKey] || 800, 0.1);
         });
-      } catch (error) {
-        console.warn(`Sound playback error for ${soundKey}:`, error);
+      } catch (error: any) {
+        console.warn(`Sound playback error for ${soundKey}:`, {
+          name: error.name,
+          message: error.message,
+          code: error.code || "Unknown",
+          soundKey,
+        });
       }
     }
   };

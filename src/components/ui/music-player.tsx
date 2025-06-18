@@ -123,8 +123,16 @@ export const MusicPlayer = ({
     if (audioRef.current) {
       const audio = audioRef.current;
 
-      const handleError = () => {
-        console.warn(`Audio file not found: ${tracks[currentTrack].url}`);
+      const handleError = (e: Event) => {
+        const target = e.target as HTMLAudioElement;
+        const error = target.error;
+        console.warn(`Audio loading failed for ${tracks[currentTrack].name}:`, {
+          code: error?.code,
+          message: error?.message || "Unknown audio error",
+          url: tracks[currentTrack].url,
+          networkState: target.networkState,
+          readyState: target.readyState,
+        });
         setHasAudioError(true);
         setIsPlaying(false);
       };
@@ -148,7 +156,12 @@ export const MusicPlayer = ({
 
       if (isPlaying && isAudioLoaded && !hasAudioError) {
         audio.play().catch((error) => {
-          console.warn("Audio play failed:", error);
+          console.warn("Audio play failed:", {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            trackName: tracks[currentTrack].name,
+          });
           setIsPlaying(false);
         });
       } else {
@@ -188,7 +201,18 @@ export const MusicPlayer = ({
         ref={audioRef}
         src={tracks[currentTrack].url}
         preload="none"
-        onError={() => setHasAudioError(true)}
+        onError={(e) => {
+          const target = e.target as HTMLAudioElement;
+          const error = target.error;
+          console.warn(`Audio error in music player:`, {
+            code: error?.code,
+            message: error?.message || "Unknown audio error",
+            src: target.src,
+            networkState: target.networkState,
+            readyState: target.readyState,
+          });
+          setHasAudioError(true);
+        }}
         onCanPlay={() => setHasAudioError(false)}
       />
 

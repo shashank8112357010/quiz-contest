@@ -11,6 +11,8 @@ import { FloatingAudioControl } from "@/components/ui/floating-audio-control";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 
+// Audio debugging removed due to infinite recursion
+
 // Static imports for now to ensure everything works
 import Index from "./pages/Index";
 import Categories from "./pages/Categories";
@@ -75,7 +77,9 @@ const AppContent = () => {
         onClose={handleCloseAutoLoginModal}
       />
       {/* <FloatingAudioControl /> */}
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <BrowserRouter
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/categories" element={<Categories />} />
