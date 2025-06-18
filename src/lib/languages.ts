@@ -204,6 +204,35 @@ export const translations: Record<string, Translations> = {
     signOut: "تسجيل الخروج",
     changeCategory: "تغيير الفئة",
 
+    prizes: {
+      iphone15: {
+        name: "آيفون 15 برو",
+        description: "أحدث هاتف ذكي رائد مع كاميرا مذهلة",
+      },
+      car: {
+        name: "سيارة BMW فاخرة",
+        description: "سيارة فاخرة ممتازة لتجربة قيادة مثالية",
+      },
+      laptop: {
+        name: "ماك بوك برو",
+        description: "كمبيوتر محمول عالي الأداء للمحترفين",
+      },
+      watch: {
+        name: "آبل واتش ألترا",
+        desc: "ساعة ذكية متقدمة مع تتبع اللياقة البدنية",
+      },
+      ps5: {
+        name: "بلايستيشن 5",
+      },
+      gamepad: {
+        name: "كأس ذهبي",
+        desc: "كأس حصري للفائز وجائزة نقدية",
+      },
+      giftcard: {
+        desc: "قسيمة هدايا ممت��زة للتسوق",
+      },
+    },
+
     question: "سؤال",
     questionsInBank: "أسئلة في البنك",
     played: "تم لعبها",
