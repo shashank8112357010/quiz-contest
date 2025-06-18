@@ -127,6 +127,35 @@ export const translations: Record<string, Translations> = {
     signOut: "Sign Out",
     changeCategory: "Change Category",
 
+    prizes: {
+      iphone15: {
+        name: "iPhone 15 Pro",
+        description: "Latest flagship smartphone with incredible camera",
+      },
+      car: {
+        name: "BMW Luxury Car",
+        description: "Premium luxury vehicle for ultimate driving experience",
+      },
+      laptop: {
+        name: "MacBook Pro",
+        description: "High-performance laptop for professionals",
+      },
+      watch: {
+        name: "Apple Watch Ultra",
+        desc: "Advanced smartwatch with fitness tracking",
+      },
+      ps5: {
+        name: "PlayStation 5",
+      },
+      gamepad: {
+        name: "Golden Trophy",
+        desc: "Exclusive winner's trophy and cash prize",
+      },
+      giftcard: {
+        desc: "Premium gift voucher for shopping",
+      },
+    },
+
     question: "Question",
     questionsInBank: "Questions in bank",
     played: "played",
