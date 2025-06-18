@@ -314,14 +314,13 @@ const Categories = () => {
           <div className="text-center mt-12 sm:mt-16 px-4">
             <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-6 sm:p-8 max-w-2xl mx-auto">
               <h3 className="text-xl sm:text-2xl font-display font-bold text-white mb-3 sm:mb-4">
-                More Categories Coming Soon!
+                {t("categoriesPage.moreComingSoon")}
               </h3>
               <p className="text-white/70 mb-4 sm:mb-6 text-sm sm:text-base">
-                We're constantly adding new categories to challenge your
-                knowledge. Stay tuned for updates!
+                {t("categoriesPage.newCategoriesDescription")}
               </p>
               <Badge className="bg-electric-500/20 border-electric-400 text-electric-100 px-3 sm:px-4 py-2 text-xs sm:text-sm">
-                🚀 New categories every week
+                {t("categoriesPage.newCategoriesWeekly")}
               </Badge>
             </div>
           </div>
