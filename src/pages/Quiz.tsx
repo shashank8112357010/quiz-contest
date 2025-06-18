@@ -97,35 +97,32 @@ const Quiz = () => {
     let isMounted = true;
 
     const loadQuiz = async () => {
+      console.log("🔍 Quiz Debug - loadQuiz started");
       setLoadingUnlock(true);
 
-      if (user?.uid) {
-        const updatedUser = await checkAndResetDailyUnlock(user.uid);
-        if (!isMounted) return;
-        setFirestoreUser(updatedUser);
-        if (updatedUser && isDailyLimitReached(updatedUser)) {
-          setShowDailyLimitModal(true);
-          setLoadingUnlock(false);
-          return;
+      try {
+        // Simplified loading - skip user checks for now
+        const userId = user?.uid || generateAnonymousId();
+        console.log("🔍 Quiz Debug - User ID:", userId);
+
+        let categoryQuestions = [];
+
+        if (parsedDay !== undefined) {
+          const defaultCategory = "gk";
+          console.log(
+            "🔍 Quiz Debug - Daily quiz, using category:",
+            defaultCategory,
+          );
+          categoryQuestions = getRandomQuestions(defaultCategory, 10, userId);
+        } else {
+          const targetCategory = categoryId || "gk";
+          console.log(
+            "🔍 Quiz Debug - Regular quiz, using category:",
+            targetCategory,
+          );
+          categoryQuestions = getRandomQuestions(targetCategory, 10, userId);
         }
-      }
 
-      const userId =
-        user?.uid ||
-        localStorage.getItem("anonymous-user-id") ||
-        generateAnonymousId();
-      let categoryQuestions = [];
-
-      if (parsedDay !== undefined) {
-        const defaultCategory = "gk"; // This is typically 'general-knowledge' or similar
-        // Fetch 10 questions for the specified daily category
-        categoryQuestions = getRandomQuestions(defaultCategory, 10, userId);
-      } else {
-        // Fetch 10 questions for the selected category, or "gk" if none selected
-        categoryQuestions = getRandomQuestions(categoryId || "gk", 10, userId);
-      }
-
-      if (isMounted) {
         console.log(
           "🔍 Quiz Debug - Questions loaded:",
           categoryQuestions.length,
@@ -134,16 +131,25 @@ const Quiz = () => {
           "🔍 Quiz Debug - First question:",
           categoryQuestions[0]?.question || "No question",
         );
-        console.log("🔍 Quiz Debug - Category ID:", categoryId || "gk");
 
-        setQuestions(categoryQuestions);
-        setUserAnswers(new Array(categoryQuestions.length).fill(null));
-        setQuestionStartTime(Date.now());
-        setContestProgress(getContestProgress());
+        if (isMounted && categoryQuestions.length > 0) {
+          setQuestions(categoryQuestions);
+          setUserAnswers(new Array(categoryQuestions.length).fill(null));
+          setQuestionStartTime(Date.now());
+          setContestProgress(getContestProgress());
+          setLoadingUnlock(false);
+          startBackgroundMusic();
+
+          console.log("🔍 Quiz Debug - Loading complete, questions set");
+        } else {
+          console.error(
+            "🔍 Quiz Debug - No questions loaded or component unmounted",
+          );
+          setLoadingUnlock(false);
+        }
+      } catch (error) {
+        console.error("🔍 Quiz Debug - Error in loadQuiz:", error);
         setLoadingUnlock(false);
-        startBackgroundMusic();
-
-        console.log("🔍 Quiz Debug - Loading complete, questions set");
       }
     };
 
