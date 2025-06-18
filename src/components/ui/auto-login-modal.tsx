@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PhoneAuthModal } from "@/components/ui/phone-auth-modal";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useLanguageStore } from "@/lib/languages";
 import { Trophy, Zap, Star, Gift, User, Smartphone } from "lucide-react";
 
 interface AutoLoginModalProps {
