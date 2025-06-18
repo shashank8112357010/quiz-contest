@@ -295,15 +295,6 @@ const Quiz = () => {
     window.location.href = "/";
   };
 
-  const generateAnonymousId = () => {
-    const id =
-      "anon_" +
-      Math.random().toString(36).substr(2, 9) +
-      Date.now().toString(36);
-    localStorage.setItem("anonymous-user-id", id);
-    return id;
-  };
-
   if (
     parsedDay !== undefined &&
     (isNaN(parsedDay) || parsedDay < 1 || parsedDay > TOTAL_DAYS)
