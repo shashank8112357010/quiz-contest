@@ -1,3 +1,4 @@
+import React from "react"; // Moved to top
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,13 +24,13 @@ interface QuestionExplanationProps {
   showDetailed?: boolean;
 }
 
-export const QuestionExplanation = ({
+export const QuestionExplanation = React.memo(function QuestionExplanation({
   question,
   userAnswer,
   isCorrect,
   timeSpent,
   showDetailed = true,
-}: QuestionExplanationProps) => {
+}: QuestionExplanationProps) {
   const [showDetailedExplanation, setShowDetailedExplanation] = useState(false);
 
   const correctOption = question.options[question.correctAnswer];
@@ -228,16 +229,16 @@ export const QuestionExplanation = ({
       </div>
     </div>
   );
-};
+});
 
 // Compact explanation for in-game display
-export const CompactExplanation = ({
+export const CompactExplanation = React.memo(function CompactExplanation({
   question,
   isCorrect,
 }: {
   question: Question;
   isCorrect: boolean;
-}) => {
+}) {
   return (
     <div
       className={`p-4 rounded-xl border-2 ${
@@ -273,16 +274,16 @@ export const CompactExplanation = ({
       </div>
     </div>
   );
-};
+});
 
 // Results page explanation summary
-export const ExplanationSummary = ({
+export const ExplanationSummary = React.memo(function ExplanationSummary({
   questions,
   userAnswers,
 }: {
   questions: Question[];
   userAnswers: (number | null)[];
-}) => {
+}) {
   const correctCount = userAnswers.filter(
     (answer, index) => answer === questions[index]?.correctAnswer,
   ).length;
@@ -350,4 +351,4 @@ export const ExplanationSummary = ({
       })}
     </div>
   );
-};
+});

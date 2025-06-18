@@ -5,6 +5,7 @@ import {
   createContext,
   useContext,
   ReactNode,
+  useCallback, // Import useCallback
 } from "react";
 import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX, Music } from "lucide-react";
@@ -294,46 +295,97 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
     }
   };
 
-  const playSound = (soundKey: keyof typeof QUIZ_SOUNDS) => {
+  // Memoize generateFallbackSound as it's a dependency for playSound
+  const generateFallbackSound = useCallback((type: "correct" | "wrong" | "warning" | "complete") => {
+    if (!isEnabled || !hasUserInteracted) return;
+
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      switch (type) {
+        case "correct":
+          [523, 659, 784, 1047].forEach((freq, i) => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.1);
+            osc.type = "sine";
+            gain.gain.setValueAtTime(0.1 * masterVolume, audioContext.currentTime + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.3);
+            osc.start(audioContext.currentTime + i * 0.1);
+            osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
+          });
+          break;
+        case "wrong":
+          oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.5);
+          oscillator.type = "sawtooth";
+          gainNode.gain.setValueAtTime(0.2 * masterVolume, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.5);
+          break;
+        case "warning":
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+          oscillator.type = "square";
+          gainNode.gain.setValueAtTime(0.15 * masterVolume, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.2);
+          break;
+        case "complete":
+          [523, 659, 784, 1047, 1319].forEach((freq, i) => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.15);
+            osc.type = "triangle";
+            gain.gain.setValueAtTime(0.15 * masterVolume, audioContext.currentTime + i * 0.15);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.4);
+            osc.start(audioContext.currentTime + i * 0.15);
+            osc.stop(audioContext.currentTime + i * 0.15 + 0.4);
+          });
+          break;
+      }
+    } catch (error) {
+      console.warn("Web Audio API not supported for fallback sounds");
+    }
+  }, [isEnabled, hasUserInteracted, masterVolume]);
+
+  const playSound = useCallback((soundKey: keyof typeof QUIZ_SOUNDS) => {
     if (!isEnabled || !soundEffectsEnabled || !hasUserInteracted) return;
-
     const audio = audioRefs.current[soundKey];
-
     if (audio && !audioErrors.has(soundKey)) {
       try {
         audio.currentTime = 0;
         audio.play().catch((error) => {
           console.warn(`Failed to play ${soundKey}:`, error);
           setAudioErrors((prev) => new Set(prev).add(soundKey));
-
-          // Use fallback sounds
           if (soundKey === "correctAnswer") generateFallbackSound("correct");
           else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
           else if (soundKey === "timeWarning") generateFallbackSound("warning");
-          else if (soundKey === "quizComplete")
-            generateFallbackSound("complete");
+          else if (soundKey === "quizComplete") generateFallbackSound("complete");
         });
       } catch (error) {
         console.warn(`Sound playback error for ${soundKey}:`, error);
       }
     } else {
-      // Use fallback sounds for missing files
       if (soundKey === "correctAnswer") generateFallbackSound("correct");
       else if (soundKey === "wrongAnswer") generateFallbackSound("wrong");
       else if (soundKey === "timeWarning") generateFallbackSound("warning");
       else if (soundKey === "quizComplete") generateFallbackSound("complete");
     }
-  };
+  }, [isEnabled, soundEffectsEnabled, hasUserInteracted, audioErrors, generateFallbackSound]);
 
-  const startBackgroundMusic = () => {
-    if (
-      !isEnabled ||
-      !backgroundMusicEnabled ||
-      !hasUserInteracted ||
-      !backgroundMusicRef.current
-    )
-      return;
-
+  const startBackgroundMusic = useCallback(() => {
+    if (!isEnabled || !backgroundMusicEnabled || !hasUserInteracted || !backgroundMusicRef.current) return;
     try {
       backgroundMusicRef.current.currentTime = 0;
       backgroundMusicRef.current.play().catch((error) => {
@@ -342,73 +394,77 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
     } catch (error) {
       console.warn("Background music error:", error);
     }
-  };
+  }, [isEnabled, backgroundMusicEnabled, hasUserInteracted]);
 
-  const stopBackgroundMusic = () => {
+  const stopBackgroundMusic = useCallback(() => {
     if (backgroundMusicRef.current) {
       backgroundMusicRef.current.pause();
       backgroundMusicRef.current.currentTime = 0;
     }
-  };
+  }, []);
 
-  const toggleAudio = () => {
+  const toggleAudio = useCallback(() => {
     setIsEnabled((prev) => {
       const newState = !prev;
-  
       if (newState) {
-        // Turned ON
         if (backgroundMusicEnabled && hasUserInteracted) {
-          startBackgroundMusic();
+          startBackgroundMusic(); // Relies on memoized startBackgroundMusic
         }
       } else {
-        // Turned OFF
-        stopBackgroundMusic();
+        stopBackgroundMusic(); // Relies on memoized stopBackgroundMusic
       }
-  
       return newState;
     });
-  };
+  }, [backgroundMusicEnabled, hasUserInteracted, startBackgroundMusic, stopBackgroundMusic]);
   
-  const setMasterVolume = (volume: number) =>
+  const setMasterVolume = useCallback((volume: number) => {
     setMasterVolumeState(Math.max(0, Math.min(1, volume)));
-  const toggleBackgroundMusic = () => {
-    setBackgroundMusicEnabled(!backgroundMusicEnabled);
-    if (!backgroundMusicEnabled && hasUserInteracted) {
-      startBackgroundMusic();
-    } else {
-      stopBackgroundMusic();
-    }
-  };
-  const toggleSoundEffects = () => setSoundEffectsEnabled(!soundEffectsEnabled);
+  }, []);
 
-  // Convenience methods
-  const playCorrectAnswer = () => playSound("correctAnswer");
-  const playWrongAnswer = () => playSound("wrongAnswer");
-  const playQuestionStart = () => playSound("questionStart");
-  const playTimeWarning = () => playSound("timeWarning");
-  const playTimeUp = () => playSound("timeUp");
-  const playQuizComplete = () => playSound("quizComplete");
-  const playTick = () => playSound("tick");
+  const toggleBackgroundMusic = useCallback(() => {
+    setBackgroundMusicEnabled(prev => {
+      const newState = !prev;
+      if (newState && isEnabled && hasUserInteracted) { // Check isEnabled here
+        startBackgroundMusic();
+      } else if (!newState) { // If turning off
+        stopBackgroundMusic();
+      }
+      return newState;
+    });
+  }, [isEnabled, hasUserInteracted, startBackgroundMusic, stopBackgroundMusic]);
+
+  const toggleSoundEffects = useCallback(() => {
+    setSoundEffectsEnabled(prev => !prev);
+  }, []);
+
+  // Convenience methods using the memoized playSound
+  const playCorrectAnswer = useCallback(() => playSound("correctAnswer"), [playSound]);
+  const playWrongAnswer = useCallback(() => playSound("wrongAnswer"), [playSound]);
+  const playQuestionStart = useCallback(() => playSound("questionStart"), [playSound]);
+  const playTimeWarning = useCallback(() => playSound("timeWarning"), [playSound]);
+  const playTimeUp = useCallback(() => playSound("timeUp"), [playSound]);
+  const playQuizComplete = useCallback(() => playSound("quizComplete"), [playSound]);
+  const playTick = useCallback(() => playSound("tick"), [playSound]);
 
   const value: QuizAudioContextType = {
     isEnabled,
     masterVolume,
     backgroundMusicEnabled,
     soundEffectsEnabled,
-    toggleAudio,
-    setMasterVolume,
-    toggleBackgroundMusic,
-    toggleSoundEffects,
-    playSound,
-    startBackgroundMusic,
-    stopBackgroundMusic,
-    playCorrectAnswer,
-    playWrongAnswer,
-    playQuestionStart,
-    playTimeWarning,
-    playTimeUp,
-    playQuizComplete,
-    playTick,
+    toggleAudio, // Memoized
+    setMasterVolume, // Memoized
+    toggleBackgroundMusic, // Memoized
+    toggleSoundEffects, // Memoized
+    playSound, // Memoized
+    startBackgroundMusic, // Memoized
+    stopBackgroundMusic, // Memoized
+    playCorrectAnswer, // Memoized
+    playWrongAnswer, // Memoized
+    playQuestionStart, // Memoized
+    playTimeWarning, // Memoized
+    playTimeUp, // Memoized
+    playQuizComplete, // Memoized
+    playTick, // Memoized
   };
 
   return (

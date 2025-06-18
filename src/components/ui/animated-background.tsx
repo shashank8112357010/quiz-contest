@@ -36,7 +36,7 @@ export const AnimatedBackground = () => {
         "text-cyan-400/40",
       ];
 
-      for (let i = 0; i < 25; i++) {
+      for (let i = 0; i < 10; i++) { // Reduced from 25 to 10
         newShapes.push({
           id: i,
           x: Math.random() * 100,
@@ -209,7 +209,7 @@ export const AnimatedBackground = () => {
 
       {/* Sparkling particles */}
       <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(10)].map((_, i) => ( // Reduced from 20 to 10
           <div
             key={i}
             className="absolute w-2 h-2 bg-white rounded-full animate-ping"

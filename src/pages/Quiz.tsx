@@ -70,10 +70,12 @@ const Quiz = () => {
       let categoryQuestions = [];
 
       if (parsedDay !== undefined) {
-        const defaultCategory = "gk";
-        categoryQuestions = getRandomQuestions(defaultCategory, 10, `${userId}-day${parsedDay}`);
+        const defaultCategory = "gk"; // This is typically 'general-knowledge' or similar
+        // Fetch 10 questions for the specified daily category
+        categoryQuestions = getRandomQuestions(10, defaultCategory);
       } else {
-        categoryQuestions = getRandomQuestions(categoryId || "gk", 10, userId);
+        // Fetch 10 questions for the selected category, or "gk" if none selected
+        categoryQuestions = getRandomQuestions(10, categoryId || "gk");
       }
 
       if (isMounted) {
@@ -192,10 +194,12 @@ const Quiz = () => {
         return;
       }
     }
-    const userId = user?.uid || localStorage.getItem("anonymous-user-id") || generateAnonymousId();
-    const categoryQuestions = getRandomQuestions(categoryId || "gk", 10, userId);
+    // const userId = user?.uid || localStorage.getItem("anonymous-user-id") || generateAnonymousId();
+    // The userId was previously used as a seed, but getRandomQuestions no longer uses it.
+    // Fetch 10 questions for the selected category, or "gk" if none selected
+    const categoryQuestions = getRandomQuestions(10, categoryId || "gk");
     setQuestions(categoryQuestions);
-    setUserAnswers(new Array(10).fill(null));
+    setUserAnswers(new Array(categoryQuestions.length).fill(null)); // Use actual length
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);

@@ -747,22 +747,61 @@ export const getQuestionsByLevel = (
 
   // If not enough questions, generate more or repeat with different difficulty
   if (shuffled.length < count) {
-    // In production, you'd fetch more from database or generate procedurally
     const needed = count - shuffled.length;
-    const additionalQuestions = questions
-      .filter((q) => q.category === categoryId)
-      .slice(0, needed);
+    const existingIds = new Set(shuffled.map(q => q.id));
 
+    // Get additional questions from the general pool, ensuring they are not duplicates
+    // from the initial category/level selection and are shuffled.
+    const additionalQuestions = [...questions] // Create a new shuffled array from all questions
+      .sort(() => Math.random() - 0.5)
+      .filter((q) => !existingIds.has(q.id)) // Exclude already selected questions
+      .slice(0, needed); // Take the required number of additional questions
+
+    // Combine and ensure final count is not exceeded (though slice in additionalQuestions should handle it)
     return [...shuffled, ...additionalQuestions].slice(0, count);
   }
 
-  return shuffled.slice(0, count);
+  return shuffled.slice(0, count); // This was already correct if shuffled.length >= count
 };
 
 // Function to get random questions for quick play
-export const getRandomQuestions = (count: number = 7): Question[] => {
-  const shuffled = [...questions].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+export const getRandomQuestions = (count: number = 10, categoryId?: string): Question[] => {
+  let questionsToShuffle = questions;
+
+  if (categoryId) {
+    questionsToShuffle = questions.filter(q => q.category === categoryId);
+  }
+
+  // Shuffle the selected questions (either all or category-specific)
+  let shuffled = [...questionsToShuffle].sort(() => Math.random() - 0.5);
+
+  // If categoryId was provided and we found fewer questions than requested count,
+  // try to fill up with questions from other categories.
+  if (categoryId && shuffled.length < count) {
+    const needed = count - shuffled.length;
+    const existingIds = new Set(shuffled.map(q => q.id));
+
+    // Get additional questions from the general pool (all questions),
+    // ensuring they are not from the current category (to avoid just getting more of the same if not enough)
+    // and are not duplicates already selected.
+    // Then shuffle these additional candidates.
+    const additionalQuestions = [...questions]
+      .filter(q => q.category !== categoryId && !existingIds.has(q.id))
+      .sort(() => Math.random() - 0.5)
+      .slice(0, needed);
+
+    // If still not enough after trying other categories (e.g. few categories or total questions low)
+    // and we strictly need to avoid duplicates, we might still have less than count.
+    // For this implementation, we'll add what we found. If the total number of unique questions
+    // across all categories is less than 'count', this will return fewer than 'count'.
+    shuffled.push(...additionalQuestions);
+  }
+
+  // Final shuffle if we added questions from different pools, then slice.
+  // If no categoryId was provided, questionsToShuffle is all questions, so this just shuffles and slices.
+  // If categoryId was provided and had enough questions, this re-shuffles (harmless) and slices.
+  // If categoryId was provided and fallback questions were added, this shuffles the combined list.
+  return [...shuffled].sort(() => Math.random() - 0.5).slice(0, count);
 };
 
 // Function to get questions by difficulty
