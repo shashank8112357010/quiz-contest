@@ -335,7 +335,7 @@ export const translations: Record<string, Translations> = {
         sports: "الرياضة",
         technology: "التكنولوجيا",
         movies: "الأفلام",
-        music: "الموسيقى",
+        music: "الموسيق��",
       },
     },
     home: "الرئيسية",
@@ -431,7 +431,7 @@ export const translations: Record<string, Translations> = {
     tryOtherCategory: "جرب فئة أخرى",
     backToHome: "العودة للرئيسية",
 
-    dailyLimitReached: "تم الوصول للحد اليومي!",
+    dailyLimitReached: "تم الوص��ل للحد اليومي!",
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
@@ -465,7 +465,7 @@ export const translations: Record<string, Translations> = {
       thisWeek: "Esta Semana",
       enterContest: "Entrar no Concurso",
       categoryLeaders: "Líderes por Categoria",
-      score: "Pontua��ão",
+      score: "Pontuação",
       points: "Pontos",
       viewFullRankings: "Ver Classificações Completas",
       badge: {
@@ -515,13 +515,13 @@ export const translations: Record<string, Translations> = {
         name: "Ciência",
         description: "Ciência geral, descobertas e princípios científicos",
       },
-      geography: {
-        name: "Geografia",
-        description: "Países, capitais, marcos e características da Terra",
+      gk: {
+        name: "Conhecimento Geral",
+        description: "Uma mistura de tudo que você deveria saber",
       },
-      literature: {
-        name: "Literatura",
-        description: "Livros, autores, poesia e clássicos literários",
+      astronomy: {
+        name: "Astronomia",
+        description: "Espaço, planetas, estrelas e fenômenos cósmicos",
       },
       easy: "Fácil",
       medium: "Médio",
