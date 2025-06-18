@@ -106,6 +106,7 @@ export interface Translations {
   continue: string;
   cancel: string;
   ok: string;
+  amazingPrizes: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -243,7 +244,7 @@ export const translations: Record<string, Translations> = {
     finalScore: "النتيجة النهائية",
     correctAnswers: "الإجابات الصحيحة",
     accuracy: "الدقة",
-    playAgain: "العب مرة أخرى",
+    playAgain: "ال��ب مرة أخرى",
     tryOtherCategory: "جرب فئة أخرى",
     backToHome: "العودة للرئيسية",
 
