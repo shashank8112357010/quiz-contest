@@ -209,7 +209,7 @@ export const translations: Record<string, Translations> = {
     prizes: {
       iphone15: {
         name: "آيفون 15 برو",
-        description: "أحدث هاتف ذكي رائد مع كا��يرا مذهلة",
+        description: "أحدث هاتف ذكي رائد مع كاميرا مذهلة",
       },
       car: {
         name: "سيارة BMW فاخرة",
@@ -341,6 +341,7 @@ export const translations: Record<string, Translations> = {
     continue: "Continuar",
     cancel: "Cancelar",
     ok: "OK",
+    amazingPrizes: "Prêmios Incríveis",
   },
 };
 
