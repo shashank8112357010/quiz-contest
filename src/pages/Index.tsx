@@ -72,7 +72,6 @@ const Index = () => {
             <FeatureGrid />
 
             {/* Firebase Debug Info (Development Only) */}
-           
           </main>
 
           {/* Enhanced Footer */}
@@ -111,7 +110,7 @@ const Index = () => {
         )}
 
         {/* Floating Help Button */}
-        {/* <FloatingHelpButton /> */}
+        <FloatingHelpButton />
 
         {/* Background Music */}
         <BackgroundMusic autoPlay={true} loop={true} volume={0.2} />
