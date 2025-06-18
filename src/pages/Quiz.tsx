@@ -216,15 +216,11 @@ const Quiz = () => {
     setLives(lives - 1);
     setIsAnswered(true);
     setShowExplanation(true);
-    if (lives <= 1) {
-      setGameOver(true);
-      setTimeout(() => setShowResult(true), 3000);
-    } else {
-      setTimeout(() => {
-        setShowExplanation(false);
-        nextQuestion();
-      }, 4000);
-    }
+    // Always proceed to next question, don't end game on timeout
+    setTimeout(() => {
+      setShowExplanation(false);
+      nextQuestion();
+    }, 4000);
   };
 
   const handleAnswerSelect = (answerIndex) => {
@@ -244,12 +240,8 @@ const Quiz = () => {
     } else {
       setLives(lives - 1);
       playWrongAnswer();
-      if (lives <= 1) {
-        setGameOver(true);
-        stopBackgroundMusic();
-        setTimeout(() => setShowResult(true), 4000);
-        return;
-      }
+      // Don't end game on wrong answers - let users complete all 10 questions
+      // Game will end naturally when all questions are completed
     }
     setTimeout(
       () => {
