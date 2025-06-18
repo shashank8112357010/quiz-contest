@@ -126,12 +126,24 @@ const Quiz = () => {
       }
 
       if (isMounted) {
+        console.log(
+          "🔍 Quiz Debug - Questions loaded:",
+          categoryQuestions.length,
+        );
+        console.log(
+          "🔍 Quiz Debug - First question:",
+          categoryQuestions[0]?.question || "No question",
+        );
+        console.log("🔍 Quiz Debug - Category ID:", categoryId || "gk");
+
         setQuestions(categoryQuestions);
         setUserAnswers(new Array(categoryQuestions.length).fill(null));
         setQuestionStartTime(Date.now());
         setContestProgress(getContestProgress());
         setLoadingUnlock(false);
         startBackgroundMusic();
+
+        console.log("🔍 Quiz Debug - Loading complete, questions set");
       }
     };
 
