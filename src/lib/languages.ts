@@ -209,10 +209,10 @@ export const translations: Record<string, Translations> = {
     prizes: {
       iphone15: {
         name: "آيفون 15 برو",
-        description: "أحدث هاتف ذكي رائد مع كاميرا مذهلة",
+        description: "أحدث هاتف ذكي رائد مع كا��يرا مذهلة",
       },
       car: {
-        name: "سيار�� BMW فاخرة",
+        name: "سيارة BMW فاخرة",
         description: "سيارة فاخرة ممتازة لتجربة قيادة مثالية",
       },
       laptop: {
@@ -249,7 +249,7 @@ export const translations: Record<string, Translations> = {
     tryOtherCategory: "جرب فئة أخرى",
     backToHome: "العودة للرئيسية",
 
-    dailyLimitReached: "ت�� الوصول للحد اليومي!",
+    dailyLimitReached: "تم الوصول للحد اليومي!",
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
@@ -263,6 +263,7 @@ export const translations: Record<string, Translations> = {
     continue: "متابعة",
     cancel: "إلغاء",
     ok: "موافق",
+    amazingPrizes: "جوائز مذهلة",
   },
   pt: {
     hero: {
