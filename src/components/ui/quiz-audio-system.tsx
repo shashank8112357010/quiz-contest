@@ -129,11 +129,14 @@ export const QuizAudioProvider = ({ children }: QuizAudioProviderProps) => {
         const target = e.target as HTMLAudioElement;
         const error = target.error;
         console.warn(`Audio loading failed for ${key}:`, {
-          code: error?.code,
-          message: error?.message || "Unknown audio error",
+          code: error?.code || "Unknown",
+          message: error?.message || "Audio file failed to load",
           src: target.src,
           networkState: target.networkState,
           readyState: target.readyState,
+          errorType: error
+            ? `MediaError code ${error.code}`
+            : "No error details available",
         });
         // Register the error. The playSound function will handle the fallback.
         setAudioErrors((prev) => new Set(prev).add(key));
