@@ -284,12 +284,16 @@ const Quiz = () => {
         return;
       }
     }
-    // const userId = user?.uid || localStorage.getItem("anonymous-user-id") || generateAnonymousId();
     // Fetch 10 questions for the selected category, or "gk" if none selected
     const categoryQuestions = getRandomQuestions(
       categoryId || "gk",
       10,
       user?.uid,
+    );
+    console.log(
+      "🔄 Restart Quiz loaded with",
+      categoryQuestions.length,
+      "questions",
     );
     setQuestions(categoryQuestions);
     setUserAnswers(new Array(categoryQuestions.length).fill(null)); // Use actual length
