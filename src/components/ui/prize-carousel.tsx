@@ -293,13 +293,15 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
                             );
                           }}
                         />
-                        {/* Value overlay */}
-                        <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded-lg font-bold">
+                      </div>
+                      {/* Prize name and price below image */}
+                      <div className="mt-2 text-center w-36">
+                        <div className="text-white text-xs font-semibold truncate">
+                          {prize.name}
+                        </div>
+                        <div className="text-green-400 text-xs font-bold mt-1">
                           {prize.value}
                         </div>
-                      </div>
-                      <div className="text-white text-xs font-semibold mt-2 truncate w-36 text-center">
-                        {prize.name}
                       </div>
                     </div>
                   ))}
