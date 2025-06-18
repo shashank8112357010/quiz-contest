@@ -214,13 +214,12 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
               <>
                 <div className={`relative inline-block mb-4`}>
                   <div
-                    className={`w-50 h-50 bg-gradient-to-r ${currentPrize.gradient} rounded-full flex items-center justify-center shadow-2xl animate-pulse`}
+                    className={`w-64 h-48 bg-gradient-to-r ${currentPrize.gradient} rounded-2xl flex items-center justify-center shadow-2xl animate-pulse overflow-hidden`}
                   >
-                    {/* TODO: Replace src with actual image for {currentPrize.name} */}
                     <img
                       src={currentPrize.imagePath || "/placeholder.svg"}
                       alt={currentPrize.name}
-                      className="object-contain w-60 h-60 rounded-full"
+                      className="object-cover w-full h-full rounded-2xl"
                     />
                   </div>
                 </div>
