@@ -224,13 +224,13 @@ export const translations: Record<string, Translations> = {
         name: "Science",
         description: "General science, discoveries, and scientific principles",
       },
-      geography: {
-        name: "Geography",
-        description: "Countries, capitals, landmarks, and Earth's features",
+      gk: {
+        name: "General Knowledge",
+        description: "A mix of everything you should know",
       },
-      literature: {
-        name: "Literature",
-        description: "Books, authors, poetry, and literary classics",
+      astronomy: {
+        name: "Astronomy",
+        description: "Space, planets, stars, and cosmic phenomena",
       },
       easy: "Easy",
       medium: "Medium",
@@ -403,7 +403,7 @@ export const translations: Record<string, Translations> = {
       },
       watch: {
         name: "آبل واتش ألترا",
-        desc: "ساعة ذكية متقدمة مع تتبع الل��اقة البدنية",
+        desc: "ساعة ذكية متقدمة مع تتبع اللياقة البدنية",
       },
       ps5: {
         name: "بلايستيشن 5",
@@ -435,7 +435,7 @@ export const translations: Record<string, Translations> = {
     dailyLimitMessage:
       "لقد أكملت حصتك اليومية من الأسئلة. عد غداً لمواصلة رحلة الاختبار!",
     comeBackTomorrow: "عد غداً",
-    questionsRemaining: "أسئل�� متبقية اليوم",
+    questionsRemaining: "أسئلة متبقية اليوم",
 
     likePortal: "أعجبني البوابة",
     dislikePortal: "لم يعجبني البوابة",
