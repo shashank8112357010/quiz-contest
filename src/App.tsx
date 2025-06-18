@@ -13,6 +13,8 @@ import { useAuth } from "@/components/providers/AuthProvider";
 
 // Temporary audio debugging
 import "./utils/audio-debug";
+// Comprehensive audio error fix
+import "./utils/audio-error-fix";
 
 // Static imports for now to ensure everything works
 import Index from "./pages/Index";
