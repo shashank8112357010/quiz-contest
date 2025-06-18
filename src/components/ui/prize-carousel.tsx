@@ -200,28 +200,11 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
         <div className="relative z-10">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="overflow-x-hidden whitespace-nowrap mb-6">
-              <div
-                className="inline-block text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent px-2"
-                style={{
-                  animation: "marquee 10s linear infinite",
-                  whiteSpace: "nowrap",
-                  display: "inline-block",
-                  minWidth: "100%",
-                }}
-              >
+            <div className="mb-6">
+              <div className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
                 Amazing Prizes
               </div>
-              <style>{`
-    @keyframes marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-  `}</style>
             </div>
-            {/* <p className="text-purple-200 text-sm">
-              Win incredible rewards in our 90-day contest!
-            </p> */}
           </div>
 
           {/* Prize Display */}
