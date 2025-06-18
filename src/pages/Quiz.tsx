@@ -229,22 +229,7 @@ const Quiz = () => {
 
   const nextQuestion = async () => {
     setQuestionsPlayedThisSession((prev) => prev + 1);
-    updateDailyQuestionCount(1);
-    updateContestProgress(1);
-    setContestProgress(getContestProgress());
-    if (user) await incrementQuestionsUnlocked(user.uid);
-    if (user) {
-      const updatedUser = await checkAndResetDailyUnlock(user.uid);
-      setFirestoreUser(updatedUser);
-      if (
-        updatedUser &&
-        isDailyLimitReached(updatedUser) &&
-        currentQuestion < questions.length - 1
-      ) {
-        setShowDailyLimitModal(true);
-        return;
-      }
-    }
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
@@ -253,6 +238,12 @@ const Quiz = () => {
       setQuestionStartTime(Date.now());
       playQuestionStart();
     } else {
+      // Quiz completed - now increment daily count
+      updateDailyQuestionCount(1);
+      updateContestProgress(1);
+      setContestProgress(getContestProgress());
+      if (user) await incrementQuestionsUnlocked(user.uid);
+
       stopBackgroundMusic();
       playQuizComplete();
       setShowResult(true);
