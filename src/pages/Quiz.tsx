@@ -372,6 +372,12 @@ const Quiz = () => {
                 <div className="text-white text-sm mb-6">
                   Daily Progress: {firestoreUser?.questionsUnlockedToday || 0}
                   /10 questions completed
+                  {(firestoreUser?.questionsUnlockedToday || 0) >= 10 && (
+                    <div className="mt-2 text-green-400 font-semibold">
+                      🎉 Daily goal achieved! Come back tomorrow for more
+                      questions.
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
