@@ -125,6 +125,7 @@ export const categories: QuizCategory[] = [
 
 const Categories = () => {
   const { user, userData } = useAuth();
+  const { t } = useLanguageStore();
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
