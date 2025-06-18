@@ -101,54 +101,28 @@ const Quiz = () => {
     let isMounted = true;
 
     const loadQuiz = async () => {
-      console.log("🔍 Quiz Debug - loadQuiz started");
       setLoadingUnlock(true);
 
       try {
-        // Simplified loading - skip user checks for now
         const userId = user?.uid || generateAnonymousId();
-        console.log("🔍 Quiz Debug - User ID:", userId);
-
         let categoryQuestions = [];
 
         if (parsedDay !== undefined) {
           const defaultCategory = "gk";
-          console.log(
-            "🔍 Quiz Debug - Daily quiz, using category:",
-            defaultCategory,
-          );
           categoryQuestions = getRandomQuestions(defaultCategory, 10, userId);
         } else {
           const targetCategory = categoryId || "gk";
-          console.log(
-            "🔍 Quiz Debug - Regular quiz, using category:",
-            targetCategory,
-          );
           categoryQuestions = getRandomQuestions(targetCategory, 10, userId);
         }
-
-        console.log(
-          "🔍 Quiz Debug - Questions loaded:",
-          categoryQuestions.length,
-        );
-        console.log(
-          "🔍 Quiz Debug - First question:",
-          categoryQuestions[0]?.question || "No question",
-        );
 
         if (isMounted && categoryQuestions.length > 0) {
           setQuestions(categoryQuestions);
           setUserAnswers(new Array(categoryQuestions.length).fill(null));
           setQuestionStartTime(Date.now());
-          // setContestProgress(getContestProgress());
+          setContestProgress(getContestProgress());
           setLoadingUnlock(false);
           startBackgroundMusic();
-
-          console.log("🔍 Quiz Debug - Loading complete, questions set");
         } else {
-          console.error(
-            "🔍 Quiz Debug - No questions loaded or component unmounted",
-          );
           setLoadingUnlock(false);
         }
       } catch (error) {
@@ -162,9 +136,6 @@ const Quiz = () => {
     // Failsafe: if questions don't load within 5 seconds, force load default questions
     const failsafeTimer = setTimeout(() => {
       if (questions.length === 0 && isMounted) {
-        console.log(
-          "🔍 Quiz Debug - Failsafe triggered, loading default questions",
-        );
         const defaultQuestions = getRandomQuestions("gk", 5, "failsafe-user");
         if (defaultQuestions.length > 0) {
           setQuestions(defaultQuestions);
@@ -366,18 +337,6 @@ const Quiz = () => {
           <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 text-center">
             <div className="animate-spin w-8 h-8 border-2 border-electric-400 border-t-transparent rounded-full mx-auto mb-4"></div>
             <p className="text-white text-lg">Loading quiz questions...</p>
-            <p className="text-white/60 text-sm mt-2">
-              Debug: Loading={loadingUnlock ? "true" : "false"}, Questions=
-              {questions.length}
-            </p>
-            {!loadingUnlock && (
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-electric-500 text-white rounded hover:bg-electric-600"
-              >
-                Reload Page
-              </button>
-            )}
           </div>
         </div>
       </div>
