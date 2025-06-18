@@ -252,15 +252,31 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
                       className="relative flex flex-col items-center"
                     >
                       <div
-                        className={`w-32 h-24 bg-gradient-to-r ${prize.gradient} rounded-xl flex items-center justify-center shadow-xl overflow-hidden`}
+                        className={`w-36 h-28 bg-gradient-to-r ${prize.gradient} rounded-xl flex items-center justify-center shadow-2xl overflow-hidden border-2 border-white/20 group-hover:border-white/40 transition-all duration-300`}
                       >
                         <img
                           src={prize.imagePath || "/placeholder.svg"}
                           alt={prize.name}
-                          className="object-cover w-full h-full rounded-xl"
+                          className="object-cover w-full h-full rounded-xl hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            console.log(
+                              `Failed to load image for ${prize.name}:`,
+                              prize.imagePath,
+                            );
+                            e.currentTarget.style.display = "none";
+                          }}
+                          onLoad={() => {
+                            console.log(
+                              `Successfully loaded image for ${prize.name}`,
+                            );
+                          }}
                         />
+                        {/* Value overlay */}
+                        <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded-lg font-bold">
+                          {prize.value}
+                        </div>
                       </div>
-                      <div className="text-white text-xs font-semibold mt-2 truncate w-32 text-center">
+                      <div className="text-white text-xs font-semibold mt-2 truncate w-36 text-center">
                         {prize.name}
                       </div>
                     </div>
