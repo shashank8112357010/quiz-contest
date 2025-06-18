@@ -27,6 +27,7 @@ import {
   BookOpen,
   Calculator,
 } from "lucide-react";
+import { useLanguageStore } from "@/lib/languages";
 
 const Contests = () => {
   const [activeTab, setActiveTab] = useState("live");
