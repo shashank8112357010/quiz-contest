@@ -345,6 +345,18 @@ const Quiz = () => {
           <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 text-center">
             <div className="animate-spin w-8 h-8 border-2 border-electric-400 border-t-transparent rounded-full mx-auto mb-4"></div>
             <p className="text-white text-lg">Loading quiz questions...</p>
+            <p className="text-white/60 text-sm mt-2">
+              Debug: Loading={loadingUnlock ? "true" : "false"}, Questions=
+              {questions.length}
+            </p>
+            {!loadingUnlock && (
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-4 py-2 bg-electric-500 text-white rounded hover:bg-electric-600"
+              >
+                Reload Page
+              </button>
+            )}
           </div>
         </div>
       </div>
