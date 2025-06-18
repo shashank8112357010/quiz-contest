@@ -111,6 +111,25 @@ const Quiz = () => {
           categoryQuestions = getRandomQuestions(targetCategory, 10, userId);
         }
 
+        // Ensure we always get exactly 10 questions
+        if (categoryQuestions.length < 10) {
+          console.warn(
+            "⚠️ Got only",
+            categoryQuestions.length,
+            "questions, padding to 10",
+          );
+          // If we don't have enough questions, add more from general pool
+          const additionalQuestions = getRandomQuestions(
+            "gk",
+            10 - categoryQuestions.length,
+            userId + "_additional",
+          );
+          categoryQuestions = [
+            ...categoryQuestions,
+            ...additionalQuestions,
+          ].slice(0, 10);
+        }
+
         console.log(
           "📝 Quiz loaded with",
           categoryQuestions.length,
