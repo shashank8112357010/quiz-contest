@@ -495,6 +495,17 @@ const Quiz = () => {
                   Questions in bank
                 </div>
               </div>
+              <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl border border-blue-400/30 px-4 py-2 shadow-lg shadow-blue-500/10">
+                <div className="text-white text-sm font-bold text-center">
+                  <span className="text-blue-300">
+                    {firestoreUser?.questionsUnlockedToday || 0}
+                  </span>{" "}
+                  / <span className="text-purple-300">10</span>
+                </div>
+                <div className="text-white/60 text-xs text-center">
+                  Daily Questions
+                </div>
+              </div>
               <div className="flex items-center gap-1">
                 {[...Array(3)].map((_, i) => (
                   <Heart
