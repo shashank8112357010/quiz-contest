@@ -210,8 +210,15 @@ export const VIPMembershipCard = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-gold-400 to-yellow-500 rounded-xl flex items-center justify-center animate-glow">
-              <Crown className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-r from-gold-400 to-yellow-500 rounded-xl flex items-center justify-center animate-glow overflow-hidden">
+              <img
+                src="https://images.pexels.com/photos/10976653/pexels-photo-10976653.jpeg"
+                alt="VIP Membership"
+                className="object-cover w-full h-full rounded-xl opacity-80"
+              />
+              <div className="absolute inset-0 bg-black/30 rounded-xl flex items-center justify-center">
+                <Crown className="w-6 h-6 text-white drop-shadow-lg" />
+              </div>
             </div>
             <div>
               <div className="text-gold-300 text-sm font-bold">EXCLUSIVE</div>
