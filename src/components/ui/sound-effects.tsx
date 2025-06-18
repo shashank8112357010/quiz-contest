@@ -116,11 +116,14 @@ export const SoundEffectsController = ({
         const target = e.target as HTMLAudioElement;
         const error = target.error;
         console.warn(`Sound effect loading failed for ${key}:`, {
-          code: error?.code,
-          message: error?.message || "Unknown audio error",
+          code: error?.code || "Unknown",
+          message: error?.message || "Audio file failed to load",
           url: sound.url,
           networkState: target.networkState,
           readyState: target.readyState,
+          errorType: error
+            ? `MediaError code ${error.code}`
+            : "No error details available",
         });
         setAudioErrors((prev) => new Set(prev).add(key));
       });
