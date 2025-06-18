@@ -74,6 +74,17 @@ export const Header = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {link.name}
+                {/* New user tour notification badge for FAQ */}
+                {link.name === t("faq") &&
+                  user &&
+                  !onboardingState.hasSeenTour && (
+                    <div className="absolute -top-2 -right-2 w-3 h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full animate-ping" />
+                  )}
+                {link.name === t("faq") &&
+                  user &&
+                  !onboardingState.hasSeenTour && (
+                    <div className="absolute -top-2 -right-2 w-3 h-3 bg-red-500 rounded-full" />
+                  )}
                 <div className="absolute inset-0 bg-gradient-to-r from-electric-400/20 to-magic-400/20 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-electric-400 to-neon-400 group-hover:w-full transition-all duration-300"></div>
               </a>
