@@ -191,8 +191,7 @@ const Categories = () => {
           </div>
 
           <p className="text-xs text-white mb-6 lg:px-8">
-            Join our 90-Day Quiz Contest! Play 10 questions daily across 6
-            categories and compete with others.
+            {t("categoriesPage.contestDescription")}
           </p>
 
           {/* Categories Grid */}
