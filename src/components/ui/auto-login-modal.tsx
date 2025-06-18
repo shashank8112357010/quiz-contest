@@ -28,6 +28,7 @@ export const AutoLoginModal: React.FC<AutoLoginModalProps> = ({
 }) => {
   const [showPhoneAuth, setShowPhoneAuth] = useState(false);
   const { user, userData } = useAuth();
+  const { t } = useLanguageStore();
 
   // Close modal if user becomes authenticated
   useEffect(() => {
