@@ -48,7 +48,12 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
       setHasInteracted(true);
       if (autoPlay && audioRef.current && !isPlaying) {
         audioRef.current.play().catch((error) => {
-          console.log("Audio autoplay failed:", error);
+          console.log("Audio autoplay failed:", {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            reason: "User interaction required for autoplay",
+          });
         });
       }
     };
@@ -72,7 +77,12 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.log("Audio autoplay failed:", error);
+          console.log("Audio autoplay failed:", {
+            name: error.name,
+            message: error.message,
+            code: error.code || "Unknown",
+            reason: "User interaction required for autoplay",
+          });
         });
       }
     }
@@ -88,7 +98,12 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
       audio.pause();
     } else {
       audio.play().catch((error) => {
-        console.log("Audio play failed:", error);
+        console.log("Audio play failed:", {
+          name: error.name,
+          message: error.message,
+          code: error.code || "Unknown",
+          reason: "Play action failed",
+        });
       });
     }
   };
@@ -122,7 +137,13 @@ export const BackgroundMusic: React.FC<BackgroundMusicProps> = ({
         }}
         onCanPlayThrough={() => {
           if (hasInteracted && autoPlay && !isPlaying) {
-            audioRef.current?.play().catch(console.error);
+            audioRef.current?.play().catch((error) => {
+              console.log("Audio canPlayThrough autoplay failed:", {
+                name: error.name,
+                message: error.message,
+                code: error.code || "Unknown",
+              });
+            });
           }
         }}
       >
