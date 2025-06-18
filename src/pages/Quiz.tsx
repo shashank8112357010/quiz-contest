@@ -144,11 +144,6 @@ const Quiz = () => {
           ].slice(0, 10);
         }
 
-        console.log(
-          "📝 Quiz loaded with",
-          categoryQuestions.length,
-          "questions",
-        );
         if (isMounted && categoryQuestions.length > 0) {
           setQuestions(categoryQuestions);
           setUserAnswers(new Array(categoryQuestions.length).fill(null));
@@ -157,7 +152,6 @@ const Quiz = () => {
           setLoadingUnlock(false);
           startBackgroundMusic();
         } else {
-          console.error("❌ No questions loaded or component unmounted");
           setLoadingUnlock(false);
         }
       } catch (error) {
@@ -304,11 +298,6 @@ const Quiz = () => {
       categoryId || "gk",
       10,
       user?.uid,
-    );
-    console.log(
-      "🔄 Restart Quiz loaded with",
-      categoryQuestions.length,
-      "questions",
     );
     setQuestions(categoryQuestions);
     setUserAnswers(new Array(categoryQuestions.length).fill(null)); // Use actual length
