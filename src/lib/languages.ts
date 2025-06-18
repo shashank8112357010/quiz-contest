@@ -229,7 +229,7 @@ export const translations: Record<string, Translations> = {
         desc: "كأس حصري للفائز وجائزة نقدية",
       },
       giftcard: {
-        desc: "قسيمة هدايا ممت��زة للتسوق",
+        desc: "قسيمة هدايا ممتازة للتسوق",
       },
     },
 
@@ -279,6 +279,36 @@ export const translations: Record<string, Translations> = {
     login: "Entrar",
     signOut: "Sair",
     changeCategory: "Alterar Categoria",
+
+    prizes: {
+      iphone15: {
+        name: "iPhone 15 Pro",
+        description: "Smartphone flagship mais recente com câmera incrível",
+      },
+      car: {
+        name: "Carro BMW de Luxo",
+        description:
+          "Veículo de luxo premium para experiência de direção definitiva",
+      },
+      laptop: {
+        name: "MacBook Pro",
+        description: "Laptop de alto desempenho para profissionais",
+      },
+      watch: {
+        name: "Apple Watch Ultra",
+        desc: "Smartwatch avançado com rastreamento de fitness",
+      },
+      ps5: {
+        name: "PlayStation 5",
+      },
+      gamepad: {
+        name: "Troféu Dourado",
+        desc: "Troféu exclusivo do vencedor e prêmio em dinheiro",
+      },
+      giftcard: {
+        desc: "Voucher de presente premium para compras",
+      },
+    },
 
     question: "Pergunta",
     questionsInBank: "Perguntas no banco",
