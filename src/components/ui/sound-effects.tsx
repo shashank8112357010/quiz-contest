@@ -29,24 +29,32 @@ export const SOUND_EFFECTS: Record<string, SoundEffect> = {
     url: "/audio/victory-fanfare.mp3",
     volume: 0.6,
   },
-  powerUp: { name: "Power Up", url: "/audio/power-up.mp3", volume: 0.5 },
+  powerUp: { name: "Power Up", url: "/audio/victory-fanfare.mp3", volume: 0.5 },
 
   // Prize/Reward Sounds
   coinCollect: {
     name: "Coin Collect",
-    url: "/audio/coin-collect.mp3",
+    url: "/audio/tick.mp3",
     volume: 0.4,
   },
-  prizeDrop: { name: "Prize Drop", url: "/audio/prize-drop.mp3", volume: 0.7 },
-  fanfare: { name: "Victory Fanfare", url: "/audio/fanfare.mp3", volume: 0.8 },
+  prizeDrop: { name: "Prize Drop", url: "/audio/clapping.mp3", volume: 0.7 },
+  fanfare: {
+    name: "Victory Fanfare",
+    url: "/audio/victory-fanfare.mp3",
+    volume: 0.8,
+  },
 
   // Streak Sounds
-  streak3: { name: "3 Streak", url: "/audio/streak-3.mp3", volume: 0.5 },
-  streak5: { name: "5 Streak", url: "/audio/streak-5.mp3", volume: 0.6 },
-  streak10: { name: "10 Streak", url: "/audio/streak-10.mp3", volume: 0.8 },
+  streak3: { name: "3 Streak", url: "/audio/clapping.mp3", volume: 0.5 },
+  streak5: { name: "5 Streak", url: "/audio/clapping.mp3", volume: 0.6 },
+  streak10: {
+    name: "10 Streak",
+    url: "/audio/victory-fanfare.mp3",
+    volume: 0.8,
+  },
 
   // Special Effects
-  magic: { name: "Magic", url: "/audio/magic.mp3", volume: 0.5 },
+  magic: { name: "Magic", url: "/audio/aww-sound.mp3", volume: 0.5 },
   explosion: { name: "Explosion", url: "/audio/explosion.mp3", volume: 0.6 },
   whoosh: { name: "Whoosh", url: "/audio/whoosh.mp3", volume: 0.4 },
 };
