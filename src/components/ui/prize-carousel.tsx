@@ -259,7 +259,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
               // Marquee Images Display
               <div
                 className="relative overflow-x-hidden mb-4"
-                style={{ height: "10rem" }}
+                style={{ height: "12rem" }}
               >
                 <div
                   className="flex items-center gap-8 animate-prize-marquee"
