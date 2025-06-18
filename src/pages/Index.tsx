@@ -72,7 +72,7 @@ const Index = () => {
             <FeatureGrid />
 
             {/* Firebase Debug Info (Development Only) */}
-            {process.env.NODE_ENV === "development" && <FirebaseDebugInfo />}
+           
           </main>
 
           {/* Enhanced Footer */}

@@ -158,42 +158,27 @@ const Categories = () => {
         <Header />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          {/* Page Header */}
-          <div className="text-center mb-8 sm:mb-12">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4 sm:mb-6 px-2">
-              Choose Your{" "}
-              <span className="bg-gradient-to-r from-electric-400 via-neon-400 to-magic-400 bg-clip-text text-transparent">
-                Category
-              </span>
+        <div className="flex flex-col sm:flex-row lg:px-8 sm:items-center sm:justify-between mb-4">
+            <h1 className="text-3xl sm:text-4xl font-display font-bold text-white">
+              Choose Your <span className="bg-gradient-to-r from-electric-400 via-neon-400 to-magic-400 bg-clip-text text-transparent">Category</span>
             </h1>
-            <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
-              Join our 90-Day Quiz Contest! Play 10 questions daily across 6
-              categories and compete with others.
-            </p>
-
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-6 sm:mb-8 px-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
-                <div className="text-xl sm:text-2xl font-bold text-electric-400">
+            <div className="flex gap-3 mt-4 sm:mt-0">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20 text-right">
+                <div className="text-lg font-bold text-electric-400">
                   {categories.length}
                 </div>
-                <div className="text-white/70 text-xs sm:text-sm">
-                  Categories
-                </div>
+                <div className="text-white text-xs">Categories</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 border border-white/20 min-w-[100px]">
-                <div className="text-xl sm:text-2xl font-bold text-neon-400">
-                  {categories
-                    .reduce((total, cat) => total + cat.questionCount, 0)
-                    .toLocaleString()}
-                  +
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20 text-right">
+                <div className="text-lg font-bold text-neon-400">
+                  {categories.reduce((total, cat) => total + cat.questionCount, 0).toLocaleString()}+
                 </div>
-                <div className="text-white/70 text-xs sm:text-sm">
-                  Questions
-                </div>
+                <div className="text-white text-xs">Questions</div>
               </div>
             </div>
           </div>
+
+          <p className="text-xs text-white mb-6 lg:px-8">Join our 90-Day Quiz Contest! Play 10 questions daily across 6 categories and compete with others.</p>
 
           {/* Categories Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 max-w-7xl mx-auto px-2 sm:px-0">
@@ -202,7 +187,7 @@ const Categories = () => {
               return (
                 <div
                   key={category.id}
-                  className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${category.borderColor} p-4 sm:p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp touch-manipulation`}
+                  className={`group relative bg-white/5 backdrop-blur-sm rounded-2xl border ${category.borderColor} p-4 sm:p-6 hover:bg-white/10 transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer transform animate-fadeInUp touch-manipulation text-left`}
                   style={{
                     animationDelay: `${index * 100}ms`,
                     animationFillMode: "both",
@@ -210,6 +195,12 @@ const Categories = () => {
                   }}
                   onClick={() => handleCategorySelect(category.id)}
                 >
+                  {/* Question Count Badge Top Right */}
+                  <div className="absolute top-4 right-4 z-20">
+                    <span className="bg-electric-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      {category.questionCount} Qs
+                    </span>
+                  </div>
                   {/* Gradient overlay on hover */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl bg-gradient-to-br from-white to-transparent" />
 
@@ -229,21 +220,20 @@ const Categories = () => {
 
                     {/* Icon with smart animations */}
                     <Icon
-                      className={`relative z-10 w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${
-                        category.id === "animal"
-                          ? "group-hover:animate-bounce"
-                          : category.id === "history"
-                            ? "group-hover:animate-pulse"
-                            : category.id === "celebrity"
-                              ? "group-hover:animate-spin"
-                              : category.id === "computer"
-                                ? "group-hover:animate-pulse"
-                                : category.id === "science"
-                                  ? "group-hover:rotate-12"
-                                  : category.id === "geography"
-                                    ? "group-hover:animate-ping"
-                                    : "group-hover:scale-110"
-                      }`}
+                      className={`relative z-10 w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-white transition-all duration-300 transform group-hover:scale-110 ${category.id === "animal"
+                        ? "group-hover:animate-bounce"
+                        : category.id === "history"
+                          ? "group-hover:animate-pulse"
+                          : category.id === "celebrity"
+                            ? "group-hover:animate-spin"
+                            : category.id === "computer"
+                              ? "group-hover:animate-pulse"
+                              : category.id === "science"
+                                ? "group-hover:rotate-12"
+                                : category.id === "geography"
+                                  ? "group-hover:animate-ping"
+                                  : "group-hover:scale-110"
+                        }`}
                       style={{
                         filter: "drop-shadow(0 0 8px rgba(255,255,255,0.3))",
                       }}
@@ -261,32 +251,27 @@ const Categories = () => {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-base sm:text-lg font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300 leading-tight">
+                  <h3 className="text-base sm:text-lg font-display font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-electric-200 group-hover:bg-clip-text transition-all duration-300 leading-tight text-left">
                     {category.name}
                   </h3>
 
-                  <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 group-hover:text-white/80 transition-colors duration-300 line-clamp-3">
+                  <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 group-hover:text-white/80 transition-colors duration-300 line-clamp-3 text-left">
                     {category.description}
                   </p>
 
                   {/* Stats */}
-                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <div className="flex items-center mb-3 sm:mb-4">
                     <Badge
                       className={`${getDifficultyColor(category.difficulty)} text-xs px-2 py-1`}
                     >
                       {category.difficulty}
                     </Badge>
-                    <div className="text-right">
-                      <div className="text-white/60 text-xs sm:text-sm font-medium">
-                        {category.questionCount} questions
+                    {!user && (
+                      <div className="text-orange-400 text-xs flex items-center gap-1 ml-3 mt-1">
+                        <div className="w-1 h-1 bg-orange-400 rounded-full"></div>
+                        Login required
                       </div>
-                      {!user && (
-                        <div className="text-orange-400 text-xs flex items-center gap-1 mt-1">
-                          <div className="w-1 h-1 bg-orange-400 rounded-full"></div>
-                          Login required
-                        </div>
-                      )}
-                    </div>
+                    )}
                   </div>
 
                   {/* Play Button */}
@@ -308,6 +293,7 @@ const Categories = () => {
               );
             })}
           </div>
+          {/* Question Count Below Each Card */}
 
           {/* More Categories Coming Soon */}
           <div className="text-center mt-12 sm:mt-16 px-4">

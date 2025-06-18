@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLanguageStore } from "@/lib/languages";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,6 +20,7 @@ import { PrizeCarousel } from "@/components/ui/prize-carousel";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 export const HeroSection = () => {
+  const { t, currentLanguage } = useLanguageStore(); // subscribe to language changes for reactivity
   const [showPhoneAuth, setShowPhoneAuth] = useState(false);
   const [showContestEntry, setShowContestEntry] = useState(false);
   const { user } = useAuth();
@@ -42,12 +44,12 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative pt-5 pb-2">
+    <section className="relative pt-5">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="max-full mx-auto text-center">
           {/* Prize Carousel */}
-          <div className="mb-12">
-            <PrizeCarousel className="max-w-2xl mx-auto" itemsToShow={5} />
+          <div className="">
+            <PrizeCarousel className="max-full mx-auto" itemsToShow={5} />
           </div>
 
           {/* Enhanced Phone Icon with multiple animations */}
@@ -66,27 +68,6 @@ export const HeroSection = () => {
                 }}
               />
 
-              {/* Main icon container */}
-              <div className="relative w-24 h-24 bg-gradient-to-br from-electric-400 via-magic-500 to-neon-500 rounded-3xl flex items-center justify-center animate-float shadow-2xl animate-glow">
-                <Smartphone className="w-12 h-12 text-white animate-pulse" />
-
-                {/* Sparkle effects */}
-                <div className="absolute -top-2 -left-2 text-yellow-400 animate-bounce">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <div
-                  className="absolute -bottom-2 -right-2 text-pink-400 animate-bounce"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  <Star className="w-4 h-4" />
-                </div>
-              </div>
-
-              {/* Trophy badge */}
-              <div className="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-r from-gold-400 to-yellow-500 rounded-full flex items-center justify-center animate-bounce-subtle shadow-xl border-2 border-white">
-                <Trophy className="w-5 h-5 text-white animate-pulse" />
-              </div>
-
               {/* Floating particles */}
               {[...Array(8)].map((_, i) => (
                 <div
@@ -104,21 +85,13 @@ export const HeroSection = () => {
 
           {/* Enhanced Main Headline */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black text-white mb-8 animate-fade-in">
-            <span className="block bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
-              Super Bonanza Contest
-            </span>
-            <span className="block text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
-              (Season - 1)
-            </span>
-            <div className="flex justify-center items-center gap-4 mt-4">
-              <Crown className="w-16 h-16 text-gold-400 animate-bounce" />
-              <Rocket className="w-16 h-16 text-electric-400 animate-pulse" />
-              <Star
-                className="w-16 h-16 text-neon-400 animate-spin"
-                style={{ animationDuration: "3s" }}
-              />
-            </div>
-          </h1>
+  <span className="block bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
+    {t('hero.contestTitle')}
+  </span>
+  <span className="block text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-electric-300 via-neon-300 via-magic-300 to-gold-300 bg-clip-text text-transparent animate-glow drop-shadow-2xl">
+    {t('hero.season')}
+  </span>
+</h1>
 
           {/* Enhanced Subtitle */}
           <p className="text-2xl md:text-3xl text-white font-bold mb-12 max-w-4xl mx-auto leading-relaxed drop-shadow-lg animate-slide-up">
@@ -152,7 +125,7 @@ export const HeroSection = () => {
                 className="w-6 h-6 mr-3 animate-spin"
                 style={{ animationDuration: "3s" }}
               />
-              View Leaderboard
+              {t('leaderboard.globalTitle')}
             </Button>
           </div>
         </div>

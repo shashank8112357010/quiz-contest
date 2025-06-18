@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguageStore } from "@/lib/languages";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Header } from "@/components/ui/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 
 const Leaderboard = () => {
+  const { t, currentLanguage } = useLanguageStore(); // subscribe to language changes for reactivity
   // Mock leaderboard data
   const topPlayers = [
     {
@@ -67,8 +69,7 @@ const Leaderboard = () => {
     { name: "Science", leader: "Albert Quiz", score: 2450 },
     { name: "History", leader: "TimeKeeper", score: 2380 },
     { name: "Sports", leader: "AthleteAce", score: 2290 },
-    { name: "Geography", leader: "WorldWise", score: 2150 },
-    { name: "Literature", leader: "BookWorm", score: 2080 },
+
   ];
 
   const getRankIcon = (rank: number) => {
@@ -108,11 +109,10 @@ const Leaderboard = () => {
           {/* Page Header */}
           <div className="text-center mb-12">
             <h1 className="text-6xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent mb-4">
-              🏆 Global Leaderboard
+              🏆 {t("leaderboard.globalTitle")}
             </h1>
             <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Compete with the best quiz masters from around the world! Climb
-              the ranks and earn your place among the legends.
+              {t("leaderboard.subtitle")}
             </p>
           </div>
 
@@ -123,8 +123,8 @@ const Leaderboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-white">
                     <Trophy className="w-8 h-8 text-yellow-400" />
-                    Top Quiz Masters
-                    <Badge className="bg-yellow-500 text-black">LIVE</Badge>
+                    {t("leaderboard.topQuizMasters")}
+                    <Badge className="bg-yellow-500 text-black">{t("leaderboard.live")}</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -132,17 +132,15 @@ const Leaderboard = () => {
                     {topPlayers.map((player, index) => (
                       <div
                         key={player.rank}
-                        className={`p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
-                          player.rank <= 3
-                            ? `bg-gradient-to-r ${getRankColor(player.rank)}/20 border-${
-                                player.rank === 1
-                                  ? "yellow"
-                                  : player.rank === 2
-                                    ? "gray"
-                                    : "orange"
-                              }-500/50`
+                        className={`p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${player.rank <= 3
+                            ? `bg-gradient-to-r ${getRankColor(player.rank)}/20 border-${player.rank === 1
+                              ? "yellow"
+                              : player.rank === 2
+                                ? "gray"
+                                : "orange"
+                            }-500/50`
                             : "bg-slate-800/50 border-slate-600 hover:border-blue-500/50"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
@@ -166,7 +164,7 @@ const Leaderboard = () => {
                               <Badge
                                 className={`bg-gradient-to-r ${getRankColor(player.rank)} text-white`}
                               >
-                                {player.badge}
+                                {t(`leaderboard.badge.${player.badge.toLowerCase()}`)}
                               </Badge>
                             </div>
                           </div>
@@ -181,7 +179,7 @@ const Leaderboard = () => {
                                   </span>
                                 </div>
                                 <span className="text-xs text-gray-400">
-                                  Score
+                                  {t("leaderboard.score")}
                                 </span>
                               </div>
                             </div>
@@ -191,10 +189,10 @@ const Leaderboard = () => {
                     ))}
                   </div>
 
-                  <div className="mt-6 text-center">
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                      View Full Rankings
-                    </Button>
+                  <div className="mt-9 text-center">
+                    {/* <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                      {t("leaderboard.viewFullRankings")}
+                    </Button> */}
                   </div>
                 </CardContent>
               </Card>
@@ -207,25 +205,25 @@ const Leaderboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <TrendingUp className="w-6 h-6 text-green-400" />
-                    Your Stats
+                    {t("leaderboard.yourStats")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Current Rank</span>
+                      <span className="text-gray-300">{t("leaderboard.currentRank")}</span>
                       <span className="font-bold text-white">#247</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Best Rank</span>
+                      <span className="text-gray-300">{t("leaderboard.bestRank")}</span>
                       <span className="font-bold text-green-400">#89</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Total Score</span>
+                      <span className="text-gray-300">{t("leaderboard.totalScore")}</span>
                       <span className="font-bold text-yellow-400">5,420</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">This Week</span>
+                      <span className="text-gray-300">{t("leaderboard.thisWeek")}</span>
                       <span className="font-bold text-blue-400">+124</span>
                     </div>
                   </div>
@@ -237,7 +235,7 @@ const Leaderboard = () => {
                     }}
                   >
                     <Target className="w-4 h-4 mr-2" />
-                    Enter Contest
+                    {t("leaderboard.enterContest")}
                   </Button>
                 </CardContent>
               </Card>
@@ -247,7 +245,7 @@ const Leaderboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Award className="w-6 h-6 text-purple-400" />
-                    Category Leaders
+                    {t("leaderboard.categoryLeaders")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -259,7 +257,7 @@ const Leaderboard = () => {
                       >
                         <div>
                           <h4 className="font-semibold text-white">
-                            {category.name}
+                            {t(`leaderboard.category.${category.name.toLowerCase()}`)}
                           </h4>
                           <p className="text-sm text-gray-400">
                             {category.leader}
@@ -269,7 +267,7 @@ const Leaderboard = () => {
                           <div className="font-bold text-yellow-400">
                             {category.score}
                           </div>
-                          <div className="text-xs text-gray-400">points</div>
+                          <div className="text-xs text-gray-400">{t("leaderboard.points")}</div>
                         </div>
                       </div>
                     ))}
@@ -278,13 +276,17 @@ const Leaderboard = () => {
               </Card>
 
               {/* Prize Carousel */}
-              <PrizeCarousel
-                showControls={false}
-                autoPlay={true}
-                interval={3000}
-              />
+
             </div>
+
           </div>
+          <PrizeCarousel
+          itemsToShow={5}
+            className="w-full mt-4 h-30"
+            showControls={false}
+            autoPlay={true}
+            interval={3000}
+          />
         </main>
       </div>
     </div>

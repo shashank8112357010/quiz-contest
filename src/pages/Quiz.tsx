@@ -107,7 +107,7 @@ const Quiz = () => {
             setFirestoreUser(updatedUser);
             // Allow up to 10 quiz sessions per day (each session has 10 questions)
             if (isDailyLimitReached(updatedUser)) {
-              setShowDailyLimitModal(true);
+              // setShowDailyLimitModal(true);
               setLoadingUnlock(false);
               return;
             }
@@ -280,7 +280,7 @@ const Quiz = () => {
       const updatedUser = await checkAndResetDailyUnlock(user.uid);
       setFirestoreUser(updatedUser);
       if (updatedUser && isDailyLimitReached(updatedUser)) {
-        setShowDailyLimitModal(true);
+        // setShowDailyLimitModal(true);
         return;
       }
     }
@@ -460,7 +460,7 @@ const Quiz = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen mt-10 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <AnimatedBackground />
       <div className="relative z-10">
         <div className="fixed bottom-6 right-6 z-50 lg:hidden">
@@ -516,25 +516,8 @@ const Quiz = () => {
                   Questions in bank
                 </div>
               </div>
-              <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl border border-blue-400/30 px-4 py-2 shadow-lg shadow-blue-500/10">
-                <div className="text-white text-sm font-bold text-center">
-                  <span className="text-blue-300">
-                    {firestoreUser?.questionsUnlockedToday || 0}
-                  </span>{" "}
-                  / <span className="text-purple-300">10</span>
-                </div>
-                <div className="text-white/60 text-xs text-center">
-                  Daily Questions
-                </div>
-              </div>
-              <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm rounded-xl border border-red-400/30 px-4 py-2 shadow-lg shadow-red-500/10">
-                <div className="text-white text-sm font-bold text-center flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-red-400 fill-current" />
-                  <span className="text-red-300">{lives}</span> /{" "}
-                  <span className="text-pink-300">10</span>
-                </div>
-                <div className="text-white/60 text-xs text-center">Lives</div>
-              </div>
+
+
               <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 px-3 py-2">
                 <div className="text-white font-mono text-lg font-bold text-center">
                   {score}
@@ -661,12 +644,7 @@ const Quiz = () => {
       </div>
 
       {/* Daily Limit Modal */}
-      <DailyLimitModal
-        isOpen={showDailyLimitModal}
-        onClose={() => setShowDailyLimitModal(false)}
-        onGoToCategories={goToCategories}
-        onGoHome={goHome}
-      />
+
     </div>
   );
 };

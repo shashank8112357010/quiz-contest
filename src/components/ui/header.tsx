@@ -57,7 +57,7 @@ export const Header = () => {
             {[
               { name: t("home"), href: "/" },
               { name: t("categories"), href: "/categories" },
-              { name: t("leaderboard"), href: "/leaderboard" },
+              { name: t("leaderboard.globalTitle"), href: "/leaderboard" },
               { name: t("gratifications"), href: "/rewards" },
               { name: t("faq"), href: "#", onClick: triggerTour },
             ].map((link, index) => (
@@ -193,7 +193,7 @@ export const Header = () => {
               {[
                 { name: t("home"), href: "/" },
                 { name: t("categories"), href: "/categories" },
-                { name: t("leaderboard"), href: "/leaderboard" },
+                { name: t("leaderboard.globalTitle"), href: "/leaderboard" },
                 { name: t("gratifications"), href: "/rewards" },
                 { name: t("faq"), href: "#", onClick: triggerTour },
               ].map((link, index) => (

@@ -103,16 +103,20 @@ const AppContent = () => {
   );
 };
 
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <QuizAudioProvider>
-        <TooltipProvider>
-          <AppContent />
-        </TooltipProvider>
-      </QuizAudioProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <QuizAudioProvider>
+          <TooltipProvider>
+            <AppContent />
+          </TooltipProvider>
+        </QuizAudioProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

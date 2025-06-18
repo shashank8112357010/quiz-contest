@@ -21,8 +21,35 @@ import {
   increment,
   serverTimestamp // <-- FIXED: add this import
 } from "firebase/firestore";
-import { auth, db } from "./firebase"; // Assuming firebase.ts is in the same directory
+import { auth, db, storage } from "./firebase"; // Import storage for profile image upload
 import { User, QuizSession } from "./store";
+
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+
+// Uploads a profile image to Firebase Storage and returns the download URL
+export const uploadProfileImage = async (uid: string, file: File): Promise<string> => {
+  alert(uid );
+  try {
+    const fileRef = storageRef(storage, `profileImages/${uid}/${file.name}`);
+    await uploadBytes(fileRef, file);
+    const url = await getDownloadURL(fileRef);
+    return url;
+  } catch (error) {
+    console.error("Error uploading profile image:", error);
+    throw error;
+  }
+};
+
+// Updates the user's photoURL in Firestore
+export const updateUserPhotoURL = async (uid: string, photoURL: string) => {
+  try {
+    const userDocRef = doc(db, "users", uid);
+    await updateDoc(userDocRef, { photoURL, lastModified: serverTimestamp() });
+  } catch (error) {
+    console.error("Error updating user photoURL in Firestore:", error);
+    throw error;
+  }
+};
 
 // Auth Services - Refactored for Firebase
 export const signUp = async (
@@ -43,6 +70,7 @@ export const signUp = async (
       email: user.email,
       phoneNumber: user.phoneNumber || "", // Ensure phoneNumber is part of the structure if needed
       displayName: displayName,
+      photoURL: "/default-avatar.png",
       coins: 100, // Starting coins
       lives: 3, // Starting lives
       totalStars: 0,

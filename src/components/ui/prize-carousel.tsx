@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useLanguageStore } from "@/lib/languages";
 import {
   ChevronLeft,
   ChevronRight,
@@ -25,70 +26,8 @@ export interface Prize {
   icon: React.ElementType;
   gradient: string;
   rarity: "common" | "rare" | "epic" | "legendary";
+  imagePath?: string; // Path to real image
 }
-
-const prizes: Prize[] = [
-  {
-    id: "iphone15",
-    name: "iPhone 15 Pro Max",
-    description: "Latest flagship smartphone with advanced features",
-    value: "₹1,59,900",
-    image: "📱",
-    icon: Smartphone,
-    gradient: "from-blue-500 via-purple-500 to-pink-500",
-    rarity: "legendary",
-  },
-  {
-    id: "bmw",
-    name: "BMW 3 Series",
-    description: "Luxury sedan with premium performance",
-    value: "₹45,00,000",
-    image: "🚗",
-    icon: Car,
-    gradient: "from-red-500 via-orange-500 to-yellow-500",
-    rarity: "legendary",
-  },
-  {
-    id: "macbook",
-    name: "MacBook Pro M3",
-    description: "Professional laptop for creators and developers",
-    value: "₹2,39,900",
-    image: "💻",
-    icon: Laptop,
-    gradient: "from-slate-500 via-gray-500 to-zinc-500",
-    rarity: "epic",
-  },
-  {
-    id: "applewatch",
-    name: "Apple Watch Ultra",
-    description: "Advanced smartwatch for fitness enthusiasts",
-    value: "₹89,900",
-    image: "⌚",
-    icon: Watch,
-    gradient: "from-green-500 via-emerald-500 to-teal-500",
-    rarity: "epic",
-  },
-  {
-    id: "ps5",
-    name: "PlayStation 5",
-    description: "Next-gen gaming console with exclusive games",
-    value: "₹54,990",
-    image: "🎮",
-    icon: Gamepad2,
-    gradient: "from-indigo-500 via-blue-500 to-cyan-500",
-    rarity: "rare",
-  },
-  {
-    id: "goldcup",
-    name: "Golden Trophy",
-    description: "Exclusive championship trophy for winners",
-    value: "₹25,000",
-    image: "🏆",
-    icon: Trophy,
-    gradient: "from-yellow-400 via-gold-500 to-amber-500",
-    rarity: "rare",
-  },
-];
 
 interface PrizeCarouselProps {
   showControls?: boolean;
@@ -98,6 +37,7 @@ interface PrizeCarouselProps {
   itemsToShow?: number;
 }
 
+// prizes array moved inside PrizeCarousel and uses t() for i18n
 export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
   showControls = true,
   autoPlay = true,
@@ -106,6 +46,77 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
   itemsToShow = 1,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { t, currentLanguage } = useLanguageStore(); // subscribe to language changes for reactivity
+
+  // Prizes array now uses t() for name and description
+  const prizes: Prize[] = [
+    {
+      id: "iphone15",
+      name: t("prizes.iphone15.name"),
+      description: t("prizes.iphone15.description"),
+      value: "₹1,59,900",
+      image: "📱",
+      icon: Smartphone,
+      gradient: "from-blue-500 via-purple-500 to-pink-500",
+      rarity: "legendary",
+      imagePath: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-model-unselect-gallery-1-202309_GEO_EMEA?wid=512&hei=512&fmt=jpeg&qlt=95&.v=1693346852416",
+    },
+    {
+      id: "bmw",
+      name: t("prizes.car.name"),
+      description: t("prizes.car.description"),
+      value: "₹45,00,000",
+      image: "🚗",
+      icon: Car,
+      gradient: "from-red-500 via-orange-500 to-yellow-500",
+      rarity: "legendary",
+      imagePath: "https://www.bmw.in/content/dam/bmw/common/all-models/3-series/sedan/2022/navigation/bmw-3-series-sedan-modelfinder.png",
+    },
+    {
+      id: "macbook",
+      name: t("prizes.laptop.name"),
+      description: t("prizes.laptop.description"),
+      value: "₹2,39,900",
+      image: "💻",
+      icon: Laptop,
+      gradient: "from-slate-500 via-gray-500 to-zinc-500",
+      rarity: "epic",
+      imagePath: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16-spacegray-select-202110_GEO_EMEA?wid=512&hei=512&fmt=jpeg&qlt=95&.v=1632788574000",
+    },
+    {
+      id: "applewatch",
+      name: t("prizes.watch.name"),
+      description: t("prizes.watch.desc"),
+      value: "₹89,900",
+      image: "⌚",
+      icon: Watch,
+      gradient: "from-green-500 via-emerald-500 to-teal-500",
+      rarity: "epic",
+      imagePath: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra2-digitalmat-gallery-1-202309?wid=512&hei=512&fmt=jpeg&qlt=95&.v=1693501344382",
+    },
+    {
+      id: "ps5",
+      name: t("prizes.ps5.name"),
+      description: t("prizes.gamepad.desc"),
+      value: "₹54,990",
+      image: "🎮",
+      icon: Gamepad2,
+      gradient: "from-indigo-500 via-blue-500 to-cyan-500",
+      rarity: "rare",
+      imagePath: "https://www.sony.co.in/image/ps5-console.png",
+    },
+    {
+      id: "goldcup",
+      name: t("prizes.gamepad.name"),
+      description: t("prizes.giftcard.desc"),
+      value: "₹25,000",
+      image: "🏆",
+      icon: Trophy,
+      gradient: "from-yellow-400 via-gold-500 to-amber-500",
+      rarity: "rare",
+      imagePath: "https://cdn-icons-png.flaticon.com/512/2583/2583346.png",
+    },
+  ];
 
   useEffect(() => {
     if (!autoPlay) return;
@@ -113,7 +124,6 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % prizes.length);
     }, interval);
-
     return () => clearInterval(timer);
   }, [autoPlay, interval]);
 
@@ -154,7 +164,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
   };
 
   return (
-    <div className={cn("relative w-full", className)}>
+    <div className={cn("relative w-full ", className)}>
       <div className="relative bg-gradient-to-br from-slate-900/90 via-purple-900/90 to-slate-900/90 backdrop-blur-xl border-2 border-purple-500/20 rounded-3xl p-6 overflow-hidden shadow-2xl">
         {/* Animated Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
@@ -184,126 +194,95 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
         <div className="relative z-10">
           {/* Header */}
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent mb-2">
-              🎁 Amazing Prizes
-            </h3>
-            <p className="text-purple-200 text-sm">
+            <div className="overflow-x-hidden whitespace-nowrap mb-6">
+              <div
+                className="inline-block text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent px-2"
+                style={{
+                  animation: 'marquee 10s linear infinite',
+                  whiteSpace: 'nowrap',
+                  display: 'inline-block',
+                  minWidth: '100%',
+                }}
+              >
+                Amazing Prizes
+              </div>
+              <style>{`
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  `}</style>
+            </div>
+            {/* <p className="text-purple-200 text-sm">
               Win incredible rewards in our 90-day contest!
-            </p>
+            </p> */}
           </div>
 
           {/* Prize Display */}
           <div className="text-center">
             {itemsToShow === 1 ? (
-              /* Single Item Display */
-              <>
-                {/* Prize Icon/Emoji */}
-                <div className={`relative inline-block mb-4`}>
-                  <div
-                    className={`w-24 h-24 bg-gradient-to-r ${currentPrize.gradient} rounded-full flex items-center justify-center shadow-2xl animate-pulse`}
-                  >
-                    <span className="text-4xl">{currentPrize.image}</span>
-                  </div>
-                  {/* Rarity Badge */}
-                  <div
-                    className={`absolute -top-2 -right-2 px-2 py-1 bg-gradient-to-r ${getRarityBadge(currentPrize.rarity).color} rounded-full text-xs font-bold text-white shadow-lg`}
-                  >
-                    {getRarityBadge(currentPrize.rarity).label}
-                  </div>
-                </div>
+  // Single Item Display
+  <>
+    <div className={`relative inline-block mb-4`}>
+      <div
+        className={`w-50 h-50 bg-gradient-to-r ${currentPrize.gradient} rounded-full flex items-center justify-center shadow-2xl animate-pulse`}
+      >
+        {/* TODO: Replace src with actual image for {currentPrize.name} */}
+        <img
+          src={currentPrize.imagePath || "/placeholder.svg"}
+          alt={currentPrize.name}
+          className="object-contain w-60 h-60 rounded-full"
+        />
+      </div>
+    </div>
+    <h4 className="text-xl font-bold text-white mb-2">{currentPrize.name}</h4>
+    <p className="text-purple-200 text-sm mb-3 max-w-xs mx-auto">{currentPrize.description}</p>
+    <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-4">{currentPrize.value}</div>
+  </>
+) : (
+  // Marquee Images Display
+  <div className="relative overflow-x-hidden mb-4" style={{height: '9rem'}}>
+    <div
+      className="flex items-center gap-8 animate-prize-marquee"
+      style={{
+        animation: 'prize-marquee 22s linear infinite',
+        willChange: 'transform',
+      }}
+    >
+      {[...prizes, ...prizes].map((prize, index) => (
+        <div key={`${prize.id}-${index}`} className="relative flex flex-col items-center">
+          <div
+            className={`w-28 h-28 bg-gradient-to-r ${prize.gradient} rounded-full flex items-center justify-center shadow-xl`}
+          >
+            <img
+              src={prize.imagePath || "/placeholder.svg"}
+              alt={prize.name}
+              className="object-contain w-26 h-26 rounded-full"
+            />
+          </div>
+          <div className="text-white text-xs font-semibold mt-2 truncate w-28 text-center">
+            {prize.name}
+          </div>
+        </div>
+      ))}
+    </div>
+    <style>{`
+      @keyframes prize-marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-prize-marquee {
+        min-width: 200%;
+      }
+    `}</style>
+  </div>
+)}
 
-                {/* Prize Info */}
-                <h4 className="text-xl font-bold text-white mb-2">
-                  {currentPrize.name}
-                </h4>
-                <p className="text-purple-200 text-sm mb-3 max-w-xs mx-auto">
-                  {currentPrize.description}
-                </p>
-                <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-4">
-                  {currentPrize.value}
-                </div>
-              </>
-            ) : (
-              /* Multiple Items Display */
-              <div className="grid grid-cols-5 gap-4 mb-4">
-                {visiblePrizes.map((prize, index) => (
-                  <div key={`${prize.id}-${index}`} className="relative">
-                    <div
-                      className={`w-16 h-16 bg-gradient-to-r ${prize.gradient} rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform duration-300 cursor-pointer`}
-                      onClick={() =>
-                        setCurrentIndex((currentIndex + index) % prizes.length)
-                      }
-                    >
-                      <span className="text-2xl">{prize.image}</span>
-                    </div>
-                    {/* Rarity Badge */}
-                    <div
-                      className={`absolute -top-1 -right-1 px-1 py-0.5 bg-gradient-to-r ${getRarityBadge(prize.rarity).color} rounded-full text-xs font-bold text-white shadow-lg`}
-                    >
-                      {getRarityBadge(prize.rarity).label.charAt(0)}
-                    </div>
-                    {/* Prize Name */}
-                    <div className="text-white text-xs font-semibold mt-2 truncate">
-                      {prize.name}
-                    </div>
-                    {/* Prize Value */}
-                    <div className="text-green-400 text-xs font-bold">
-                      {prize.value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
 
-            {/* Progress Dots */}
-            <div className="flex justify-center gap-2 mb-4">
-              {prizes.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
-                    index === currentIndex
-                      ? "bg-yellow-400 w-6"
-                      : "bg-white/30 hover:bg-white/50",
-                  )}
-                />
-              ))}
-            </div>
-
-            {/* Contest Info */}
-            <div className="bg-black/30 rounded-xl p-3 text-center">
-              <p className="text-xs text-purple-300 mb-1">Contest Status</p>
-              <div className="text-yellow-400 font-bold text-sm">
-                🏆 90-Day Championship Active
-              </div>
-              <div className="text-emerald-400 text-xs mt-1">
-                Play daily to increase your chances!
-              </div>
-            </div>
           </div>
 
-          {/* Navigation Controls */}
-          {showControls && (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={prevPrize}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white border-white/20"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={nextPrize}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white border-white/20"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </Button>
-            </>
-          )}
+
+
         </div>
       </div>
     </div>

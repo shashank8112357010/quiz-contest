@@ -30,10 +30,14 @@ import {
   BookOpen,
   Play,
   Pause,
+  Plus,
+  Eye,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { useLanguageStore } from "@/lib/languages";
 
 const Dashboard = () => {
+  const { t, currentLanguage } = useLanguageStore(); // subscribe to language changes for reactivity
   const { user, userData, loading } = useAuth();
   const [activeMetric, setActiveMetric] = useState("overview");
 
@@ -66,18 +70,18 @@ const Dashboard = () => {
   const activeOffers = [
     {
       id: 1,
-      title: "Weekend Bonus",
-      description: "Double XP and coins for all quizzes",
+      title: t("dashboard.offers.weekendBonus.title"),
+      description: t("dashboard.offers.weekendBonus.desc"),
       type: "limited_time",
       expires: "23h 45m",
-      reward: "2x XP + Coins",
+      reward: t("dashboard.offers.weekendBonus.reward"),
       claimed: false,
       urgent: true,
     },
     {
       id: 2,
-      title: "First Place Prize",
-      description: "Finish top 3 in any category today",
+      title: t("dashboard.offers.firstPlacePrize.title"),
+      description: t("dashboard.offers.firstPlacePrize.desc"),
       type: "daily_challenge",
       expires: "5h 12m",
       reward: "500 coins + Premium badge",
@@ -86,11 +90,11 @@ const Dashboard = () => {
     },
     {
       id: 3,
-      title: "Study Buddy Bonus",
-      description: "Invite a friend and both get rewards",
+      title: t("dashboard.offers.studyBuddyBonus.title"),
+      description: t("dashboard.offers.studyBuddyBonus.desc"),
       type: "referral",
       expires: "7 days",
-      reward: "1000 coins each",
+      reward: t("dashboard.offers.studyBuddyBonus.reward"),
       claimed: false,
       urgent: false,
     },
@@ -100,46 +104,46 @@ const Dashboard = () => {
   const activeChallenges = [
     {
       id: 1,
-      title: "Science Master",
-      description: "Answer 50 science questions correctly",
-      category: "Science",
+      title: t("dashboard.challenges.scienceMaster.title"),
+      description: t("dashboard.challenges.scienceMaster.desc"),
+      category: t("dashboard.challenges.scienceMaster.category"),
       progress: 32,
       target: 50,
-      reward: "Science Expert Badge + 750 coins",
-      difficulty: "medium",
+      reward: t("dashboard.challenges.scienceMaster.reward"),
+      difficulty: t("dashboard.difficulty.medium"),
       timeLeft: "3 days",
     },
     {
       id: 2,
-      title: "Speed Demon",
-      description: "Complete 10 quizzes in under 30 seconds each",
-      category: "Mixed",
+      title: t("dashboard.challenges.speedDemon.title"),
+      description: t("dashboard.challenges.speedDemon.desc"),
+      category: t("dashboard.challenges.speedDemon.category"),
       progress: 7,
       target: 10,
-      reward: "Lightning Badge + 1000 coins",
-      difficulty: "hard",
+      reward: t("dashboard.challenges.speedDemon.reward"),
+      difficulty: t("dashboard.difficulty.hard"),
       timeLeft: "1 day",
     },
     {
       id: 3,
-      title: "Perfect Week",
-      description: "Maintain 100% accuracy for 7 days",
-      category: "Accuracy",
+      title: t("dashboard.challenges.perfectWeek.title"),
+      description: t("dashboard.challenges.perfectWeek.desc"),
+      category: t("dashboard.challenges.perfectWeek.category"),
       progress: 4,
       target: 7,
-      reward: "Perfectionist Badge + 2000 coins",
-      difficulty: "expert",
+      reward: t("dashboard.challenges.perfectWeek.reward"),
+      difficulty: t("dashboard.difficulty.expert"),
       timeLeft: "3 days",
     },
     {
       id: 4,
-      title: "History Buff",
-      description: "Complete all history category quizzes",
-      category: "History",
+      title: t("dashboard.challenges.historyBuff.title"),
+      description: t("dashboard.challenges.historyBuff.desc"),
+      category: t("dashboard.challenges.historyBuff.category"),
       progress: 15,
       target: 25,
-      reward: "History Scholar Badge + Premium Month",
-      difficulty: "easy",
+      reward: t("dashboard.challenges.historyBuff.reward"),
+      difficulty: t("dashboard.difficulty.easy"),
       timeLeft: "No limit",
     },
   ];
@@ -147,7 +151,7 @@ const Dashboard = () => {
   const recentActivity = [
     {
       id: 1,
-      action: "Completed Science Quiz",
+      action: t("dashboard.activity.completedScienceQuiz"),
       score: "18/20",
       time: "2 min ago",
       points: 180,
@@ -155,24 +159,24 @@ const Dashboard = () => {
     },
     {
       id: 2,
-      action: "Achievement Unlocked",
-      description: "Speed Demon",
+      action: t("dashboard.activity.achievementUnlocked"),
+      description: t("dashboard.activity.speedDemon"),
       time: "15 min ago",
       points: 500,
       type: "achievement",
     },
     {
       id: 3,
-      action: "Daily Login Bonus",
-      description: "Day 5 Streak",
+      action: t("dashboard.activity.dailyLoginBonus"),
+      description: t("dashboard.activity.day5Streak"),
       time: "2 hours ago",
       points: 50,
       type: "bonus",
     },
     {
       id: 4,
-      action: "Leveled Up",
-      description: "Reached Level 23",
+      action: t("dashboard.activity.leveledUp"),
+      description: t("dashboard.activity.reachedLevel23"),
       time: "1 day ago",
       points: 1000,
       type: "level",
@@ -192,22 +196,22 @@ const Dashboard = () => {
   const notifications = [
     {
       id: 1,
-      title: "Contest Starting Soon",
-      message: "Science Championship begins in 2 hours",
+      title: t("dashboard.notifications.contestStartingSoon.title"),
+      message: t("dashboard.notifications.contestStartingSoon.msg"),
       time: "1h ago",
       type: "info",
     },
     {
       id: 2,
-      title: "New Achievement Available",
-      message: "Complete 5 more quizzes to unlock 'Quiz Master'",
+      title: t("dashboard.notifications.newAchievementAvailable.title"),
+      message: t("dashboard.notifications.newAchievementAvailable.msg"),
       time: "3h ago",
       type: "achievement",
     },
     {
       id: 3,
-      title: "Friend Request",
-      message: "AlexQuizzer wants to connect",
+      title: t("dashboard.notifications.friendRequest.title"),
+      message: t("dashboard.notifications.friendRequest.msg"),
       time: "5h ago",
       type: "social",
     },
@@ -216,24 +220,24 @@ const Dashboard = () => {
   const upcomingEvents = [
     {
       id: 1,
-      title: "Weekly Tournament",
+      title: t("dashboard.events.weeklyTournament.title"),
       date: "Tomorrow 6:00 PM",
       participants: 1247,
-      prize: "5,000 Coins",
+      prize: t("dashboard.events.weeklyTournament.prize"),
     },
     {
       id: 2,
-      title: "History Challenge",
+      title: t("dashboard.events.historyChallenge.title"),
       date: "Dec 25, 8:00 PM",
       participants: 892,
-      prize: "Premium Badge",
+      prize: t("dashboard.events.historyChallenge.prize"),
     },
     {
       id: 3,
-      title: "Speed Quiz Marathon",
+      title: t("dashboard.events.speedQuizMarathon.title"),
       date: "Dec 30, 3:00 PM",
       participants: 2156,
-      prize: "10,000 Coins",
+      prize: t("dashboard.events.speedQuizMarathon.prize"),
     },
   ];
 
@@ -246,7 +250,8 @@ const Dashboard = () => {
           <div className="container mx-auto px-4 py-16 text-center">
             <div className="animate-pulse">
               <h1 className="text-4xl font-bold text-white mb-4">
-                Loading Dashboard...
+                {t("dashboard.loading")}
+
               </h1>
               <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
             </div>
@@ -267,11 +272,11 @@ const Dashboard = () => {
               <div className="flex items-center justify-center gap-3 mb-4">
                 <LayoutDashboard className="w-8 h-8 text-purple-400" />
                 <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Dashboard Access
+                  {t("dashboard.accessTitle")}
                 </h1>
               </div>
               <p className="text-gray-300 text-lg">
-                Sign in to access your personalized quiz dashboard
+                {t("dashboard.accessPrompt")}
               </p>
             </div>
 
@@ -297,13 +302,12 @@ const Dashboard = () => {
             <div className="flex items-center gap-3 mb-4">
               <LayoutDashboard className="w-8 h-8 text-purple-400" />
               <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Personal Dashboard
+                {t("dashboard.personalTitle")}
               </h1>
-              <Badge className="bg-purple-500 text-white">Player</Badge>
+              <Badge className="bg-purple-500 text-white">{t("dashboard.playerBadge")}</Badge>
             </div>
             <p className="text-gray-300 text-lg">
-              Welcome back, {userData.displayName}! Track your progress and
-              continue your learning journey.
+              {t("dashboard.welcome", { name: userData.displayName })}
             </p>
           </div>
 
@@ -316,18 +320,18 @@ const Dashboard = () => {
                     className={`w-3 h-3 rounded-full ${currentStatus.isOnline ? "bg-green-400 animate-pulse" : "bg-gray-400"}`}
                   />
                   <h3 className="font-bold text-white text-lg">
-                    Current Status
+                    {t("dashboard.currentStatus")}
                   </h3>
                   <Badge
                     className={
                       currentStatus.isOnline ? "bg-green-500" : "bg-gray-500"
                     }
                   >
-                    {currentStatus.isOnline ? "Online" : "Offline"}
+                    {currentStatus.isOnline ? t("dashboard.online") : t("dashboard.offline")}
                   </Badge>
                 </div>
                 <div className="text-sm text-gray-300">
-                  Last active: {currentStatus.lastActive}
+                  {t("dashboard.lastActive", { time: currentStatus.lastActive })}
                 </div>
               </div>
 
@@ -344,19 +348,19 @@ const Dashboard = () => {
                   <div className="text-2xl font-bold text-blue-400">
                     {currentStatus.todayQuizzes}/{currentStatus.todayGoal}
                   </div>
-                  <div className="text-xs text-blue-300">Today's Progress</div>
+                  <div className="text-xs text-blue-300">{t("dashboard.todaysProgress")}</div>
                 </div>
                 <div className="text-center p-3 bg-white/5 rounded-lg">
                   <div className="text-2xl font-bold text-yellow-400">
                     {currentStatus.energyLevel}%
                   </div>
-                  <div className="text-xs text-yellow-300">Energy Level</div>
+                  <div className="text-xs text-yellow-300">{t("dashboard.energyLevel")}</div>
                 </div>
                 <div className="text-center p-3 bg-white/5 rounded-lg">
                   <div className="text-2xl font-bold text-purple-400">
                     {currentStatus.studyTime}
                   </div>
-                  <div className="text-xs text-purple-300">Study Time</div>
+                  <div className="text-xs text-purple-300">{t("dashboard.studyTime")}</div>
                 </div>
               </div>
             </CardContent>
@@ -367,8 +371,8 @@ const Dashboard = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
                 <Star className="w-6 h-6 text-yellow-400" />
-                Limited Time Offers
-                <Badge className="bg-yellow-500 text-black">HOT</Badge>
+                {t("dashboard.limitedTimeOffers")}
+                <Badge className="bg-yellow-500 text-black">{t("dashboard.hot")}</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -382,7 +386,7 @@ const Dashboard = () => {
                       <h4 className="font-bold text-white">{offer.title}</h4>
                       {offer.urgent && (
                         <Badge className="bg-red-500 text-white text-xs">
-                          URGENT
+                          {t("dashboard.urgent")}
                         </Badge>
                       )}
                     </div>
@@ -402,7 +406,7 @@ const Dashboard = () => {
                       className={`w-full ${offer.urgent ? "bg-red-600 hover:bg-red-700" : "bg-yellow-600 hover:bg-yellow-700"} text-white`}
                       disabled={offer.claimed}
                     >
-                      {offer.claimed ? "Claimed" : "Claim Now"}
+                      {offer.claimed ? t("dashboard.claimed") : t("dashboard.claimNow")}
                     </Button>
                   </div>
                 ))}
@@ -410,20 +414,20 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Active Challenges */}
+          {/* {t("dashboard.activeChallenges")} */}
           <Card className="mb-8 bg-gradient-to-r from-purple-900/80 to-pink-900/80 border-purple-500/20 backdrop-blur-xl">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Trophy className="w-6 h-6 text-purple-400" />
-                  Active Challenges
+                  {t("dashboard.activeChallenges")}
                   <Badge className="bg-purple-500 text-white">
                     {activeChallenges.length}
                   </Badge>
                 </CardTitle>
                 <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
                   <Plus className="w-4 h-4 mr-2" />
-                  Browse More
+                  {t("dashboard.browseMore")}
                 </Button>
               </div>
             </CardHeader>
@@ -484,7 +488,7 @@ const Dashboard = () => {
                         size="sm"
                         className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                       >
-                        Continue
+                        {t("dashboard.continue")}
                       </Button>
                       <Button
                         size="sm"
@@ -506,7 +510,7 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-400">Total Quizzes</p>
+                    <p className="text-sm text-gray-400">{t("dashboard.totalQuizzes")}</p>
                     <p className="text-2xl font-bold text-white">
                       {dashboardStats.totalQuizzes}
                     </p>
@@ -515,7 +519,7 @@ const Dashboard = () => {
                 </div>
                 <div className="mt-2">
                   <Badge className="bg-blue-500 text-white text-xs">
-                    +12 this week
+                    {t("dashboard.plus12ThisWeek")}
                   </Badge>
                 </div>
               </CardContent>
@@ -525,7 +529,7 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-400">Accuracy Rate</p>
+                    <p className="text-sm text-gray-400">{t("dashboard.accuracyRate")}</p>
                     <p className="text-2xl font-bold text-white">
                       {dashboardStats.accuracy}%
                     </p>
@@ -534,7 +538,7 @@ const Dashboard = () => {
                 </div>
                 <div className="mt-2">
                   <Badge className="bg-green-500 text-white text-xs">
-                    +2.3% improvement
+                    {t("dashboard.plus2Improvement")}
                   </Badge>
                 </div>
               </CardContent>
@@ -544,7 +548,7 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-400">Current Streak</p>
+                    <p className="text-sm text-gray-400">{t("dashboard.currentStreak")}</p>
                     <p className="text-2xl font-bold text-white">
                       {dashboardStats.streak} days
                     </p>
@@ -553,7 +557,7 @@ const Dashboard = () => {
                 </div>
                 <div className="mt-2">
                   <Badge className="bg-orange-500 text-white text-xs">
-                    Personal best!
+                    {t("dashboard.personalBest")}
                   </Badge>
                 </div>
               </CardContent>
@@ -563,7 +567,7 @@ const Dashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-400">Global Rank</p>
+                    <p className="text-sm text-gray-400">{t("dashboard.globalRank")}</p>
                     <p className="text-2xl font-bold text-white">
                       #{dashboardStats.rank}
                     </p>
@@ -572,7 +576,7 @@ const Dashboard = () => {
                 </div>
                 <div className="mt-2">
                   <Badge className="bg-purple-500 text-white text-xs">
-                    Top 15%
+                    {t("dashboard.top15")}
                   </Badge>
                 </div>
               </CardContent>
@@ -583,12 +587,12 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Weekly Performance Chart */}
+              {/* {t("dashboard.weeklyPerformance")} Chart */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <BarChart3 className="w-6 h-6 text-blue-400" />
-                    Weekly Performance
+                    {t("dashboard.weeklyPerformance")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -601,7 +605,7 @@ const Dashboard = () => {
                         <div className="flex-1">
                           <div className="flex justify-between text-sm text-gray-400 mb-1">
                             <span>{day.quizzes} quizzes</span>
-                            <span>{day.score}% avg</span>
+                            <span>{day.score}% {t("dashboard.avg")}</span>
                           </div>
                           <Progress value={day.score} className="h-2" />
                         </div>
@@ -614,12 +618,12 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Recent Activity */}
+              {/* {t("dashboard.recentActivity")} */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Activity className="w-6 h-6 text-green-400" />
-                    Recent Activity
+                    {t("dashboard.recentActivity")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -656,7 +660,7 @@ const Dashboard = () => {
                           <div className="text-yellow-400 font-bold">
                             +{activity.points}
                           </div>
-                          <div className="text-xs text-gray-400">points</div>
+                          <div className="text-xs text-gray-400">{t("dashboard.points")}</div>
                         </div>
                       </div>
                     ))}
@@ -692,25 +696,25 @@ const Dashboard = () => {
                         <div className="text-lg font-bold text-red-400">
                           {userData.lives}
                         </div>
-                        <div className="text-xs text-gray-400">Lives</div>
+                        <div className="text-xs text-gray-400">{t("dashboard.lives")}</div>
                       </div>
                       <div className="text-center">
                         <div className="text-lg font-bold text-purple-400">
                           {userData.totalStars}
                         </div>
-                        <div className="text-xs text-gray-400">Stars</div>
+                        <div className="text-xs text-gray-400">{t("dashboard.stars")}</div>
                       </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Notifications */}
+              {/* {t("dashboard.notifications")} */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Bell className="w-5 h-5 text-yellow-400" />
-                    Notifications
+                    {t("dashboard.notifications")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -748,12 +752,12 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Upcoming Events */}
+              {/* {t("dashboard.upcomingEvents")} */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Calendar className="w-5 h-5 text-blue-400" />
-                    Upcoming Events
+                    {t("dashboard.upcomingEvents")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -769,7 +773,7 @@ const Dashboard = () => {
                         <p className="text-xs text-gray-400">{event.date}</p>
                         <div className="flex justify-between items-center mt-2">
                           <span className="text-xs text-gray-500">
-                            {event.participants} participants
+                            {event.participants} {t("dashboard.participants")}
                           </span>
                           <Badge className="bg-yellow-500 text-black text-xs">
                             {event.prize}
@@ -781,19 +785,19 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Daily Goals & Challenges */}
+              {/* {t("dashboard.dailyGoals")} & Challenges */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl mb-6">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Target className="w-5 h-5 text-orange-400" />
-                    Daily Goals
+                    {t("dashboard.dailyGoals")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Quizzes Completed</span>
+                        <span className="text-gray-400">{t("dashboard.quizzesCompleted")}</span>
                         <span className="text-white">
                           {currentStatus.todayQuizzes}/{currentStatus.todayGoal}
                         </span>
@@ -810,7 +814,7 @@ const Dashboard = () => {
 
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Weekly Streak</span>
+                        <span className="text-gray-400">{t("dashboard.weeklyStreak")}</span>
                         <span className="text-white">5/7 days</span>
                       </div>
                       <Progress value={(5 / 7) * 100} className="h-2" />
@@ -818,7 +822,7 @@ const Dashboard = () => {
 
                     <div>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Accuracy Goal</span>
+                        <span className="text-gray-400">{t("dashboard.accuracyGoal")}</span>
                         <span className="text-white">92/90%</span>
                       </div>
                       <Progress value={100} className="h-2" />
@@ -829,46 +833,46 @@ const Dashboard = () => {
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-400" />
                       <span className="text-sm text-green-300">
-                        3 goals completed today! +150 bonus coins earned
+                        {t("dashboard.goalsCompleted")}
                       </span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
+              {/* {t("dashboard.quickActions")} */}
               <Card className="bg-slate-900/80 border-slate-700 backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <Zap className="w-5 h-5 text-purple-400" />
-                    Quick Actions
+                    {t("dashboard.quickActions")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
                     <Play className="w-4 h-4 mr-2" />
-                    Continue Quiz Journey
+                    {t("dashboard.continue")} Quiz Journey
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white"
                   >
                     <Target className="w-4 h-4 mr-2" />
-                    Join Daily Challenge
+                    {t("dashboard.joinDailyChallenge")}
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-white"
                   >
                     <Star className="w-4 h-4 mr-2" />
-                    Claim Rewards
+                    {t("dashboard.claimRewards")}
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full border-green-500 text-green-400 hover:bg-green-500 hover:text-white"
                   >
                     <Users className="w-4 h-4 mr-2" />
-                    Invite Friends
+                    {t("dashboard.inviteFriends")}
                   </Button>
                 </CardContent>
               </Card>
@@ -880,39 +884,38 @@ const Dashboard = () => {
             <CardContent className="p-6">
               <div className="text-center">
                 <h3 className="font-bold text-yellow-400 mb-4">
-                  🔑 Demo Credentials for Testing
+                  {t("dashboard.demoCredentialsTitle")}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-yellow-500/10 p-4 rounded-lg border border-yellow-500/20">
                     <h4 className="font-semibold text-yellow-300 mb-2">
-                      Quick Demo Account
+                      {t("dashboard.quickDemoAccount")}
                     </h4>
                     <div className="space-y-1 text-sm text-yellow-200">
                       <div>
-                        <strong>Email:</strong> demo@quiz2play.com
+                        <strong>{t("dashboard.email")}</strong> demo@quiz2play.com
                       </div>
                       <div>
-                        <strong>Password:</strong> demo123
+                        <strong>{t("dashboard.password")}</strong> demo123
                       </div>
                     </div>
                   </div>
                   <div className="bg-orange-500/10 p-4 rounded-lg border border-orange-500/20">
                     <h4 className="font-semibold text-orange-300 mb-2">
-                      Test Account
+                      {t("dashboard.testAccount")}
                     </h4>
                     <div className="space-y-1 text-sm text-orange-200">
                       <div>
-                        <strong>Email:</strong> test@example.com
+                        <strong>{t("dashboard.email")}</strong> test@example.com
                       </div>
                       <div>
-                        <strong>Password:</strong> test123
+                        <strong>{t("dashboard.password")}</strong> test123
                       </div>
                     </div>
                   </div>
                 </div>
                 <p className="text-yellow-300 text-sm mt-4">
-                  💡 <strong>Demo Mode:</strong> You can also create any account
-                  with any email address!
+                  {t("dashboard.demoModeInfo")}
                 </p>
               </div>
             </CardContent>

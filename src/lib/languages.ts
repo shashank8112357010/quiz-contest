@@ -27,10 +27,18 @@ export const supportedLanguages: Language[] = [
 ];
 
 export interface Translations {
+  hero?: {
+    contestTitle: string;
+    season: string;
+    subtitle: string;
+  };
   // Header
   home: string;
   categories: string;
-  leaderboard: string;
+  leaderboard: {
+    globalTitle: string;
+    subtitle: string;
+  };
   gratifications: string;
   faq: string;
   login: string;
@@ -72,9 +80,17 @@ export interface Translations {
 
 export const translations: Record<string, Translations> = {
   en: {
+    hero: {
+      contestTitle: "Super Bonanza Contest",
+      season: "(Season - 1)",
+      subtitle: "India's biggest quiz contest with mega prizes!",
+    },
+    leaderboard: {
+      globalTitle: "Global Leaderboard",
+      subtitle: "Compete with quiz masters worldwide and climb to the top!",
+    },
     home: "Home",
     categories: "Categories",
-    leaderboard: "Leaderboard",
     gratifications: "Gratifications",
     faq: "FAQ",
     login: "Login",
@@ -111,9 +127,17 @@ export const translations: Record<string, Translations> = {
     ok: "OK",
   },
   ar: {
+    hero: {
+      contestTitle: "مسابقة بونانزا الكبرى",
+      season: "(الموسم - 1)",
+      subtitle: "أكبر مسابقة اختبار في الهند مع جوائز ضخمة!",
+    },
+    leaderboard: {
+      globalTitle: "لوحة المتصدرين العالمية",
+      subtitle: "تنافس مع أساتذة الاختبار من جميع أنحاء العالم وتسلق إلى القمة!",
+    },
     home: "الرئيسية",
     categories: "الفئات",
-    leaderboard: "لوحة المتصدري��",
     gratifications: "المكافآت",
     faq: "الأسئلة الشائعة",
     login: "تسجيل الدخول",
@@ -150,9 +174,17 @@ export const translations: Record<string, Translations> = {
     ok: "موافق",
   },
   pt: {
+    hero: {
+      contestTitle: "Super Bonanza Concurso",
+      season: "(Temporada - 1)",
+      subtitle: "O maior concurso de perguntas da Índia com grandes prêmios!",
+    },
+    leaderboard: {
+      globalTitle: "Classificação Global",
+      subtitle: "Compita com mestres do quiz no mundo todo e chegue ao topo!",
+    },
     home: "Início",
     categories: "Categorias",
-    leaderboard: "Classificação",
     gratifications: "Gratificações",
     faq: "FAQ",
     login: "Entrar",
@@ -197,7 +229,7 @@ import { persist } from "zustand/middleware";
 interface LanguageStore {
   currentLanguage: string;
   setLanguage: (language: string) => void;
-  t: (key: keyof Translations) => string;
+  t: (key: string) => string;
 }
 
 export const useLanguageStore = create<LanguageStore>()(
@@ -205,9 +237,17 @@ export const useLanguageStore = create<LanguageStore>()(
     (set, get) => ({
       currentLanguage: "en",
       setLanguage: (language: string) => set({ currentLanguage: language }),
-      t: (key: keyof Translations): string => {
+      t: (key: string): string => {
         const currentLang = get().currentLanguage;
-        return translations[currentLang]?.[key] || translations.en[key] || key;
+        // Try to resolve nested keys (e.g., 'dashboard.offers.weekendBonus.title')
+        const resolve = (obj: any, path: string): any => {
+          return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
+        };
+        return (
+          resolve(translations[currentLang], key) ||
+          resolve(translations.en, key) ||
+          key
+        );
       },
     }),
     {

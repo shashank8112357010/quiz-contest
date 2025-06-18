@@ -6,7 +6,7 @@ import { Header } from "@/components/ui/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -41,11 +41,18 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { ProfileCompletion } from "@/components/ui/profile-completion";
 import { AuthDebug } from "@/components/ui/auth-debug";
 
+import { uploadProfileImage, updateUserPhotoURL } from "@/lib/firebaseService";
+
 const Profile = () => {
   const { user, userData, loading } = useAuth();
   const [streak, setStreak] = useState<number | null>(null);
   const [loadingStreak, setLoadingStreak] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Upload state for profile image
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   useEffect(() => {
     if (!user?.uid) return;
     const ref = doc(db, "users", user.uid);
@@ -165,8 +172,7 @@ const Profile = () => {
                   Please Sign In
                 </h1>
                 <p className="text-gray-300 mb-6">
-                  You need to be signed in to view your profile and track your
-                  progress.
+                  You need to be signed in to view your profile and track your progress.
                 </p>
                 <Button
                   onClick={() => (window.location.href = "/")}
@@ -181,6 +187,17 @@ const Profile = () => {
       </div>
     );
   }
+
+  // Defensive fallback for all fields
+  const safePhotoURL = userData?.photoURL || undefined;
+  const safeDisplayName = userData?.displayName || "User";
+  const safeEmail = userData?.email || "";
+  const safeCoins = userData?.coins ?? 0;
+  const safeLives = userData?.lives ?? 0;
+  const safeTotalStars = userData?.totalStars ?? 0;
+  const safeCurrentLevel = userData?.currentLevel ?? 1;
+  const safeTotalGamesPlayed = userData?.totalGamesPlayed ?? 0;
+  const safeTotalCorrectAnswers = userData?.totalCorrectAnswers ?? 0;
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -199,16 +216,57 @@ const Profile = () => {
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="relative">
                   <Avatar className="w-24 h-24">
-                    <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-2xl font-bold">
-                      {userData.displayName?.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
+                    {safePhotoURL ? (
+                      <AvatarImage src={safePhotoURL} alt="Profile" />
+                    ) : (
+                      <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-2xl font-bold">
+                        {safeDisplayName.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    )}
                   </Avatar>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="profile-image-input"
+                    style={{ display: "none" }}
+                    onChange={async (e) => {
+                      if (!user?.uid || !e.target.files?.[0]) return;
+                      setUploading(true);
+                      setUploadError("");
+                      try {
+                        const url = await uploadProfileImage(user.uid, e.target.files[0]);
+                        await updateUserPhotoURL(user.uid, url);
+                        setUploadSuccess(true);
+                        setTimeout(() => setUploadSuccess(false), 2000);
+                      } catch (err) {
+                        setUploadError("Failed to upload image. Please try again.");
+                      } finally {
+                        setUploading(false);
+                      }
+                    }}
+                  />
                   <Button
                     size="icon"
                     className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-purple-600 hover:bg-purple-700"
+                    onClick={() => document.getElementById("profile-image-input")?.click()}
+                    disabled={uploading}
                   >
-                    <Camera className="w-4 h-4" />
+                    {uploading ? (
+                      <span className="loader w-4 h-4" />
+                    ) : (
+                      <Camera className="w-4 h-4" />
+                    )}
                   </Button>
+                  {uploadError && (
+                    <div className="absolute left-0 right-0 mt-2 text-xs text-red-400 bg-slate-900/90 p-1 rounded shadow">
+                      {uploadError}
+                    </div>
+                  )}
+                  {uploadSuccess && (
+                    <div className="absolute left-0 right-0 mt-2 text-xs text-green-400 bg-slate-900/90 p-1 rounded shadow">
+                      Profile image updated!
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex-1 text-center md:text-left">
@@ -251,20 +309,6 @@ const Profile = () => {
                         Level {userData.currentLevel}
                       </span>
                     </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
-                      <Share className="w-4 h-4 mr-2" />
-                      Share Profile
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Export Data
-                    </Button>
                   </div>
                 </div>
 
@@ -341,7 +385,7 @@ const Profile = () => {
               >
                 🏆 Achievements
               </TabsTrigger>
-           
+
             </TabsList>
 
             {/* Overview Tab */}
@@ -460,11 +504,11 @@ const Profile = () => {
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-  <span className="text-gray-300">Current Streak</span>
-  <span className="font-bold text-orange-400">
-    {loadingStreak ? "..." : streak !== null ? `${streak} days` : "0 days"}
-  </span>
-</div>
+                          <span className="text-gray-300">Current Streak</span>
+                          <span className="font-bold text-orange-400">
+                            {loadingStreak ? "..." : streak !== null ? `${streak} days` : "0 days"}
+                          </span>
+                        </div>
                         <div className="flex justify-between items-center">
                           <span className="text-gray-300">Time Played</span>
                           <span className="font-bold text-blue-400">
@@ -598,44 +642,39 @@ const Profile = () => {
                 {achievements.map((achievement) => (
                   <Card
                     key={achievement.id}
-                    className={`${
-                      achievement.unlocked
+                    className={`${achievement.unlocked
                         ? `bg-gradient-to-r ${getRarityColor(achievement.rarity)}/20 border-slate-600`
                         : "bg-slate-800/50 border-slate-700"
-                    } backdrop-blur-xl transition-all duration-300 hover:scale-105`}
+                      } backdrop-blur-xl transition-all duration-300 hover:scale-105`}
                   >
                     <CardContent className="p-6 text-center">
                       <div
-                        className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                          achievement.unlocked
+                        className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${achievement.unlocked
                             ? `bg-gradient-to-r ${getRarityColor(achievement.rarity)}`
                             : "bg-slate-700"
-                        }`}
+                          }`}
                       >
                         {achievement.icon}
                       </div>
                       <h3
-                        className={`font-bold mb-2 ${
-                          achievement.unlocked ? "text-white" : "text-gray-400"
-                        }`}
+                        className={`font-bold mb-2 ${achievement.unlocked ? "text-white" : "text-gray-400"
+                          }`}
                       >
                         {achievement.title}
                       </h3>
                       <p
-                        className={`text-sm mb-3 ${
-                          achievement.unlocked
+                        className={`text-sm mb-3 ${achievement.unlocked
                             ? "text-gray-300"
                             : "text-gray-500"
-                        }`}
+                          }`}
                       >
                         {achievement.description}
                       </p>
                       <Badge
-                        className={`capitalize ${
-                          achievement.unlocked
+                        className={`capitalize ${achievement.unlocked
                             ? `bg-gradient-to-r ${getRarityColor(achievement.rarity)} text-white`
                             : "bg-slate-600 text-gray-300"
-                        }`}
+                          }`}
                       >
                         {achievement.rarity}
                       </Badge>
@@ -650,7 +689,7 @@ const Profile = () => {
               </div>
             </TabsContent>
 
-         
+
           </Tabs>
         </main>
       </div>
