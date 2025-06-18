@@ -17,6 +17,7 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import Index from "./pages/Index";
 import Categories from "./pages/Categories";
 import Quiz from "./pages/Quiz";
+import QuizTest from "./pages/QuizTest";
 import Leaderboard from "./pages/Leaderboard";
 import Contests from "./pages/Contests";
 import Rewards from "./pages/Rewards";
@@ -84,6 +85,7 @@ const AppContent = () => {
           <Route path="/" element={<Index />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz-test" element={<QuizTest />} />
           <Route path="/quiz/:categoryId" element={<Quiz />} />
           <Route path="/quiz/day/:day" element={<Quiz />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
