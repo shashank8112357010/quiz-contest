@@ -46,6 +46,7 @@ import { uploadProfileImage, updateUserPhotoURL } from "@/lib/firebaseService";
 
 const Profile = () => {
   const { user, userData, loading } = useAuth();
+  const { t } = useLanguageStore();
   const [streak, setStreak] = useState<number | null>(null);
   const [loadingStreak, setLoadingStreak] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
