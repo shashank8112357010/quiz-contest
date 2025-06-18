@@ -202,7 +202,7 @@ export const PrizeCarousel: React.FC<PrizeCarouselProps> = ({
           <div className="text-center mb-6">
             <div className="mb-6">
               <div className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Amazing Prizes
+                {t("amazingPrizes")}
               </div>
             </div>
           </div>
